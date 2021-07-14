@@ -16,3 +16,11 @@
 # Add a feed source
 #echo 'src-git helloworld https://github.com/fw876/helloworld' >>feeds.conf.default
 #echo 'src-git passwall https://github.com/xiaorouji/openwrt-passwall' >>feeds.conf.default
+
+# 添加passwall
+echo 'src-git helloworld https://github.com/fw876/helloworld' >>feeds.conf.default
+# 添加ssrplus
+echo 'src-git passwall https://github.com/xiaorouji/openwrt-passwall' >>feeds.conf.default
+
+# 修改luci版本
+sed -i '/luci/s/17.01/19.07/' feeds.conf.default
