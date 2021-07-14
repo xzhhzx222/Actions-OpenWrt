@@ -52,10 +52,9 @@ git clone https://github.com/garypang13/luci-app-bypass.git package/luci-app-byp
 #git clone https://github.com/jerrykuku/lua-maxminddb.git package/vssr/lua-maxminddb
 git clone https://github.com/jerrykuku/luci-app-vssr.git package/vssr/luci-app-vssr
 # 添加oaf
-git clone https://github.com/destan19/OpenAppFilter.git  package/OpenAppFilter
+#git clone https://github.com/destan19/OpenAppFilter.git  package/OpenAppFilter
 # 添加openclash
 git clone https://github.com/vernesong/OpenClash.git package/luci-app-openclash
-#svn co https://github.com/vernesong/OpenClash/trunk/luci-app-openclash package/luci-app-openclash
 # 添加timecontrol
 svn co https://github.com/Lienol/openwrt-package/trunk/luci-app-timecontrol package/luci-app-timecontrol
 # 添加weburl
@@ -68,9 +67,9 @@ rm -rf package/lean/luci-theme-argon
 git clone -b 18.06 https://github.com/jerrykuku/luci-theme-argon.git package/luci-theme-argon
 sed -i 's/luci-theme-bootstrap/luci-theme-argon/g' package/feeds/luci/luci/Makefile
 
-# 移动appfilter到管控下
-sed -i 's/"network"/"control"/g' package/OpenAppFilter/luci-app-oaf/luasrc/controller/appfilter.lua
-sed -i 's/network/control/g' package/OpenAppFilter/luci-app-oaf/luasrc/view/admin_network/user_status.htm
+# 移动oaf到管控下
+#sed -i 's/"network"/"control"/g' package/OpenAppFilter/luci-app-oaf/luasrc/controller/appfilter.lua
+#sed -i 's/network/control/g' package/OpenAppFilter/luci-app-oaf/luasrc/view/admin_network/user_status.htm
 # 移动upnp到网络下
 sed -i 's/"services"/"network"/g' package/feeds/luci/luci-app-upnp/luasrc/controller/upnp.lua
 sed -i 's/services/network/g' package/feeds/luci/luci-app-upnp/luasrc/view/upnp_status.htm
