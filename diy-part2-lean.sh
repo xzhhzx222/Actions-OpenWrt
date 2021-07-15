@@ -50,7 +50,7 @@ git clone https://github.com/jerrykuku/luci-app-argon-config.git package/luci-ap
 git clone https://github.com/garypang13/luci-app-bypass.git package/luci-app-bypass
 # 添加helloworld
 #git clone https://github.com/jerrykuku/lua-maxminddb.git package/vssr/lua-maxminddb
-git clone https://github.com/jerrykuku/luci-app-vssr.git package/vssr/luci-app-vssr
+#git clone https://github.com/jerrykuku/luci-app-vssr.git package/vssr/luci-app-vssr
 # 添加oaf
 #git clone https://github.com/destan19/OpenAppFilter.git  package/OpenAppFilter
 # 添加openclash
@@ -60,7 +60,7 @@ svn co https://github.com/Lienol/openwrt-package/trunk/luci-app-timecontrol pack
 # 添加weburl
 svn co https://github.com/Lienol/openwrt-package/trunk/luci-app-control-weburl package/luci-app-control-weburl
 # 添加webrestriction
-svn co https://github.com/Lienol/openwrt-package/trunk/luci-app-control-webrestriction package/luci-app-control-webrestriction
+#svn co https://github.com/Lienol/openwrt-package/trunk/luci-app-control-webrestriction package/luci-app-control-webrestriction
 
 # 更改默认主题
 rm -rf package/lean/luci-theme-argon
