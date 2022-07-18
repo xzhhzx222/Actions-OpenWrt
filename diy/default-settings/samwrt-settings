@@ -51,7 +51,7 @@ uci del_list firewall.@zone[1].network='wan6'
 # Delete firewall.rule
 for i in $(seq 3 6);do uci set firewall.@rule[$i].enabled='0';done
 # Add firewall.zone
-for i in 2 3;do uci add firewall zone && uci set firewall.@zone[$i].input='ACCEPT' && uci set firewall.@zone[$i].output='ACCEPT' && uci set firewall.@zone[$i].forward='ACCEPT'
+for i in 2 3;do uci add firewall zone && uci set firewall.@zone[$i].input='ACCEPT' && uci set firewall.@zone[$i].output='ACCEPT' && uci set firewall.@zone[$i].forward='ACCEPT';done
 # Set firewall.zone
 uci set firewall.@zone[2].name='vlan85'
 uci set firewall.@zone[2].network='vlan85'
