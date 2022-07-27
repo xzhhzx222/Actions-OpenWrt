@@ -30,15 +30,12 @@ uci set dhcp.@domain[2].name='jimmynas.com'
 # Add dhcp.host
 for i in $(seq 0 4);do uci add dhcp host && uci set dhcp.@host[$i].dns='1' && uci set dhcp.@host[$i].ip='192.168.0.1'$i'' && uci set dhcp.@host[$i].leasetime='infinite';done
 # Set dhcp.host
+for i in $(seq 1 4);do uci set dhcp.@host[$i].name='Lobby-PC'$i'';done
 uci set dhcp.@host[0].name='Jimmy-Server'
 uci set dhcp.@host[0].mac='28:e3:47:c3:70:24'
-uci set dhcp.@host[1].name='Lobby-PC1'
 uci set dhcp.@host[1].mac='a8:a1:59:20:60:d5'
-uci set dhcp.@host[2].name='Lobby-PC2'
 uci set dhcp.@host[2].mac='1c:39:47:18:09:2f'
-uci set dhcp.@host[3].name='Lobby-PC3'
 uci set dhcp.@host[3].mac='a8:a1:59:20:60:d7'
-uci set dhcp.@host[4].name='Lobby-PC4'
 uci set dhcp.@host[4].mac='a8:a1:59:20:60:9f'
 uci commit dhcp
 
@@ -196,7 +193,7 @@ sed -i 's/\"control\"/\"services\"/g' /usr/lib/lua/luci/view/timewol/index.htm
 sed -i 's/root::0:0:99999:7:::/root:$1$fbr0AcjI$x07b6cfvhGdfFLdbDCcfj.:0:0:99999:7:::/g' /etc/shadow
 
 sed -i '/DISTRIB_REVISION/d' /etc/openwrt_release
-echo "DISTRIB_REVISION='Ver22.07.20'" >> /etc/openwrt_release
+echo "DISTRIB_REVISION='Ver22.07.27'" >> /etc/openwrt_release
 sed -i '/DISTRIB_DESCRIPTION/d' /etc/openwrt_release
 echo "DISTRIB_DESCRIPTION='JimmyWrt '" >> /etc/openwrt_release
 
