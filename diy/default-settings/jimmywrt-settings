@@ -165,6 +165,7 @@ uci set timewol.@macclient[3].macaddr='A8:A1:59:20:60:9F'
 uci set timewol.@basic[0].enable='1'
 uci commit timewol
 
+uci set turboacc.config.fullcone_nat='0'
 uci set turboacc.config.bbr_cca='1'
 uci commit turboacc
 
