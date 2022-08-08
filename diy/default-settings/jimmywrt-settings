@@ -21,6 +21,7 @@ uci set dhcp.@dnsmasq[0].sequential_ip='1'
 # Set dhcp.lan
 uci set dhcp.lan.start='20'
 uci set dhcp.lan.limit='99'
+uci set dhcp.lan.force='1'
 # Add dhcp.domain
 for i in $(seq 0 2);do uci add dhcp domain && uci set dhcp.@domain[$i].ip='192.168.0.'$(($i+1))'';done
 # Set dhcp.domain
@@ -194,7 +195,7 @@ sed -i 's/\"control\"/\"services\"/g' /usr/lib/lua/luci/view/timewol/index.htm
 sed -i 's/root::0:0:99999:7:::/root:$1$fbr0AcjI$x07b6cfvhGdfFLdbDCcfj.:0:0:99999:7:::/g' /etc/shadow
 
 sed -i '/DISTRIB_REVISION/d' /etc/openwrt_release
-echo "DISTRIB_REVISION='Ver22.07.28'" >> /etc/openwrt_release
+echo "DISTRIB_REVISION='Ver22.08.08'" >> /etc/openwrt_release
 sed -i '/DISTRIB_DESCRIPTION/d' /etc/openwrt_release
 echo "DISTRIB_DESCRIPTION='JimmyWrt '" >> /etc/openwrt_release
 
