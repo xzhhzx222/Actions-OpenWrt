@@ -21,6 +21,7 @@ uci set dhcp.@dnsmasq[0].sequential_ip='1'
 # Set dhcp.lan
 uci set dhcp.lan.start='20'
 uci set dhcp.lan.limit='99'
+uci set dhcp.lan.force='1'
 # Add dhcp.domain
 for i in $(seq 0 2);do uci add dhcp domain && uci set dhcp.@domain[$i].ip='10.0.0.'$(($i+1))'';done
 # Set dhcp.domain
@@ -207,7 +208,7 @@ echo 'dhcp-option=60,00:00:01:06:68:75:61:71:69:6E:02:0A:48:47:55:34:32:31:4E:20
 sed -i 's/root::0:0:99999:7:::/root:$1$MDmA.Fh7$15LUuc2.kXYYr3Z7VYRxt1:0:0:99999:7:::/g' /etc/shadow
 
 sed -i '/DISTRIB_REVISION/d' /etc/openwrt_release
-echo "DISTRIB_REVISION='Ver22.07.28'" >> /etc/openwrt_release
+echo "DISTRIB_REVISION='Ver22.08.08'" >> /etc/openwrt_release
 sed -i '/DISTRIB_DESCRIPTION/d' /etc/openwrt_release
 echo "DISTRIB_DESCRIPTION='SamWrt '" >> /etc/openwrt_release
 
