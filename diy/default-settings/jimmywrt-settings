@@ -33,9 +33,9 @@ for i in $(seq 0 4);do uci add dhcp host && uci set dhcp.@host[$i].dns='1' && uc
 # Set dhcp.host
 for i in $(seq 1 4);do uci set dhcp.@host[$i].name='Lobby-PC'$i'';done
 uci set dhcp.@host[0].name='Jimmy-Server'
-uci set dhcp.@host[0].mac='28:e3:47:c3:70:24'
+uci set dhcp.@host[0].mac='e0:94:67:4a:1a:69'
 uci set dhcp.@host[1].mac='a8:a1:59:20:60:d5'
-uci set dhcp.@host[2].mac='1c:39:47:18:09:2f'
+uci set dhcp.@host[2].mac='a8:a1:59:20:60:a1'
 uci set dhcp.@host[3].mac='a8:a1:59:20:60:d7'
 uci set dhcp.@host[4].mac='a8:a1:59:20:60:9f'
 uci commit dhcp
@@ -159,7 +159,7 @@ for i in $(seq 0 3);do uci del timewol.@macclient[0];done
 for i in $(seq 0 3);do uci add timewol macclient && uci set timewol.@macclient[$i].maceth='br-lan' && uci set timewol.@macclient[$i].minute='30' && uci set timewol.@macclient[$i].hour='10';done
 # Set timewol.macclient
 uci set timewol.@macclient[0].macaddr='A8:A1:59:20:60:D5'
-uci set timewol.@macclient[1].macaddr='1C:39:47:18:09:2F'
+uci set timewol.@macclient[1].macaddr='A8:A1:59:20:60:A1'
 uci set timewol.@macclient[2].macaddr='A8:A1:59:20:60:D7'
 uci set timewol.@macclient[3].macaddr='A8:A1:59:20:60:9F'
 # Set timewol.basic
@@ -180,7 +180,7 @@ uci commit upnpd
 for i in $(seq 1 4);do uci set wolplus.pc$i=macclient && uci set wolplus.pc$i.name='Lobby-P'C$i'' && uci set wolplus.pc$i.maceth='br-lan';done
 # Set wolplus.pc
 uci set wolplus.pc1.macaddr='A8:A1:59:20:60:D5'
-uci set wolplus.pc2.macaddr='1C:39:47:18:09:2F'
+uci set wolplus.pc2.macaddr='A8:A1:59:20:60:A1'
 uci set wolplus.pc3.macaddr='A8:A1:59:20:60:D7'
 uci set wolplus.pc4.macaddr='A8:A1:59:20:60:9F'
 uci commit wolplus
