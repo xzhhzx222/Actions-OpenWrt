@@ -23,7 +23,7 @@ uci set dhcp.lan.start='20'
 uci set dhcp.lan.limit='99'
 uci set dhcp.lan.force='1'
 # Add dhcp.domain
-for i in $(seq 0 2);do uci add dhcp domain && uci set dhcp.@domain[$i].ip='192.168.0.'$(($i+1))'';done
+for i in $(seq 1 3);do uci add dhcp domain && uci set dhcp.@domain[$i].ip='192.168.0.'$i'';done
 # Set dhcp.domain
 uci set dhcp.@domain[0].name='jimmyesxi.com'
 uci set dhcp.@domain[1].name='jimmywrt.com'
@@ -50,7 +50,7 @@ for i in $(seq 3 6);do uci set firewall.@rule[$i].enabled='0';done
 for i in $(seq 0 13);do uci add firewall redirect && uci set firewall.@redirect[$i].target='DNAT' && uci set firewall.@redirect[$i].src='wan' && uci set firewall.@redirect[$i].dest='lan' && uci set firewall.@redirect[$i].proto='tcp';done
 # Adjust firewall.redirect
 for i in 7 10;do uci set firewall.@redirect[$i].proto='tcp udp';done
-for i in 1 3 11;do uci set firewall.@redirect[$i].enabled='0';done
+for i in 3 11;do uci set firewall.@redirect[$i].enabled='0';done
 for i in $(seq 1 4);do uci set firewall.@redirect[$i].dest_ip='192.168.0.2';done
 for i in $(seq 5 13);do uci set firewall.@redirect[$i].dest_ip='192.168.0.3';done
 # Set firewall.redirect
@@ -124,17 +124,17 @@ uci set serverchan.serverchan.serverchan_enable='1'
 uci set serverchan.serverchan.serverchan_up='0'
 uci set serverchan.serverchan.serverchan_down='0'
 uci set serverchan.serverchan.cpuload_enable='0'
-uci set serverchan.serverchan.jsonpath='/usr/bin/serverchan/api/qywx_mpnews.json'
-uci set serverchan.serverchan.mediapath='/usr/bin/serverchan/api/logo.jpg'
+# uci set serverchan.serverchan.jsonpath='/usr/bin/serverchan/api/qywx_mpnews.json'
+# uci set serverchan.serverchan.mediapath='/usr/bin/serverchan/api/logo.jpg'
 uci set serverchan.serverchan.device_name='JimmyWrt'
-uci set serverchan.serverchan.serverchan_ipv4='1'
+# uci set serverchan.serverchan.serverchan_ipv4='1'
 uci set serverchan.serverchan.ipv4_interface='pppoe-wan'
-uci set serverchan.serverchan.web_logged='1'
-uci set serverchan.serverchan.ssh_logged='1'
-uci set serverchan.serverchan.web_login_failed='1'
-uci set serverchan.serverchan.ssh_login_failed='1'
-uci set serverchan.serverchan.web_login_black='0'
-uci set serverchan.serverchan.login_max_num='3'
+# uci set serverchan.serverchan.web_logged='1'
+# uci set serverchan.serverchan.ssh_logged='1'
+# uci set serverchan.serverchan.web_login_failed='1'
+# uci set serverchan.serverchan.ssh_login_failed='1'
+# uci set serverchan.serverchan.web_login_black='0'
+# uci set serverchan.serverchan.login_max_num='1'
 uci set serverchan.serverchan.crontab='2'
 uci set serverchan.serverchan.interval_time='4'
 uci set serverchan.serverchan.send_title='路由状态'
@@ -177,7 +177,7 @@ uci set upnpd.config.enabled='1'
 uci commit upnpd
 
 # Add wolplus.pc
-for i in $(seq 1 4);do uci set wolplus.pc$i=macclient && uci set wolplus.pc$i.name='Lobby-P'C$i'' && uci set wolplus.pc$i.maceth='br-lan';done
+for i in $(seq 1 4);do uci set wolplus.pc$i=macclient && uci set wolplus.pc$i.name='Lobby-PC'$i'' && uci set wolplus.pc$i.maceth='br-lan';done
 # Set wolplus.pc
 uci set wolplus.pc1.macaddr='A8:A1:59:20:60:D5'
 uci set wolplus.pc2.macaddr='A8:A1:59:20:60:A1'
@@ -185,7 +185,6 @@ uci set wolplus.pc3.macaddr='A8:A1:59:20:60:D7'
 uci set wolplus.pc4.macaddr='A8:A1:59:20:60:9F'
 uci commit wolplus
 
-sed -i '/dhcp-option/d' /etc/dnsmasq.conf
 sed -i '/log-facility/d' /etc/dnsmasq.conf
 echo "log-facility=/dev/null" >> /etc/dnsmasq.conf
 
@@ -195,7 +194,7 @@ sed -i 's/\"control\"/\"services\"/g' /usr/lib/lua/luci/view/timewol/index.htm
 sed -i 's/root::0:0:99999:7:::/root:$1$fbr0AcjI$x07b6cfvhGdfFLdbDCcfj.:0:0:99999:7:::/g' /etc/shadow
 
 sed -i '/DISTRIB_REVISION/d' /etc/openwrt_release
-echo "DISTRIB_REVISION='Ver22.08.08'" >> /etc/openwrt_release
+echo "DISTRIB_REVISION='Ver22.08.15'" >> /etc/openwrt_release
 sed -i '/DISTRIB_DESCRIPTION/d' /etc/openwrt_release
 echo "DISTRIB_DESCRIPTION='JimmyWrt '" >> /etc/openwrt_release
 
