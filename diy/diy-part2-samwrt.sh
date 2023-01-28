@@ -15,7 +15,7 @@
 
 # 更改默认主题
 # sed -i 's/luci-theme-bootstrap/luci-theme-argon-18.06/g' package/feeds/luci/luci/Makefile
-sed -i 's/luci-theme-bootstrap/luci-theme-argon/g' package/feeds/luci/luci/Makefile
+sed -i 's/luci-theme-bootstrap/luci-theme-argon-mod/g' package/feeds/luci/luci/Makefile
 
 # 替换default-settings
 mv -vf package/self-settings/default-settings/samwrt-settings package/lean/default-settings/files/zzz-default-settings
