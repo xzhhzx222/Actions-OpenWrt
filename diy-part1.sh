@@ -32,6 +32,8 @@ git clone https://github.com/sirpdboy/luci-app-advanced.git package/luci-app-adv
 # 添加control
 svn co https://github.com/Lienol/openwrt-package/trunk/luci-app-control-timewol package/samwrt/luci-app-control-timewol
 svn co https://github.com/Lienol/openwrt-package/trunk/luci-app-control-weburl package/samwrt/luci-app-control-weburl
+# 添加ddns-go
+git clone https://github.com/sirpdboy/luci-app-ddns-go.git package/luci-app-ddns-go
 # 添加helloworld
 git clone https://github.com/jerrykuku/lua-maxminddb.git package/samwrt/lua-maxminddb
 git clone https://github.com/jerrykuku/luci-app-vssr.git package/samwrt/luci-app-vssr
