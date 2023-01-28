@@ -30,17 +30,17 @@ svn co https://github.com/xzhhzx222/Actions-OpenWrt/trunk/diy package/self-setti
 # 添加advanced
 git clone https://github.com/sirpdboy/luci-app-advanced.git package/luci-app-advanced
 # 添加control
-svn co https://github.com/Lienol/openwrt-package/trunk/luci-app-control-timewol package/samwrt/luci-app-control-timewol
-svn co https://github.com/Lienol/openwrt-package/trunk/luci-app-control-weburl package/samwrt/luci-app-control-weburl
+svn co https://github.com/Lienol/openwrt-package/trunk/luci-app-control-timewol package/luci-app-control-timewol
+svn co https://github.com/Lienol/openwrt-package/trunk/luci-app-control-weburl package/luci-app-control-weburl
 # 添加ddns-go
 git clone https://github.com/sirpdboy/luci-app-ddns-go.git package/luci-app-ddns-go
 # 添加helloworld
-git clone https://github.com/jerrykuku/lua-maxminddb.git package/samwrt/lua-maxminddb
-git clone https://github.com/jerrykuku/luci-app-vssr.git package/samwrt/luci-app-vssr
+git clone https://github.com/jerrykuku/lua-maxminddb.git package/lua-maxminddb
+git clone https://github.com/jerrykuku/luci-app-vssr.git package/luci-app-vssr
 # 添加openclash
-svn co https://github.com/vernesong/OpenClash/trunk/luci-app-openclash package/samwrt/luci-app-openclash
+svn co https://github.com/vernesong/OpenClash/trunk/luci-app-openclash package/luci-app-openclash
 # 添加timecontrol
-svn co https://github.com/Lienol/openwrt-package/trunk/luci-app-timecontrol package/samwrt/luci-app-timecontrol
+svn co https://github.com/Lienol/openwrt-package/trunk/luci-app-timecontrol package/luci-app-timecontrol
 # 添加wolplus
 svn co https://github.com/sundaqiang/openwrt-packages/trunk/luci-app-wolplus package/luci-app-wolplus
 
