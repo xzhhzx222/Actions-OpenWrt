@@ -28,21 +28,21 @@ echo 'src-git helloworld https://github.com/fw876/helloworld' >>feeds.conf.defau
 svn co https://github.com/xzhhzx222/Actions-OpenWrt/trunk/diy package/self-settings
 
 # 添加advanced
-git clone https://github.com/sirpdboy/luci-app-advanced.git package/luci-app-advanced
+git clone https://github.com/sirpdboy/luci-app-advanced.git package/xzhhzx222/luci-app-advanced
 # 添加control
-svn co https://github.com/Lienol/openwrt-package/trunk/luci-app-control-timewol package/luci-app-control-timewol
-svn co https://github.com/Lienol/openwrt-package/trunk/luci-app-control-weburl package/luci-app-control-weburl
+svn co https://github.com/Lienol/openwrt-package/trunk/luci-app-control-timewol package/xzhhzx222/luci-app-control-timewol
+svn co https://github.com/Lienol/openwrt-package/trunk/luci-app-control-weburl package/xzhhzx222/luci-app-control-weburl
 # 添加ddns-go
-git clone https://github.com/sirpdboy/luci-app-ddns-go.git package/luci-app-ddns-go
+git clone https://github.com/sirpdboy/luci-app-ddns-go.git package/xzhhzx222/luci-app-ddns-go
 # 添加helloworld
-git clone https://github.com/jerrykuku/lua-maxminddb.git package/lua-maxminddb
-git clone https://github.com/jerrykuku/luci-app-vssr.git package/luci-app-vssr
+git clone https://github.com/jerrykuku/lua-maxminddb.git package/xzhhzx222/lua-maxminddb
+git clone https://github.com/jerrykuku/luci-app-vssr.git package/xzhhzx222/luci-app-vssr
 # 添加openclash
-svn co https://github.com/vernesong/OpenClash/trunk/luci-app-openclash package/luci-app-openclash
+svn co https://github.com/vernesong/OpenClash/trunk/luci-app-openclash package/xzhhzx222/luci-app-openclash
 # 添加timecontrol
-svn co https://github.com/Lienol/openwrt-package/trunk/luci-app-timecontrol package/luci-app-timecontrol
+svn co https://github.com/Lienol/openwrt-package/trunk/luci-app-timecontrol package/xzhhzx222/luci-app-timecontrol
 # 添加wolplus
-svn co https://github.com/sundaqiang/openwrt-packages/trunk/luci-app-wolplus package/luci-app-wolplus
+svn co https://github.com/sundaqiang/openwrt-packages/trunk/luci-app-wolplus package/xzhhzx222/luci-app-wolplus
 
 # # 添加argon
 # git clone -b 18.06 https://github.com/jerrykuku/luci-theme-argon.git package/luci-theme-argon-18.06
