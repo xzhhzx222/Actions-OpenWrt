@@ -58,8 +58,8 @@ uci set firewall.@redirect[0].dest_ip='192.168.0.1'
 uci set firewall.@redirect[0].src_dport='27443'
 uci set firewall.@redirect[0].dest_port='443'
 uci set firewall.@redirect[0].name='JimmyEsxi WebUI'
-uci set firewall.@redirect[1].src_dport='7981'
-uci set firewall.@redirect[1].dest_port='7981'
+uci set firewall.@redirect[1].src_dport='7983'
+uci set firewall.@redirect[1].dest_port='7983'
 uci set firewall.@redirect[1].name='JimmyWrt OpenClash Socks'
 uci set firewall.@redirect[2].src_dport='9090'
 uci set firewall.@redirect[2].dest_port='9090'
@@ -191,10 +191,10 @@ echo "log-facility=/dev/null" >> /etc/dnsmasq.conf
 sed -i 's/\"control\"/\"services\"/g' /usr/lib/lua/luci/controller/timewol.lua
 sed -i 's/\"control\"/\"services\"/g' /usr/lib/lua/luci/view/timewol/index.htm
 
-sed -i 's/root::0:0:99999:7:::/root:$1$fbr0AcjI$x07b6cfvhGdfFLdbDCcfj.:0:0:99999:7:::/g' /etc/shadow
+#sed -i 's/root::0:0:99999:7:::/root:$1$fbr0AcjI$x07b6cfvhGdfFLdbDCcfj.:0:0:99999:7:::/g' /etc/shadow
 
 sed -i '/DISTRIB_REVISION/d' /etc/openwrt_release
-echo "DISTRIB_REVISION='Ver22.08.15'" >> /etc/openwrt_release
+echo "DISTRIB_REVISION='Ver23.01.29'" >> /etc/openwrt_release
 sed -i '/DISTRIB_DESCRIPTION/d' /etc/openwrt_release
 echo "DISTRIB_DESCRIPTION='JimmyWrt '" >> /etc/openwrt_release
 

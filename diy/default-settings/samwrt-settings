@@ -1,14 +1,14 @@
 #!/bin/sh
 
-uci set ddns.cf_pan=service
-uci set ddns.cf_pan.enabled='1'
-uci set ddns.cf_pan.service_name='cloudflare.com-v4'
-uci set ddns.cf_pan.lookup_host='pan.xzhhzx222.com'
-uci set ddns.cf_pan.domain='pan@xzhhzx222.com'
-uci set ddns.cf_pan.ip_source='interface'
-uci set ddns.cf_pan.interface='wan'
-uci set ddns.cf_pan.ip_interface='pppoe-wan'
-uci commit ddns
+#uci set ddns.cf_pan=service
+#uci set ddns.cf_pan.enabled='1'
+#uci set ddns.cf_pan.service_name='cloudflare.com-v4'
+#uci set ddns.cf_pan.lookup_host='pan.xzhhzx222.com'
+#uci set ddns.cf_pan.domain='pan@xzhhzx222.com'
+#uci set ddns.cf_pan.ip_source='interface'
+#uci set ddns.cf_pan.interface='wan'
+#uci set ddns.cf_pan.ip_interface='pppoe-wan'
+#uci commit ddns
 
 # Delete dhcp.domain
 for i in $(seq 0 2);do uci del dhcp.@domain[0];done
@@ -44,7 +44,7 @@ uci set dhcp.@host[4].mac='4c:02:20:a9:8d:dc'
 uci commit dhcp
 
 # Delete firewall.redirect
-for i in $(seq 0 13);do uci del firewall.@redirect[0];done
+for i in $(seq 0 16);do uci del firewall.@redirect[0];done
 # Delete firewall.zone
 for i in 2 2;do uci del firewall.@zone[$i];done
 # Delete firewall.zone list
@@ -70,8 +70,8 @@ uci set firewall.@redirect[0].dest_ip='10.0.0.1'
 uci set firewall.@redirect[0].src_dport='27443'
 uci set firewall.@redirect[0].dest_port='443'
 uci set firewall.@redirect[0].name='SamEsxi WebUI'
-uci set firewall.@redirect[1].src_dport='7891'
-uci set firewall.@redirect[1].dest_port='7891'
+uci set firewall.@redirect[1].src_dport='7893'
+uci set firewall.@redirect[1].dest_port='7893'
 uci set firewall.@redirect[1].name='SamWrt OpenClash Socks'
 uci set firewall.@redirect[2].src_dport='9090'
 uci set firewall.@redirect[2].dest_port='9090'
@@ -134,7 +134,7 @@ uci set network.lan.ipaddr='10.0.0.2'
 uci set network.lan.dns='119.29.29.29 114.114.114.114'
 uci set network.lan.netmask='255.0.0.0'
 uci set network.lan.delegate='0'
-uci set network.lan.ifname='eth0 eth1 eth2 eth3 eth4'
+uci set network.lan.ifname='eth0 eth1 eth2 eth3 eth4 tap_vpn'
 uci set network.wan.proto='pppoe'
 uci set network.wan.delegate='0'
 uci set network.wan.ipv6='0'
@@ -205,10 +205,10 @@ echo 'dhcp-option=15' >>/etc/dnsmasq.conf
 echo 'dhcp-option=28' >>/etc/dnsmasq.conf
 echo 'dhcp-option=60,00:00:01:06:68:75:61:71:69:6E:02:0A:48:47:55:34:32:31:4E:20:76:33:03:0A:48:47:55:34:32:31:4E:20:76:33:04:10:32:30:30:2E:55:59:59:2E:30:2E:41:2E:30:2E:53:48:05:04:00:01:00:50' >>/etc/dnsmasq.conf
 
-sed -i 's/root::0:0:99999:7:::/root:$1$MDmA.Fh7$15LUuc2.kXYYr3Z7VYRxt1:0:0:99999:7:::/g' /etc/shadow
+#sed -i 's/root::0:0:99999:7:::/root:$1$MDmA.Fh7$15LUuc2.kXYYr3Z7VYRxt1:0:0:99999:7:::/g' /etc/shadow
 
 sed -i '/DISTRIB_REVISION/d' /etc/openwrt_release
-echo "DISTRIB_REVISION='Ver22.08.15'" >> /etc/openwrt_release
+echo "DISTRIB_REVISION='Ver23.01.29'" >> /etc/openwrt_release
 sed -i '/DISTRIB_DESCRIPTION/d' /etc/openwrt_release
 echo "DISTRIB_DESCRIPTION='SamWrt '" >> /etc/openwrt_release
 
