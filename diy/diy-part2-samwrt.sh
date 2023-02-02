@@ -19,6 +19,7 @@ sed -i 's/luci-theme-bootstrap/luci-theme-argon-mod/g' package/feeds/luci/luci/M
 
 # 替换default-settings
 mv -vf package/self-settings/default-settings/samwrt-settings package/lean/default-settings/files/zzz-default-settings
+sed -i 's/23.02.02/'"$(date +%y.%m.%d)"'/g' package/lean/default-settings/files/zzz-default-settings
 
 # 替换serverchan logo
 mv -vf package/self-settings/serverchan/samwrt.jpg package/feeds/luci/luci-app-serverchan/root/usr/bin/serverchan/api/logo.jpg

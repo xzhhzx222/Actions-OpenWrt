@@ -25,11 +25,11 @@ uci set dhcp.lan.force='1'
 # Add dhcp.domain
 for i in $(seq 0 2);do uci add dhcp domain && uci set dhcp.@domain[$i].ip='10.0.0.'$(($i+1))'';done
 uci add dhcp domain
-uci set dhcp.@domain[3].ip='10.0.0.3'
 # Set dhcp.domain
 uci set dhcp.@domain[0].name='samesxi.com'
 uci set dhcp.@domain[1].name='samwrt.com'
 uci set dhcp.@domain[2].name='samnas.com'
+uci set dhcp.@domain[3].ip='10.0.0.3'
 uci set dhcp.@domain[3].name='pan.xzhhzx222.com'
 # Add dhcp.host
 for i in $(seq 0 4);do uci add dhcp host && uci set dhcp.@host[$i].dns='1' && uci set dhcp.@host[$i].ip='10.0.0.1'$i'' && uci set dhcp.@host[$i].leasetime='infinite';done
@@ -42,12 +42,12 @@ uci set dhcp.@host[2].name='Sophie-XIAOXIN'
 uci set dhcp.@host[2].mac='08:5b:d6:b0:76:83'
 uci set dhcp.@host[3].name='Mom-Nova6'
 uci set dhcp.@host[3].mac='92:bc:db:b7:c6:ce'
-uci set dhcp.@host[4].name='Dad-10X'
-uci set dhcp.@host[4].mac='4c:02:20:a9:8d:dc'
+uci set dhcp.@host[4].name='Dad-K40S'
+uci set dhcp.@host[4].mac='be:36:f0:5e:0f:67'
 uci commit dhcp
 
 # Delete firewall.redirect
-for i in $(seq 0 16);do uci del firewall.@redirect[0];done
+for i in $(seq 0 10);do uci del firewall.@redirect[0];done
 # Delete firewall.zone
 for i in 2 2;do uci del firewall.@zone[$i];done
 # Delete firewall.zone list
@@ -62,74 +62,59 @@ uci set firewall.@zone[2].network='vlan85'
 uci set firewall.@zone[3].name='vlan51'
 uci set firewall.@zone[3].network='vlan51'
 # Add firewall.redirect
-for i in $(seq 0 16);do uci add firewall redirect && uci set firewall.@redirect[$i].target='DNAT' && uci set firewall.@redirect[$i].src='wan' && uci set firewall.@redirect[$i].dest='lan' && uci set firewall.@redirect[$i].proto='tcp';done
+for i in $(seq 0 10);do uci add firewall redirect && uci set firewall.@redirect[$i].target='DNAT' && uci set firewall.@redirect[$i].src='wan' && uci set firewall.@redirect[$i].dest='lan' && uci set firewall.@redirect[$i].proto='tcp';done
 # Adjust firewall.redirect
 for i in 8 12;do uci set firewall.@redirect[$i].proto='tcp udp';done
 for i in 3 13;do uci set firewall.@redirect[$i].enabled='0';done
 for i in $(seq 1 4);do uci set firewall.@redirect[$i].dest_ip='10.0.0.2';done
-for i in $(seq 5 15);do uci set firewall.@redirect[$i].dest_ip='10.0.0.3';done
+for i in $(seq 5 9);do uci set firewall.@redirect[$i].dest_ip='10.0.0.3';done
 # Set firewall.redirect
 uci set firewall.@redirect[0].dest_ip='10.0.0.1'
 uci set firewall.@redirect[0].src_dport='27444'
 uci set firewall.@redirect[0].dest_port='443'
 uci set firewall.@redirect[0].name='SamEsxi WebUI'
+uci set firewall.@redirect[0].enabled='0'
 uci set firewall.@redirect[1].src_dport='7893'
 uci set firewall.@redirect[1].dest_port='7893'
 uci set firewall.@redirect[1].name='SamWrt OpenClash Socks'
+uci set firewall.@redirect[1].enabled='1'
 uci set firewall.@redirect[2].src_dport='9090'
 uci set firewall.@redirect[2].dest_port='9090'
 uci set firewall.@redirect[2].name='SamWrt OpenClash WebUI'
+uci set firewall.@redirect[2].enabled='0'
 uci set firewall.@redirect[3].src_dport='27022'
 uci set firewall.@redirect[3].dest_port='22'
 uci set firewall.@redirect[3].name='SamWrt SSH'
-uci set firewall.@redirect[4].src_dport='27081'
+uci set firewall.@redirect[3].enabled='0'
+uci set firewall.@redirect[4].src_dport='22080'
 uci set firewall.@redirect[4].dest_port='80'
 uci set firewall.@redirect[4].name='SamWrt WebUI'
-uci set firewall.@redirect[5].src_dport='5700'
-uci set firewall.@redirect[5].dest_port='5700'
-uci set firewall.@redirect[5].name='SamNas qinglong 5700'
-uci set firewall.@redirect[5].enabled='0'
-uci set firewall.@redirect[6].src_dport='6800'
-uci set firewall.@redirect[6].dest_port='6800'
-uci set firewall.@redirect[6].name='SamNas aria2 6800'
-uci set firewall.@redirect[6].enabled='0'
-uci set firewall.@redirect[7].src_dport='6880'
-uci set firewall.@redirect[7].dest_port='6880'
-uci set firewall.@redirect[7].name='SamNas aria2 6880'
-uci set firewall.@redirect[7].enabled='0'
-uci set firewall.@redirect[8].src_dport='6888'
-uci set firewall.@redirect[8].dest_port='6888'
-uci set firewall.@redirect[8].name='SamNas aria2 6888'
+uci set firewall.@redirect[4].enabled='0'
+uci set firewall.@redirect[5].src_dport='16888'
+uci set firewall.@redirect[5].dest_port='16888'
+uci set firewall.@redirect[5].name='SamNas qbittorrent 16888'
+uci set firewall.@redirect[5].enabled='1'
+uci set firewall.@redirect[6].src_dport='27023'
+uci set firewall.@redirect[6].dest_port='22'
+uci set firewall.@redirect[6].name='SamNas SSH'
+uci set firewall.@redirect[6].enabled='1'
+uci set firewall.@redirect[7].src_dport='27080'
+uci set firewall.@redirect[7].dest_port='27080'
+uci set firewall.@redirect[7].name='SamNas npm http'
+uci set firewall.@redirect[7].enabled='1'
+uci set firewall.@redirect[8].src_dport='27081'
+uci set firewall.@redirect[8].dest_port='27081'
+uci set firewall.@redirect[8].name='SamNas npm WebUI'
 uci set firewall.@redirect[8].enabled='0'
-uci set firewall.@redirect[9].src_dport='8443'
-uci set firewall.@redirect[9].dest_port='8443'
-uci set firewall.@redirect[9].name='SamNas Unifi'
-uci set firewall.@redirect[9].enabled='0'
-uci set firewall.@redirect[10].src_dport='8999'
-uci set firewall.@redirect[10].dest_port='8999'
-uci set firewall.@redirect[10].name='SamNas qbittorrent 8999'
+uci set firewall.@redirect[9].src_dport='27443'
+uci set firewall.@redirect[9].dest_port='27443'
+uci set firewall.@redirect[9].name='SamNas npm https'
+uci set firewall.@redirect[9].enabled='1'
+uci set firewall.@redirect[10].dest_ip='10.0.0.10'
+uci set firewall.@redirect[10].src_dport='3389'
+uci set firewall.@redirect[10].dest_port='3389'
+uci set firewall.@redirect[10].name='Remote Desktop'
 uci set firewall.@redirect[10].enabled='0'
-uci set firewall.@redirect[11].src_dport='9000'
-uci set firewall.@redirect[11].dest_port='9000'
-uci set firewall.@redirect[11].name='SamNas portainer 9000'
-uci set firewall.@redirect[11].enabled='0'
-uci set firewall.@redirect[12].src_dport='16888'
-uci set firewall.@redirect[12].dest_port='16888'
-uci set firewall.@redirect[12].name='SamNas qbittorrent 16888'
-uci set firewall.@redirect[13].src_dport='27023'
-uci set firewall.@redirect[13].dest_port='22'
-uci set firewall.@redirect[13].name='SamNas SSH'
-uci set firewall.@redirect[14].src_dport='27080'
-uci set firewall.@redirect[14].dest_port='27080'
-uci set firewall.@redirect[14].name='SamNas npm http'
-uci set firewall.@redirect[15].src_dport='27443'
-uci set firewall.@redirect[15].dest_port='27443'
-uci set firewall.@redirect[15].name='SamNas npm https'
-uci set firewall.@redirect[16].dest_ip='10.0.0.10'
-uci set firewall.@redirect[16].src_dport='3389'
-uci set firewall.@redirect[16].dest_port='3389'
-uci set firewall.@redirect[16].name='Remote Desktop'
-uci set firewall.@redirect[16].enabled='0'
 uci commit firewall
 
 uci set fstab.@global[0].anon_mount=1
@@ -198,8 +183,9 @@ uci set system.@system[0].zonename=Asia/Shanghai
 uci set system.ntp.enable_server='1'
 uci commit system
 
+uci set turboacc.config.sfe_flow='0'
 uci set turboacc.config.fullcone_nat='1'
-#uci set turboacc.config.bbr_cca='1'
+uci set turboacc.config.bbr_cca='0'
 uci commit turboacc
 
 uci set uhttpd.main.rfc1918_filter='0'
@@ -219,7 +205,7 @@ echo 'dhcp-option=60,00:00:01:06:68:75:61:71:69:6E:02:0A:48:47:55:34:32:31:4E:20
 #sed -i 's/root::0:0:99999:7:::/root:$1$MDmA.Fh7$15LUuc2.kXYYr3Z7VYRxt1:0:0:99999:7:::/g' /etc/shadow
 
 sed -i '/DISTRIB_REVISION/d' /etc/openwrt_release
-echo "DISTRIB_REVISION='Ver"$(date +%y.%m.%d)"'" >> /etc/openwrt_release
+echo "DISTRIB_REVISION='Ver23.02.02'" >> /etc/openwrt_release
 sed -i '/DISTRIB_DESCRIPTION/d' /etc/openwrt_release
 echo "DISTRIB_DESCRIPTION='SamWrt '" >> /etc/openwrt_release
 
