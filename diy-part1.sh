@@ -32,8 +32,6 @@ git clone https://github.com/sirpdboy/luci-app-advanced.git package/xzhhzx222/lu
 # 添加control
 svn co https://github.com/Lienol/openwrt-package/trunk/luci-app-control-timewol package/xzhhzx222/luci-app-control-timewol
 svn co https://github.com/Lienol/openwrt-package/trunk/luci-app-control-weburl package/xzhhzx222/luci-app-control-weburl
-# 添加dns-go
-git clone https://github.com/sirpdboy/luci-app-ddns-go.git package/xzhhzx222/luci-app-ddns-go
 # 添加helloworld
 git clone https://github.com/jerrykuku/lua-maxminddb.git package/xzhhzx222/lua-maxminddb
 git clone https://github.com/jerrykuku/luci-app-vssr.git package/xzhhzx222/luci-app-vssr
