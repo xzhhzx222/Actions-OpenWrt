@@ -36,7 +36,7 @@ uci set ddns.cf_root.force_interval='24'
 uci commit ddns
 
 # Delete dhcp.domain
-for i in $(seq 0 3);do uci del dhcp.@domain[0];done
+for i in $(seq 0 2);do uci del dhcp.@domain[0];done
 # Delete dhcp.host
 for i in $(seq 0 4);do uci del dhcp.@host[0];done
 # Set dhcp.dnsmasq
@@ -54,8 +54,6 @@ uci add dhcp domain
 uci set dhcp.@domain[0].name='samesxi.com'
 uci set dhcp.@domain[1].name='samwrt.com'
 uci set dhcp.@domain[2].name='samnas.com'
-uci set dhcp.@domain[3].ip='10.0.0.3'
-uci set dhcp.@domain[3].name='pan.xzhhzx222.com'
 # Add dhcp.host
 for i in $(seq 0 4);do uci add dhcp host && uci set dhcp.@host[$i].dns='1' && uci set dhcp.@host[$i].ip='10.0.0.1'$i'' && uci set dhcp.@host[$i].leasetime='infinite';done
 # Set dhcp.host
