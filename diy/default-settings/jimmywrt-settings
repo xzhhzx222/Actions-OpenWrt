@@ -104,10 +104,10 @@ uci set firewall.@redirect[8].dest_port='22'
 uci set firewall.@redirect[8].name='JimmyNas SSH'
 uci set firewall.@redirect[9].src_dport='27080'
 uci set firewall.@redirect[9].dest_port='27080'
-uci set firewall.@redirect[9].name='JimmyNas traefik 27080'
+uci set firewall.@redirect[9].name='JimmyNas traefik http'
 uci set firewall.@redirect[10].src_dport='27443'
 uci set firewall.@redirect[10].dest_port='27443'
-uci set firewall.@redirect[10].name='JimmyNas traefik 27443'
+uci set firewall.@redirect[10].name='JimmyNas traefik https'
 uci commit firewall
 
 uci set fstab.@global[0].anon_mount=1
