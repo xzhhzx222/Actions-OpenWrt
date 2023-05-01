@@ -11,6 +11,17 @@ uci set ddns.cf_jimmy.interface='wan'
 uci set ddns.cf_jimmy.ip_interface='pppoe-wan'
 uci set ddns.cf_jimmy.check_interval='5'
 uci set ddns.cf_jimmy.force_interval='24'
+uci set ddns.cf_pan=service
+uci set ddns.cf_pan.enabled='1'
+uci set ddns.cf_pan.service_name='cloudflare.com-v4'
+uci set ddns.cf_pan.lookup_host='pan1.xzhhzx222.com'
+uci set ddns.cf_pan.domain='pan1@xzhhzx222.com'
+uci set ddns.cf_pan.username='Bearer'
+uci set ddns.cf_pan.ip_source='interface'
+uci set ddns.cf_pan.interface='wan'
+uci set ddns.cf_pan.ip_interface='pppoe-wan'
+uci set ddns.cf_pan.check_interval='5'
+uci set ddns.cf_pan.force_interval='24'
 uci commit ddns
 
 # Delete dhcp.domain
