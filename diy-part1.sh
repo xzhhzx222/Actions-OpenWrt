@@ -43,4 +43,4 @@ svn co https://github.com/Lienol/openwrt-package/trunk/luci-app-timecontrol pack
 svn co https://github.com/sundaqiang/openwrt-packages/trunk/luci-app-wolplus package/xzhhzx222/luci-app-wolplus
 
 # # 添加argon
-# git clone -b 18.06 https://github.com/jerrykuku/luci-theme-argon.git package/luci-theme-argon-18.06
+git clone -b 18.06 https://github.com/jerrykuku/luci-theme-argon.git package/luci-theme-argon-18.06
