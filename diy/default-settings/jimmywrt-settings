@@ -167,7 +167,7 @@ uci commit system
 # Delete timewol.macclient
 for i in $(seq 0 3);do uci del timewol.@macclient[0];done
 # Add timewol.macclient
-for i in $(seq 0 3);do uci add timewol macclient && uci set timewol.@macclient[$i].maceth='br-lan' && uci set timewol.@macclient[$i].minute='30' && uci set timewol.@macclient[$i].hour='10';done
+for i in $(seq 0 3);do uci add timewol macclient && uci set timewol.@macclient[$i].maceth='br-lan' && uci set timewol.@macclient[$i].minute='30' && uci set timewol.@macclient[$i].hour='12';done
 # Set timewol.macclient
 uci set timewol.@macclient[0].macaddr='A8:A1:59:20:60:D5'
 uci set timewol.@macclient[1].macaddr='A8:A1:59:20:60:A1'
