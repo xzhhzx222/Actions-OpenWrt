@@ -31,14 +31,19 @@ svn co https://github.com/xzhhzx222/Actions-OpenWrt/trunk/diy package/self-setti
 git clone https://github.com/sirpdboy/luci-app-advanced.git package/xzhhzx222/luci-app-advanced
 # 添加control
 svn co https://github.com/Lienol/openwrt-package/trunk/luci-app-control-timewol package/xzhhzx222/luci-app-control-timewol
-svn co https://github.com/Lienol/openwrt-package/trunk/luci-app-control-weburl package/xzhhzx222/luci-app-control-weburl
+# svn co https://github.com/Lienol/openwrt-package/trunk/luci-app-control-weburl package/xzhhzx222/luci-app-control-weburl
 # # 添加helloworld
 #git clone https://github.com/jerrykuku/lua-maxminddb.git package/xzhhzx222/lua-maxminddb
 #git clone https://github.com/jerrykuku/luci-app-vssr.git package/xzhhzx222/luci-app-vssr
 # 添加openclash
 svn co https://github.com/vernesong/OpenClash/trunk/luci-app-openclash package/xzhhzx222/luci-app-openclash
-# 添加timecontrol
-svn co https://github.com/Lienol/openwrt-package/trunk/luci-app-timecontrol package/xzhhzx222/luci-app-timecontrol
+# 添加parentcontrol
+git clone https://github.com/sirpdboy/luci-app-parentcontrol.git package/xzhhzx222/luci-app-parentcontrol
+# 添加serverchan
+rm -rf package/feeds/luci/luci-app-serverchan
+git clone https://github.com/tty228/luci-app-serverchan.git package/xzhhzx222/luci-app-serverchan
+# # 添加timecontrol
+# svn co https://github.com/Lienol/openwrt-package/trunk/luci-app-timecontrol package/xzhhzx222/luci-app-timecontrol
 # 添加wolplus
 svn co https://github.com/sundaqiang/openwrt-packages/trunk/luci-app-wolplus package/xzhhzx222/luci-app-wolplus
 
