@@ -26,7 +26,7 @@ sed -i 's/23.02.02/'"$(date +%y.%m.%d)"'/g' package/lean/default-settings/files/
 # 替换serverchan
 rm -rf package/feeds/luci/luci-app-serverchan
 # mv -vf package/self-settings/serverchan/samwrt.jpg package/feeds/luci/luci-app-serverchan/root/usr/bin/serverchan/api/logo.jpg
-mv -vf package/self-settings/serverchan/samwrt.jpg package/feeds/luci/luci-app-serverchan/root/usr/share/serverchan/api/logo.jpg
+mv -vf package/self-settings/serverchan/samwrt.jpg package/xzhhzx222/luci-app-serverchan/root/usr/share/serverchan/api/logo.jpg
 
 # 删除多余配置
 rm -rf package/self-settings
