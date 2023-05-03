@@ -31,8 +31,8 @@ uci set ddns.cf_pan.username='Bearer'
 uci set ddns.cf_pan.ip_source='interface'
 uci set ddns.cf_pan.interface='wan'
 uci set ddns.cf_pan.ip_interface='pppoe-wan'
-uci set ddns.cf_root.check_interval='5'
-uci set ddns.cf_root.force_interval='24'
+uci set ddns.cf_pan.check_interval='5'
+uci set ddns.cf_pan.force_interval='24'
 uci commit ddns
 
 # Delete dhcp.domain
@@ -70,12 +70,12 @@ uci set dhcp.@host[4].mac='be:36:f0:5e:0f:67'
 uci commit dhcp
 
 # Delete firewall.redirect
-for i in $(seq 0 9);do uci del firewall.@redirect[0];done
+for i in $(seq 0 11);do uci del firewall.@redirect[0];done
 # Delete firewall.zone
 for i in 2 2;do uci del firewall.@zone[$i];done
 # Delete firewall.zone list
 uci del_list firewall.@zone[1].network='wan6'
-# Delete firewall.rule
+# Disable firewall.rule
 for i in $(seq 3 6);do uci set firewall.@rule[$i].enabled='0';done
 # Add firewall.zone
 for i in 2 3;do uci add firewall zone && uci set firewall.@zone[$i].input='ACCEPT' && uci set firewall.@zone[$i].output='ACCEPT' && uci set firewall.@zone[$i].forward='ACCEPT';done
@@ -85,12 +85,12 @@ uci set firewall.@zone[2].network='vlan85'
 uci set firewall.@zone[3].name='vlan51'
 uci set firewall.@zone[3].network='vlan51'
 # Add firewall.redirect
-for i in $(seq 0 10);do uci add firewall redirect && uci set firewall.@redirect[$i].target='DNAT' && uci set firewall.@redirect[$i].src='wan' && uci set firewall.@redirect[$i].dest='lan' && uci set firewall.@redirect[$i].proto='tcp';done
+for i in $(seq 0 11);do uci add firewall redirect && uci set firewall.@redirect[$i].target='DNAT' && uci set firewall.@redirect[$i].src='wan' && uci set firewall.@redirect[$i].dest='lan' && uci set firewall.@redirect[$i].proto='tcp';done
 # Adjust firewall.redirect
-for i in 8 12;do uci set firewall.@redirect[$i].proto='tcp udp';done
-for i in 3 13;do uci set firewall.@redirect[$i].enabled='0';done
+#for i in 8 12;do uci set firewall.@redirect[$i].proto='tcp udp';done
+#for i in 3 13;do uci set firewall.@redirect[$i].enabled='0';done
 for i in $(seq 1 4);do uci set firewall.@redirect[$i].dest_ip='10.0.0.2';done
-for i in $(seq 5 8);do uci set firewall.@redirect[$i].dest_ip='10.0.0.3';done
+for i in $(seq 5 10);do uci set firewall.@redirect[$i].dest_ip='10.0.0.3';done
 # Set firewall.redirect
 uci set firewall.@redirect[0].dest_ip='10.0.0.1'
 uci set firewall.@redirect[0].src_dport='27444'
@@ -109,31 +109,40 @@ uci set firewall.@redirect[3].src_dport='27022'
 uci set firewall.@redirect[3].dest_port='22'
 uci set firewall.@redirect[3].name='SamWrt SSH'
 uci set firewall.@redirect[3].enabled='0'
-uci set firewall.@redirect[4].src_dport='22080'
+uci set firewall.@redirect[4].src_dport='27081'
 uci set firewall.@redirect[4].dest_port='80'
 uci set firewall.@redirect[4].name='SamWrt WebUI'
 uci set firewall.@redirect[4].enabled='0'
-uci set firewall.@redirect[5].src_dport='16888'
-uci set firewall.@redirect[5].dest_port='16888'
-uci set firewall.@redirect[5].name='SamNas qbittorrent 16888'
-uci set firewall.@redirect[5].enabled='1'
-uci set firewall.@redirect[6].src_dport='27023'
-uci set firewall.@redirect[6].dest_port='22'
-uci set firewall.@redirect[6].name='SamNas SSH'
-uci set firewall.@redirect[6].enabled='1'
-uci set firewall.@redirect[7].src_dport='27080'
-uci set firewall.@redirect[7].dest_port='27080'
-uci set firewall.@redirect[7].name='SamNas traefik http'
+uci set firewall.@redirect[5].src_dport='8999'
+uci set firewall.@redirect[5].dest_port='8999'
+uci set firewall.@redirect[5].name='SamNas qbittorrent 8999'
+uci set firewall.@redirect[5].enabled='0'
+uci set firewall.@redirect[6].src_dport='9000'
+uci set firewall.@redirect[6].dest_port='9000'
+uci set firewall.@redirect[6].name='SamNas portainer 9000'
+uci set firewall.@redirect[6].enabled='0'
+uci set firewall.@redirect[7].src_dport='16888'
+uci set firewall.@redirect[7].dest_port='16888'
+uci set firewall.@redirect[7].proto='tcp udp'
+uci set firewall.@redirect[7].name='SamNas qbittorrent 16888'
 uci set firewall.@redirect[7].enabled='1'
-uci set firewall.@redirect[8].src_dport='27443'
-uci set firewall.@redirect[8].dest_port='27443'
-uci set firewall.@redirect[8].name='SamNas traefik https'
+uci set firewall.@redirect[8].src_dport='27023'
+uci set firewall.@redirect[8].dest_port='22'
+uci set firewall.@redirect[8].name='SamNas SSH'
 uci set firewall.@redirect[8].enabled='1'
-uci set firewall.@redirect[9].dest_ip='10.0.0.10'
-uci set firewall.@redirect[9].src_dport='3389'
-uci set firewall.@redirect[9].dest_port='3389'
-uci set firewall.@redirect[9].name='Remote Desktop'
-uci set firewall.@redirect[9].enabled='0'
+uci set firewall.@redirect[9].src_dport='27080'
+uci set firewall.@redirect[9].dest_port='27080'
+uci set firewall.@redirect[9].name='SamNas traefik http'
+uci set firewall.@redirect[9].enabled='1'
+uci set firewall.@redirect[10].src_dport='27443'
+uci set firewall.@redirect[10].dest_port='27443'
+uci set firewall.@redirect[10].name='SamNas traefik https'
+uci set firewall.@redirect[10].enabled='1'
+uci set firewall.@redirect[11].dest_ip='10.0.0.10'
+uci set firewall.@redirect[11].src_dport='3389'
+uci set firewall.@redirect[11].dest_port='3389'
+uci set firewall.@redirect[11].name='Remote Desktop'
+uci set firewall.@redirect[11].enabled='0'
 uci commit firewall
 
 uci set fstab.@global[0].anon_mount=1
@@ -173,8 +182,8 @@ uci set serverchan.serverchan.serverchan_enable='1'
 uci set serverchan.serverchan.serverchan_up='0'
 uci set serverchan.serverchan.serverchan_down='0'
 uci set serverchan.serverchan.cpuload_enable='0'
-# uci set serverchan.serverchan.jsonpath='/usr/bin/serverchan/api/qywx_mpnews.json'
-# uci set serverchan.serverchan.mediapath='/usr/bin/serverchan/api/logo.jpg'
+# uci set serverchan.serverchan.jsonpath='/usr/share/serverchan/api/qywx_mpnews.json'
+# uci set serverchan.serverchan.mediapath='/usr/share/serverchan/api/logo.jpg'
 uci set serverchan.serverchan.device_name='SamWrt'
 # uci set serverchan.serverchan.serverchan_ipv4='1'
 uci set serverchan.serverchan.ipv4_interface='pppoe-wan'
