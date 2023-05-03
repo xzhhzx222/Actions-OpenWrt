@@ -58,12 +58,12 @@ uci commit dhcp
 for i in $(seq 0 10);do uci del firewall.@redirect[0];done
 # Delete firewall.zone list
 uci del_list firewall.@zone[1].network='wan6'
-# Delete firewall.rule
+# Disable firewall.rule
 for i in $(seq 3 6);do uci set firewall.@rule[$i].enabled='0';done
 # Add firewall.redirect
 for i in $(seq 0 10);do uci add firewall redirect && uci set firewall.@redirect[$i].target='DNAT' && uci set firewall.@redirect[$i].src='wan' && uci set firewall.@redirect[$i].dest='lan' && uci set firewall.@redirect[$i].proto='tcp';done
 # Adjust firewall.redirect
-for i in 7 10;do uci set firewall.@redirect[$i].proto='tcp udp';done
+#for i in 7 10;do uci set firewall.@redirect[$i].proto='tcp udp';done
 #for i in 3 11;do uci set firewall.@redirect[$i].enabled='0';done
 for i in $(seq 1 4);do uci set firewall.@redirect[$i].dest_ip='192.168.0.2';done
 for i in $(seq 5 10);do uci set firewall.@redirect[$i].dest_ip='192.168.0.3';done
@@ -76,6 +76,7 @@ uci set firewall.@redirect[0].enabled='0'
 uci set firewall.@redirect[1].src_dport='7983'
 uci set firewall.@redirect[1].dest_port='7983'
 uci set firewall.@redirect[1].name='JimmyWrt OpenClash Socks'
+uci set firewall.@redirect[1].enabled='1'
 uci set firewall.@redirect[2].src_dport='9090'
 uci set firewall.@redirect[2].dest_port='9090'
 uci set firewall.@redirect[2].name='JimmyWrt OpenClash WebUI'
@@ -91,22 +92,28 @@ uci set firewall.@redirect[4].enabled='0'
 uci set firewall.@redirect[5].src_dport='8999'
 uci set firewall.@redirect[5].dest_port='8999'
 uci set firewall.@redirect[5].name='JimmyNas qbittorrent 8999'
+uci set firewall.@redirect[5].enabled='0'
 uci set firewall.@redirect[6].src_dport='9000'
 uci set firewall.@redirect[6].dest_port='9000'
 uci set firewall.@redirect[6].name='JimmyNas portainer 9000'
 uci set firewall.@redirect[6].enabled='0'
 uci set firewall.@redirect[7].src_dport='16888'
 uci set firewall.@redirect[7].dest_port='16888'
+uci set firewall.@redirect[7].proto='tcp udp'
 uci set firewall.@redirect[7].name='JimmyNas qbittorrent 16888'
+uci set firewall.@redirect[7].enabled='1'
 uci set firewall.@redirect[8].src_dport='27023'
 uci set firewall.@redirect[8].dest_port='22'
 uci set firewall.@redirect[8].name='JimmyNas SSH'
+uci set firewall.@redirect[8].enabled='1'
 uci set firewall.@redirect[9].src_dport='27080'
 uci set firewall.@redirect[9].dest_port='27080'
 uci set firewall.@redirect[9].name='JimmyNas traefik http'
+uci set firewall.@redirect[9].enabled='1'
 uci set firewall.@redirect[10].src_dport='27443'
 uci set firewall.@redirect[10].dest_port='27443'
 uci set firewall.@redirect[10].name='JimmyNas traefik https'
+uci set firewall.@redirect[10].enabled='1'
 uci commit firewall
 
 uci set fstab.@global[0].anon_mount=1
