@@ -37,11 +37,10 @@ uci set dhcp.lan.start='20'
 uci set dhcp.lan.limit='99'
 uci set dhcp.lan.force='1'
 # Add dhcp.domain
-for i in $(seq 0 1);do uci add dhcp domain && uci set dhcp.@domain[$i].ip='192.168.0.'$(($i+1))'';done
+for i in $(seq 0 2);do uci add dhcp domain && uci set dhcp.@domain[$i].ip='192.168.0.'$(($i+1))'';done
 # Set dhcp.domain
 uci set dhcp.@domain[0].name='jimmyesxi.com'
 uci set dhcp.@domain[1].name='jimmywrt.com'
-uci set dhcp.@domain[2].domain='192.168.0.10'
 uci set dhcp.@domain[2].name='jimmynas.com'
 # Add dhcp.host
 for i in $(seq 0 4);do uci add dhcp host && uci set dhcp.@host[$i].dns='1' && uci set dhcp.@host[$i].ip='192.168.0.1'$i'' && uci set dhcp.@host[$i].leasetime='infinite';done
@@ -67,7 +66,7 @@ for i in $(seq 0 10);do uci add firewall redirect && uci set firewall.@redirect[
 for i in 7 10;do uci set firewall.@redirect[$i].proto='tcp udp';done
 #for i in 3 11;do uci set firewall.@redirect[$i].enabled='0';done
 for i in $(seq 1 4);do uci set firewall.@redirect[$i].dest_ip='192.168.0.2';done
-for i in $(seq 5 10);do uci set firewall.@redirect[$i].dest_ip='192.168.0.10';done
+for i in $(seq 5 10);do uci set firewall.@redirect[$i].dest_ip='192.168.0.3';done
 # Set firewall.redirect
 uci set firewall.@redirect[0].dest_ip='192.168.0.1'
 uci set firewall.@redirect[0].src_dport='27443'
