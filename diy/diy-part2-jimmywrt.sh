@@ -25,7 +25,8 @@ mv -vf package/self-settings/default-settings/jimmywrt-settings package/lean/def
 sed -i 's/23.02.02/'"$(date +%y.%m.%d)"'/g' package/lean/default-settings/files/zzz-default-settings
 
 # 替换serverchan logo
-mv -vf package/self-settings/serverchan/jimmywrt.jpg package/feeds/luci/luci-app-serverchan/root/usr/bin/serverchan/api/logo.jpg
+# mv -vf package/self-settings/serverchan/jimmywrt.jpg package/feeds/luci/luci-app-serverchan/root/usr/bin/serverchan/api/logo.jpg
+mv -vf package/self-settings/serverchan/jimmywrt.jpg package/feeds/luci/luci-app-serverchan/root/usr/share/serverchan/api/logo.jpg
 
 # 删除多余配置
 rm -rf package/self-settings
