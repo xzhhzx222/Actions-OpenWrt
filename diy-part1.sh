@@ -40,7 +40,6 @@ svn co https://github.com/vernesong/OpenClash/trunk/luci-app-openclash package/x
 # 添加parentcontrol
 git clone https://github.com/sirpdboy/luci-app-parentcontrol.git package/xzhhzx222/luci-app-parentcontrol
 # 添加serverchan
-rm -rf package/feeds/luci/luci-app-serverchan
 git clone https://github.com/tty228/luci-app-serverchan.git package/xzhhzx222/luci-app-serverchan
 # # 添加timecontrol
 # svn co https://github.com/Lienol/openwrt-package/trunk/luci-app-timecontrol package/xzhhzx222/luci-app-timecontrol
