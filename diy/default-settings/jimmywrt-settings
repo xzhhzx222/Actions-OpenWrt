@@ -48,7 +48,7 @@ for i in $(seq 0 4);do uci add dhcp host && uci set dhcp.@host[$i].dns='1' && uc
 # Set dhcp.host
 for i in $(seq 1 4);do uci set dhcp.@host[$i].name='Lobby-PC'$i'';done
 uci set dhcp.@host[0].name='Jimmy-Server'
-uci set dhcp.@host[0].mac='e0:94:67:4a:1a:69'
+uci set dhcp.@host[0].mac='00:0c:29:e0:61:fb'
 uci set dhcp.@host[1].mac='a8:a1:59:20:60:d5'
 uci set dhcp.@host[2].mac='a8:a1:59:20:60:a1'
 uci set dhcp.@host[3].mac='a8:a1:59:20:60:d7'
