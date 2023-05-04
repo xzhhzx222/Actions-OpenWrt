@@ -138,8 +138,8 @@ jobs:
       id: tag
       if: env.UPLOAD_RELEASE == 'true' && !cancelled()
       run: |
-        #echo "release_tag=$(date +"%Y.%m.%d-%H%M")" >> $GITHUB_OUTPUT
-        echo "release_tag=JimmyWrt Ver""$(date +"%y.%m.%d")" >> $GITHUB_OUTPUT
+        echo "release_tag=$(date +"%y.%m.%d-%H%M")" >> $GITHUB_OUTPUT
+        echo "release_name=JimmyWrt $(date +"%y.%m.%d")" >> $GITHUB_OUTPUT
         touch release.txt
         echo "status=success" >> $GITHUB_OUTPUT
 
@@ -149,6 +149,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
+        name: ${{ steps.tag.outputs.release_name }}
         tag_name: ${{ steps.tag.outputs.release_tag }}
         body_path: release.txt
         files: ${{ env.FIRMWARE }}/*
