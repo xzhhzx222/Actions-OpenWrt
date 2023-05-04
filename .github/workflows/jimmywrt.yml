@@ -134,23 +134,23 @@ jobs:
         name: JimmyWrt_firmware${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
         path: ${{ env.FIRMWARE }}
 
-    - name: Generate release tag
-      id: tag
+    - name: Generate release info
+      id: info
       if: env.UPLOAD_RELEASE == 'true' && !cancelled()
       run: |
+        echo "release_name=JimmyWrt Ver$(date +"%y.%m.%d-%H%M")" >> $GITHUB_OUTPUT
         echo "release_tag=$(date +"%Y.%m.%d-%H%M")" >> $GITHUB_OUTPUT
-        echo "release_name=JimmyWrt $(date +"%y.%m.%d")" >> $GITHUB_OUTPUT
         touch release.txt
         echo "status=success" >> $GITHUB_OUTPUT
 
     - name: Upload firmware to release
       uses: softprops/action-gh-release@v1
-      if: steps.tag.outputs.status == 'success' && !cancelled()
+      if: steps.info.outputs.status == 'success' && !cancelled()
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        name: ${{ steps.tag.outputs.release_name }}
-        tag_name: ${{ steps.tag.outputs.release_tag }}
+        name: ${{ steps.info.outputs.release_name }}
+        tag_name: ${{ steps.info.outputs.release_tag }}
         body_path: release.txt
         files: ${{ env.FIRMWARE }}/*
 
