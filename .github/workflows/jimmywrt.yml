@@ -30,7 +30,7 @@ env:
   UPLOAD_FIRMWARE: true
   UPLOAD_RELEASE: true
   TZ: Asia/Shanghai
-
+  
 jobs:
   build:
     runs-on: ubuntu-20.04
@@ -72,18 +72,23 @@ jobs:
     - name: Install feeds
       run: cd openwrt && ./scripts/feeds install -a
 
-    - name: Load custom configuration
+    - name: Load custom configuration samwrt
+      if: github.event.inputs.version == 'samwrt' || contains(github.event.action, 'version')
       run: |
         [ -e files ] && mv files openwrt/files
         [ -e $CONFIG_FILE ] && mv $CONFIG_FILE openwrt/.config
-        if: github.event.inputs.version == 'samwrt' || contains(github.event.action, 'version')
-          chmod +x diy/diy-part2-samwrt.sh
-          cd openwrt
-          $GITHUB_WORKSPACE/diy/diy-part2-samwrt.sh
-        if: github.event.inputs.version == 'jimmywrt' || contains(github.event.action, 'version')
-          chmod +x diy/diy-part2-jimmywrt.sh
-          cd openwrt
-          $GITHUB_WORKSPACE/diy/diy-part2-jimmywrt.sh
+        chmod +x diy/diy-part2-samwrt.sh
+        cd openwrt
+        $GITHUB_WORKSPACE/diy/diy-part2-samwrt.sh
+        
+    - name: Load custom configuration jimmywrt
+      if: github.event.inputs.version == 'jimmywrt' || contains(github.event.action, 'version')
+      run: |
+        [ -e files ] && mv files openwrt/files
+        [ -e $CONFIG_FILE ] && mv $CONFIG_FILE openwrt/.config
+        chmod +x diy/diy-part2-jimmywrt.sh
+        cd openwrt
+        $GITHUB_WORKSPACE/diy/diy-part2-jimmywrt.sh
 
 #     - name: SSH connection to Actions
 #       uses: P3TERX/ssh2actions@v1.0.0
