@@ -23,11 +23,9 @@ env:
   REPO_URL: https://github.com/coolsnowwolf/lede
   REPO_BRANCH: master
   FEEDS_CONF: feeds.conf.default
-  CONFIG_FILE_1: diy/configs/samwrt.config
-  CONFIG_FILE_2: diy/configs/jimmywrt.config
+#   CONFIG_FILE: diy/configs/samwrt.config
   DIY_P1_SH: diy-part1.sh
-  DIY_P2_SH_1: diy/diy-part2-samwrt.sh
-  DIY_P2_SH_2: diy/diy-part2-jimmywrt.sh
+#   DIY_P2_SH: diy/diy-part2-samwrt.sh
   UPLOAD_BIN_DIR: false
   UPLOAD_FIRMWARE: true
   UPLOAD_RELEASE: true
@@ -74,25 +72,27 @@ jobs:
     - name: Install feeds
       run: cd openwrt && ./scripts/feeds install -a
     
-    - name: Load samwrt configuration
+    - name: Load samwrt env
       if: github.event.inputs.version == 'samwrt' || contains(github.event.action, 'version')
       run: |
-        [ -e files ] && mv files openwrt/files
-        [ -e $CONFIG_FILE_1 ] && mv $CONFIG_FILE_1 openwrt/.config
-        chmod +x $DIY_P2_SH_1
-        cd openwrt
-        $GITHUB_WORKSPACE/$DIY_P2_SH_1
+        echo "DIY_P2_SH=diy/diy-part2-samwrt.sh" >> $GITHUB_ENV
+        echo "CONFIG_FILE=diy/configs/samwrt.config" >> $GITHUB_ENV
         echo "FILE_VERSION=SamWrt" >> $GITHUB_ENV
-        
-    - name: Load jimmywrt configuration
+    
+    - name: Load jimmywrt env
       if: github.event.inputs.version == 'jimmywrt' || contains(github.event.action, 'version')
       run: |
+        echo "DIY_P2_SH=diy/diy-part2-jimmywrt.sh" >> $GITHUB_ENV
+        echo "CONFIG_FILE=diy/configs/jimmywrt.config" >> $GITHUB_ENV
+        echo "FILE_VERSION=JimmWrt" >> $GITHUB_ENV
+    
+    - name: Load custom configuration
+      run: |
         [ -e files ] && mv files openwrt/files
-        [ -e $CONFIG_FILE_2 ] && mv $CONFIG_FILE_2 openwrt/.config
-        chmod +x $DIY_P2_SH_2
+        [ -e $CONFIG_FILE ] && mv $CONFIG_FILE openwrt/.config
+        chmod +x $DIY_P2_SH
         cd openwrt
-        $GITHUB_WORKSPACE/$DIY_P2_SH_2
-        echo "FILE_VERSION=JimmyWrt" >> $GITHUB_ENV
+        $GITHUB_WORKSPACE/$DIY_P2_SH
 
     - name: Download package
       id: package
@@ -150,7 +150,7 @@ jobs:
       id: info
       if: env.UPLOAD_RELEASE == 'true' && !cancelled()
       run: |
-        echo "release_name=JimmyWrt Ver$(date +"%y.%m.%d-%H%M")" >> $GITHUB_OUTPUT
+        echo "release_name=${{ env.FILE_VERSION }} Ver$(date +"%y.%m.%d-%H%M")" >> $GITHUB_OUTPUT
         echo "release_tag=$(date +"%Y.%m.%d-%H%M")" >> $GITHUB_OUTPUT
         touch release.txt
         echo "status=success" >> $GITHUB_OUTPUT
