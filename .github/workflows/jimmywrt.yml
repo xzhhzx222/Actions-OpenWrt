@@ -25,7 +25,8 @@ env:
   FEEDS_CONF: feeds.conf.default
   CONFIG_FILE: diy/configs/jimmywrt.config
   DIY_P1_SH: diy-part1.sh
-#   DIY_P2_SH: diy/diy-part2-jimmywrt.sh
+  DIY_P2_SH_1: diy/diy-part2-samwrt.sh
+  DIY_P2_SH_2: diy/diy-part2-jimmywrt.sh
   UPLOAD_BIN_DIR: false
   UPLOAD_FIRMWARE: true
   UPLOAD_RELEASE: true
@@ -71,31 +72,26 @@ jobs:
 
     - name: Install feeds
       run: cd openwrt && ./scripts/feeds install -a
-
-    - name: Load custom configuration samwrt
+    
+    - name: Load samwrt configuration
       if: github.event.inputs.version == 'samwrt' || contains(github.event.action, 'version')
       run: |
         [ -e files ] && mv files openwrt/files
         [ -e $CONFIG_FILE ] && mv $CONFIG_FILE openwrt/.config
-        chmod +x diy/diy-part2-samwrt.sh
+        chmod +x $DIY_P2_SH_1
         cd openwrt
-        $GITHUB_WORKSPACE/diy/diy-part2-samwrt.sh
+        $GITHUB_WORKSPACE/$DIY_P2_SH_1
+        echo "FILE_VERSION=SamWrt" >> $GITHUB_ENV
         
-    - name: Load custom configuration jimmywrt
+    - name: Load jimmywrt configuration
       if: github.event.inputs.version == 'jimmywrt' || contains(github.event.action, 'version')
       run: |
         [ -e files ] && mv files openwrt/files
         [ -e $CONFIG_FILE ] && mv $CONFIG_FILE openwrt/.config
-        chmod +x diy/diy-part2-jimmywrt.sh
+        chmod +x $DIY_P2_SH_2
         cd openwrt
-        $GITHUB_WORKSPACE/diy/diy-part2-jimmywrt.sh
-
-#     - name: SSH connection to Actions
-#       uses: P3TERX/ssh2actions@v1.0.0
-#       if: (github.event.inputs.ssh == 'true' && github.event.inputs.ssh  != 'false') || contains(github.event.action, 'ssh')
-#       env:
-#         TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-#         TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+        $GITHUB_WORKSPACE/$DIY_P2_SH_2
+        echo "FILE_VERSION=JimmyWrt" >> $GITHUB_ENV
 
     - name: Download package
       id: package
@@ -125,7 +121,7 @@ jobs:
       uses: actions/upload-artifact@main
       if: steps.compile.outputs.status == 'success' && env.UPLOAD_BIN_DIR == 'true'
       with:
-        name: JimmyWrt_bin${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
+        name: ${{ env.FILE_VERSION }}_bin${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
         path: openwrt/bin
 
     - name: Organize files
@@ -146,7 +142,7 @@ jobs:
       uses: actions/upload-artifact@main
       if: steps.organize.outputs.status == 'success' && !cancelled()
       with:
-        name: JimmyWrt_firmware${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
+        name: ${{ env.FILE_VERSION }}_firmware${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
         path: ${{ env.FIRMWARE }}
 
     - name: Generate release info
