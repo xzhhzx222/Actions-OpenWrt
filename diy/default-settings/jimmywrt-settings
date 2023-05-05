@@ -43,9 +43,10 @@ uci set dhcp.@domain[0].name='jimmyesxi.com'
 uci set dhcp.@domain[1].name='jimmywrt.com'
 uci set dhcp.@domain[2].name='jimmynas.com'
 # Add dhcp.host
-for i in $(seq 0 4);do uci add dhcp host && uci set dhcp.@host[$i].dns='1' && uci set dhcp.@host[$i].ip='192.168.0.1'$i'' && uci set dhcp.@host[$i].leasetime='infinite';done
+for i in $(seq 0 4);do uci add dhcp host && uci set dhcp.@host[$i].dns='1' && uci set dhcp.@host[$i].leasetime='infinite';done
 # Set dhcp.host
-for i in $(seq 1 4);do uci set dhcp.@host[$i].name='Lobby-PC'$i'';done
+for i in $(seq 1 4);uci set dhcp.@host[$i].ip='192.168.0.1'$i'' && do uci set dhcp.@host[$i].name='Lobby-PC'$i'';done
+uci set dhcp.@host[0].ip='192.168.0.3'
 uci set dhcp.@host[0].name='Jimmy-Server'
 uci set dhcp.@host[0].mac='00:0c:29:e0:61:fb'
 uci set dhcp.@host[1].mac='a8:a1:59:20:60:d5'
