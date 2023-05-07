@@ -85,9 +85,9 @@ jobs:
       if: github.event.inputs.version == 'jimmywrt' || contains(github.event.action, 'version')
       run: |
         echo "CONFIG_FILE=diy/configs/jimmywrt.config" >> $GITHUB_ENV
-        echo "DEFAULT_SETTING=diy/default-settings/jimmywrt-settings" >> $GITHUB_EN
+        echo "DEFAULT_SETTING=diy/default-settings/jimmywrt-settings" >> $GITHUB_ENV
         echo "SERVERCHAN_JPG=diy/serverchan/jimmywrt.jpg" >> $GITHUB_ENV
-        echo "FILE_VERSION=JimmWrt" >> $GITHUB_ENV
+        echo "FILE_VERSION=JimmyWrt" >> $GITHUB_ENV
     
     - name: Load custom configuration
       run: |
