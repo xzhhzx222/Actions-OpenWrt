@@ -76,21 +76,27 @@ jobs:
     - name: Load samwrt env
       if: github.event.inputs.version == 'samwrt' || contains(github.event.action, 'version')
       run: |
-        echo "DIY_P2_SH=diy/diy-part2-samwrt.sh" >> $GITHUB_ENV
         echo "CONFIG_FILE=diy/configs/samwrt.config" >> $GITHUB_ENV
+        echo "DEFAULT_SETTING=diy/default-settings/samwrt-settings" >> $GITHUB_ENV
+        echo "SERVERCHAN_JPG=diy/serverchan/samwrt.jpg" >> $GITHUB_ENV
         echo "FILE_VERSION=SamWrt" >> $GITHUB_ENV
     
     - name: Load jimmywrt env
       if: github.event.inputs.version == 'jimmywrt' || contains(github.event.action, 'version')
       run: |
-        echo "DIY_P2_SH=diy/diy-part2-jimmywrt.sh" >> $GITHUB_ENV
         echo "CONFIG_FILE=diy/configs/jimmywrt.config" >> $GITHUB_ENV
+        echo "DEFAULT_SETTING=diy/default-settings/jimmywrt-settings" >> $GITHUB_EN
+        echo "SERVERCHAN_JPG=diy/serverchan/jimmywrt.jpg" >> $GITHUB_ENV
         echo "FILE_VERSION=JimmWrt" >> $GITHUB_ENV
     
     - name: Load custom configuration
       run: |
         [ -e files ] && mv files openwrt/files
         [ -e $CONFIG_FILE ] && mv $CONFIG_FILE openwrt/.config
+        [ -e $DEFAULT_SETTING ] && mv -vf $DEFAULT_SETTING openwrt/package/lean/default-settings/files/zzz-default-settings
+        sed -i 's/VER_DATE/'"$(date +%y.%m.%d)"'/g' openwrt/package/lean/default-settings/files/zzz-default-settings
+        rm -rf openwrt/package/feeds/luci/luci-app-serverchan
+        [ -e $SERVERCHAN_JPG ] && mv -vf $SERVERCHAN_JPG package/xzhhzx222/luci-app-serverchan/root/usr/share/serverchan/api/logo.jpg
         chmod +x $DIY_P2_SH
         cd openwrt
         $GITHUB_WORKSPACE/$DIY_P2_SH
