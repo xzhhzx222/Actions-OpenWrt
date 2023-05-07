@@ -235,7 +235,7 @@ sed -i 's/\"control\"/\"services\"/g' /usr/lib/lua/luci/view/parentcontrol/index
 #sed -i 's/root::0:0:99999:7:::/root:$1$MDmA.Fh7$15LUuc2.kXYYr3Z7VYRxt1:0:0:99999:7:::/g' /etc/shadow
 
 sed -i '/DISTRIB_REVISION/d' /etc/openwrt_release
-echo "DISTRIB_REVISION='Ver23.02.02'" >> /etc/openwrt_release
+echo "DISTRIB_REVISION='VER_DATE'" >> /etc/openwrt_release
 sed -i '/DISTRIB_DESCRIPTION/d' /etc/openwrt_release
 echo "DISTRIB_DESCRIPTION='SamWrt '" >> /etc/openwrt_release
 
