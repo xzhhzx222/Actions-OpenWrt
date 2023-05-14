@@ -221,6 +221,14 @@ uci commit uhttpd
 uci set upnpd.config.enabled='1'
 uci commit upnpd
 
+# Add wolplus.pc
+uci set wolplus.pc1=macclient
+# Set wolplus.pc
+uci set wolplus.pc1.name='Sam-Desktop'
+uci set wolplus.pc1.maceth='br-lan'
+uci set wolplus.pc1.macaddr='70:4D:7B:63:0A:37'
+uci commit wolplus
+
 sed -i '/log-facility/d' /etc/dnsmasq.conf
 sed -i '/dhcp-option/d' /etc/dnsmasq.conf
 echo "log-facility=/dev/null" >> /etc/dnsmasq.conf
