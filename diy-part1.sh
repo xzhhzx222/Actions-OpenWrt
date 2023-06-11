@@ -18,20 +18,17 @@
 #echo 'src-git passwall https://github.com/xiaorouji/openwrt-passwall' >>feeds.conf.default
 
 # # 添加passwall
-#echo 'src-git passwall_pkg https://github.com/xiaorouji/openwrt-passwall;packages' >>feeds.conf.default
-#echo 'src-git passwall https://github.com/xiaorouji/openwrt-passwall;luci' >>feeds.conf.default
-#echo 'src-git passwall2 https://github.com/xiaorouji/openwrt-passwall2' >>feeds.conf.default
+# echo 'src-git passwall_pkg https://github.com/xiaorouji/openwrt-passwall;packages' >>feeds.conf.default
+# echo 'src-git passwall https://github.com/xiaorouji/openwrt-passwall;luci' >>feeds.conf.default
+# echo 'src-git passwall2 https://github.com/xiaorouji/openwrt-passwall2' >>feeds.conf.default
 # 添加ssrplus
 echo 'src-git helloworld https://github.com/fw876/helloworld' >>feeds.conf.default
-
-# 添加self-settings
-svn co https://github.com/xzhhzx222/Actions-OpenWrt/trunk/diy package/self-settings
 
 # 添加advanced
 git clone https://github.com/sirpdboy/luci-app-advanced.git package/xzhhzx222/luci-app-advanced
 # 添加control
 svn co https://github.com/Lienol/openwrt-package/trunk/luci-app-control-timewol package/xzhhzx222/luci-app-control-timewol
-# svn co https://github.com/Lienol/openwrt-package/trunk/luci-app-control-weburl package/xzhhzx222/luci-app-control-weburl
+svn co https://github.com/Lienol/openwrt-package/trunk/luci-app-control-weburl package/xzhhzx222/luci-app-control-weburl
 # # 添加helloworld
 #git clone https://github.com/jerrykuku/lua-maxminddb.git package/xzhhzx222/lua-maxminddb
 #git clone https://github.com/jerrykuku/luci-app-vssr.git package/xzhhzx222/luci-app-vssr
@@ -40,9 +37,9 @@ svn co https://github.com/vernesong/OpenClash/trunk/luci-app-openclash package/x
 # 添加parentcontrol
 git clone https://github.com/sirpdboy/luci-app-parentcontrol.git package/xzhhzx222/luci-app-parentcontrol
 # 添加serverchan
-git clone https://github.com/tty228/luci-app-serverchan.git package/xzhhzx222/luci-app-serverchan
-# # 添加timecontrol
-# svn co https://github.com/Lienol/openwrt-package/trunk/luci-app-timecontrol package/xzhhzx222/luci-app-timecontrol
+git clone -b openwrt-18.06 https://github.com/tty228/luci-app-wechatpush.git package/xzhhzx222/luci-app-wechatpush
+# 添加timecontrol
+svn co https://github.com/Lienol/openwrt-package/trunk/luci-app-timecontrol package/xzhhzx222/luci-app-timecontrol
 # 添加wolplus
 svn co https://github.com/sundaqiang/openwrt-packages/trunk/luci-app-wolplus package/xzhhzx222/luci-app-wolplus
 
