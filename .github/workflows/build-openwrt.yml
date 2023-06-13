@@ -155,7 +155,7 @@ jobs:
 
     - name: Generate release info
       id: info
-      if: env.UPLOAD_RELEASE == 'true' && !cancelled()
+      if: steps.organize.outputs.status == 'success' && env.UPLOAD_RELEASE == 'true' && !cancelled()
       run: |
         echo "release_name=${{ env.FILE_VERSION }} Ver$(date +"%y.%m.%d-%H%M")" >> $GITHUB_OUTPUT
         echo "release_tag=$(date +"%Y.%m.%d-%H%M")" >> $GITHUB_OUTPUT
