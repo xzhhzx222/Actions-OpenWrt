@@ -91,7 +91,7 @@ jobs:
     
     - name: Load custom configuration
       run: |
-        if [ ${github.event.inputs.version} == "jimmywrt" ]; then
+        if [ ${{github.event.inputs.version}} == "jimmywrt" ]; then
           echo "CONFIG_FILE=diy/configs/jimmywrt.config" >> $GITHUB_ENV
           echo "DEFAULT_SETTING=diy/default-settings/jimmywrt-settings" >> $GITHUB_ENV
           echo "LOGO_JPG=diy/jimmywrt.jpg" >> $GITHUB_ENV
