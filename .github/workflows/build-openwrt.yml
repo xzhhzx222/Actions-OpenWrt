@@ -73,21 +73,31 @@ jobs:
     - name: Install feeds
       run: cd openwrt && ./scripts/feeds install -a
     
-    - name: Load samwrt env
-      if: github.event.inputs.version == 'samwrt' || contains(github.event.action, 'version')
+#     - name: Load samwrt env
+    - name: Load custom configuration
+#       if: github.event.inputs.version == 'samwrt' || contains(github.event.action, 'version')
       run: |
-        echo "CONFIG_FILE=diy/configs/samwrt.config" >> $GITHUB_ENV
-        echo "DEFAULT_SETTING=diy/default-settings/samwrt-settings" >> $GITHUB_ENV
-        echo "LOGO_JPG=diy/samwrt.jpg" >> $GITHUB_ENV
-        echo "FILE_VERSION=SamWrt" >> $GITHUB_ENV
+        if [ github.event.inputs.version == "jimmywrt"]; then
+          echo "CONFIG_FILE=diy/configs/jimmywrt.config" >> $GITHUB_ENV
+          echo "DEFAULT_SETTING=diy/default-settings/jimmywrt-settings" >> $GITHUB_ENV
+          echo "LOGO_JPG=diy/jimmywrt.jpg" >> $GITHUB_ENV
+          echo "FILE_VERSION=JimmyWrt" >> $GITHUB_ENV
+          echo "JimmyWrt"
+        else
+          echo "CONFIG_FILE=diy/configs/samwrt.config" >> $GITHUB_ENV
+          echo "DEFAULT_SETTING=diy/default-settings/samwrt-settings" >> $GITHUB_ENV
+          echo "LOGO_JPG=diy/samwrt.jpg" >> $GITHUB_ENV
+          echo "FILE_VERSION=SamWrt" >> $GITHUB_ENV
+          echo "SamWrt"
+        fi
     
-    - name: Load jimmywrt env
-      if: github.event.inputs.version == 'jimmywrt' || contains(github.event.action, 'version')
-      run: |
-        echo "CONFIG_FILE=diy/configs/jimmywrt.config" >> $GITHUB_ENV
-        echo "DEFAULT_SETTING=diy/default-settings/jimmywrt-settings" >> $GITHUB_ENV
-        echo "LOGO_JPG=diy/jimmywrt.jpg" >> $GITHUB_ENV
-        echo "FILE_VERSION=JimmyWrt" >> $GITHUB_ENV
+#     - name: Load jimmywrt env
+#       if: github.event.inputs.version == 'jimmywrt' || contains(github.event.action, 'version')
+#       run: |
+#         echo "CONFIG_FILE=diy/configs/jimmywrt.config" >> $GITHUB_ENV
+#         echo "DEFAULT_SETTING=diy/default-settings/jimmywrt-settings" >> $GITHUB_ENV
+#         echo "LOGO_JPG=diy/jimmywrt.jpg" >> $GITHUB_ENV
+#         echo "FILE_VERSION=JimmyWrt" >> $GITHUB_ENV
     
     - name: Load custom configuration
       run: |
