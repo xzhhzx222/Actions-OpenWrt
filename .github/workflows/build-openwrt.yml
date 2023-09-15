@@ -91,6 +91,10 @@ jobs:
         echo "DIY_SETTING=diy/default-settings/${{github.event.inputs.version}}-settings" >> $GITHUB_ENV
         echo "DIY_LOGO=diy/${{github.event.inputs.version}}.jpg" >> $GITHUB_ENV
         echo "FILE_VERSION=${{github.event.inputs.version}}" >> $GITHUB_ENV
+        echo $CONFIG_FILE
+        echo $DIY_SETTING
+        echo $DIY_LOGO
+        echo $FILE_VERSION
         [ -e files ] && mv files openwrt/files
         [ -e $CONFIG_FILE ] && mv $CONFIG_FILE openwrt/.config
         #[ -e $DIY_LOGO ] && mv -f $DIY_LOGO openwrt/package/xzhhzx222/luci-app-wechatpush/root/usr/share/serverchan/api/logo.jpg
