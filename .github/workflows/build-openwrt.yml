@@ -22,6 +22,10 @@ on:
         description: 'Online Build Version'
         required: true
         default: 'samwrt'
+        type: choice
+        options:
+          - 'samwrt'
+          - 'jimmywrt'
 
 env:
   #REPO_URL: https://github.com/coolsnowwolf/lede
