@@ -96,7 +96,7 @@ jobs:
         [ -e $CONFIG_FILE ] && mv $CONFIG_FILE openwrt/.config
         # [ -e $DEFAULT_SETTING ] && mv -vf $DEFAULT_SETTING openwrt/package/lean/default-settings/files/zzz-default-settings
         # sed -i 's/VER_DATE/'"$(date +%y.%m.%d)"'/g' openwrt/package/lean/default-settings/files/zzz-default-settings
-        [ -e $LOGO_JPG ] && mv -vf $LOGO_JPG openwrt/package/xzhhzx222/luci-app-wechatpush/root/usr/share/serverchan/api/logo.jpg
+        [ -e $LOGO_JPG ] && mv -vf $LOGO_JPG openwrt/package/xzhhzx222/luci-app-wechatpush/root/usr/share/wechatpush/api/logo.jpg
         chmod +x $DIY_P2_SH
         cd openwrt
         $GITHUB_WORKSPACE/$DIY_P2_SH
