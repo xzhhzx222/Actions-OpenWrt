@@ -14,30 +14,27 @@ on:
   repository_dispatch:
   workflow_dispatch:
     inputs:
-      ssh:
-        #description: 'SSH connection to Actions'
-        #required: false
-        #default: 'false'
-        description: 'Online Build Version'
+      version:
+        description: 'BUILD VERSION'
         required: true
         default: 'samwrt'
 
 env:
-  #REPO_URL: https://github.com/coolsnowwolf/lede
-  #REPO_BRANCH: master
+  # REPO_URL: https://github.com/coolsnowwolf/lede
+  # REPO_BRANCH: master
+  # DEPENDS_UBUNTU: diy/depends-lede
   REPO_URL: https://github.com/openwrt/openwrt
   REPO_BRANCH: openwrt-22.03
+  DEPENDS_UBUNTU: diy/depends-openwrt
   FEEDS_CONF: feeds.conf.default
   CONFIG_FILE: .config
   DIY_P1_SH: diy-part1.sh
   DIY_P2_SH: diy-part2.sh
   UPLOAD_BIN_DIR: false
   UPLOAD_FIRMWARE: true
-  #UPLOAD_COWTRANSFER: false
-  #UPLOAD_WETRANSFER: false
   UPLOAD_RELEASE: true
   TZ: Asia/Shanghai
-
+  
 jobs:
   build:
     runs-on: ubuntu-20.04
@@ -52,12 +49,7 @@ jobs:
       run: |
         sudo rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /opt/ghc
         sudo -E apt-get -qq update
-        #sudo -E apt-get -qq install $(curl -fsSL git.io/depends-ubuntu-2004)
-        if [ "$REPO_URL" = "https://github.com/coolsnowwolf/lede" ]; then
-          echo "DEPENDS_UBUNTU=diy/depends-lede" >> $GITHUB_ENV 
-        else
-          echo "DEPENDS_UBUNTU=diy/depends-openwrt" >> $GITHUB_ENV
-        fi
+        # sudo -E apt-get -qq install $(curl -fsSL git.io/depends-ubuntu-2004)
         sudo -E apt-get -qq install $(cat $DEPENDS_UBUNTU)
         sudo -E apt-get -qq autoremove --purge
         sudo -E apt-get -qq clean
@@ -87,28 +79,20 @@ jobs:
 
     - name: Load custom configuration
       run: |
-        echo "CONFIG_FILE=diy/configs/${{github.event.inputs.version}}.config" >> $GITHUB_ENV
+        echo "DIY_CONFIG=diy/configs/${{github.event.inputs.version}}.config" >> $GITHUB_ENV
         echo "DIY_SETTING=diy/default-settings/${{github.event.inputs.version}}-settings" >> $GITHUB_ENV
         echo "DIY_LOGO=diy/${{github.event.inputs.version}}.jpg" >> $GITHUB_ENV
         echo "FILE_VERSION=${{github.event.inputs.version}}" >> $GITHUB_ENV
         [ -e files ] && mv files openwrt/files
         [ -e $CONFIG_FILE ] && mv $CONFIG_FILE openwrt/.config
+        #[ -e $DIY_CONFIG ] && mv $DIY_CONFIG openwrt/.config
+        [ -e $DIY_SETTING ] && mv -f $DIY_SETTING openwrt/package/lean/default-settings/files/zzz-default-settings
+        # sed -i 's/VER_DATE/'"$(date +%y.%m.%d)"'/g' openwrt/package/lean/default-settings/files/zzz-default-settings
         #[ -e $DIY_LOGO ] && mv -f $DIY_LOGO openwrt/package/xzhhzx222/luci-app-wechatpush/root/usr/share/serverchan/api/logo.jpg
         [ -e $DIY_LOGO ] && mv -f $DIY_LOGO openwrt/package/xzhhzx222/luci-app-wechatpush/root/usr/share/wechatpush/api/logo.jpg
-        if [ "$REPO_URL" = "https://github.com/coolsnowwolf/lede" ]; then
-          [ -e $DIY_SETTING ] && mv -f $DIY_SETTING openwrt/package/lean/default-settings/files/zzz-default-settings
-          sed -i 's/VER_DATE/'"$(date +%y.%m.%d)"'/g' openwrt/package/lean/default-settings/files/zzz-default-settings
-        fi
         chmod +x $DIY_P2_SH
         cd openwrt
         $GITHUB_WORKSPACE/$DIY_P2_SH
-
-    #- name: SSH connection to Actions
-    #  uses: P3TERX/ssh2actions@v1.0.0
-    #  if: (github.event.inputs.ssh == 'true' && github.event.inputs.ssh  != 'false') || contains(github.event.action, 'ssh')
-    #  env:
-    #    TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-    #    TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
 
     - name: Download package
       id: package
@@ -125,11 +109,10 @@ jobs:
         cd openwrt
         echo -e "$(nproc) thread compile"
         make -j$(nproc) || make -j1 || make -j1 V=s
-        #echo "::set-output name=status::success"
         echo "status=success" >> $GITHUB_OUTPUT
         grep '^CONFIG_TARGET.*DEVICE.*=y' .config | sed -r 's/.*DEVICE_(.*)=y/\1/' > DEVICE_NAME
         [ -s DEVICE_NAME ] && echo "DEVICE_NAME=_$(cat DEVICE_NAME)" >> $GITHUB_ENV
-        echo "FILE_DATE=_$(date +"%Y%m%d%H%M")" >> $GITHUB_ENV
+        echo "FILE_DATE=_$(date +"%y%m%d%H%M")" >> $GITHUB_ENV
 
     - name: Check space usage
       if: (!cancelled())
@@ -139,61 +122,30 @@ jobs:
       uses: actions/upload-artifact@main
       if: steps.compile.outputs.status == 'success' && env.UPLOAD_BIN_DIR == 'true'
       with:
-        #name: OpenWrt_bin${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
         name: ${{ env.FILE_VERSION }}_bin${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
         path: openwrt/bin
 
     - name: Organize files
       id: organize
-      if: steps.compile.outputs.status == 'success' && env.UPLOAD_FIRMWARE == 'true' && !cancelled()
+      if: env.UPLOAD_FIRMWARE == 'true' && !cancelled()
       run: |
         cd openwrt/bin/targets/*/*
         rm -rf packages
-        #rm -rf *.bin
-        #rm -rf *.json
-        #rm -rf *.manifest
-        #rm -rf *rootfs.img.gz
-        #rm -rf sha256sums
+        rm -rf *.bin
+        rm -rf *.json
+        rm -rf *.manifest
+        rm -rf *rootfs.img.gz
+        rm -rf sha256sums
         echo "FIRMWARE=$PWD" >> $GITHUB_ENV
-        #echo "::set-output name=status::success"
         echo "status=success" >> $GITHUB_OUTPUT
 
     - name: Upload firmware directory
       uses: actions/upload-artifact@main
       if: steps.organize.outputs.status == 'success' && !cancelled()
       with:
-        #name: OpenWrt_firmware${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
         name: ${{ env.FILE_VERSION }}_firmware${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
         path: ${{ env.FIRMWARE }}
 
-    #- name: Upload firmware to cowtransfer
-    #  id: cowtransfer
-    #  if: steps.organize.outputs.status == 'success' && env.UPLOAD_COWTRANSFER == 'true' && !cancelled()
-    #  run: |
-    #    curl -fsSL git.io/file-transfer | sh
-    #    ./transfer cow --block 2621440 -s -p 64 --no-progress ${FIRMWARE} 2>&1 | tee cowtransfer.log
-    #    echo "::warning file=cowtransfer.com::$(cat cowtransfer.log | grep https)"
-    #    echo "::set-output name=url::$(cat cowtransfer.log | grep https | cut -f3 -d" ")"
-
-    #- name: Upload firmware to WeTransfer
-    #  id: wetransfer
-    #  if: steps.organize.outputs.status == 'success' && env.UPLOAD_WETRANSFER == 'true' && !cancelled()
-    #  run: |
-    #    curl -fsSL git.io/file-transfer | sh
-    #    ./transfer wet -s -p 16 --no-progress ${FIRMWARE} 2>&1 | tee wetransfer.log
-    #    echo "::warning file=wetransfer.com::$(cat wetransfer.log | grep https)"
-    #    echo "::set-output name=url::$(cat wetransfer.log | grep https | cut -f3 -d" ")"
-
-    #- name: Generate release tag
-    #  id: tag
-    #  if: env.UPLOAD_RELEASE == 'true' && !cancelled()
-    #  run: |
-    #    echo "::set-output name=release_tag::$(date +"%Y.%m.%d-%H%M")"
-    #    touch release.txt
-    #    [ $UPLOAD_COWTRANSFER = true ] && echo "🔗 [Cowtransfer](${{ steps.cowtransfer.outputs.url }})" >> release.txt
-    #    [ $UPLOAD_WETRANSFER = true ] && echo "🔗 [WeTransfer](${{ steps.wetransfer.outputs.url }})" >> release.txt
-    #    echo "::set-output name=status::success"
-    
     - name: Generate release info
       id: info
       if: steps.organize.outputs.status == 'success' && env.UPLOAD_RELEASE == 'true' && !cancelled()
@@ -215,16 +167,14 @@ jobs:
         files: ${{ env.FIRMWARE }}/*
 
     - name: Delete workflow runs
-      #uses: GitRML/delete-workflow-runs@main
       uses: FunctionXJB/delete-workflow-runs@main
       with:
         retain_days: 1
         keep_minimum_runs: 3
 
     - name: Remove old Releases
-      #uses: dev-drprasad/delete-older-releases@v0.1.0
       uses: dev-drprasad/delete-older-releases@v0.2.1
-      if: steps.organize.outputs.status == 'success' && env.UPLOAD_RELEASE == 'true' && !cancelled()
+      if: env.UPLOAD_RELEASE == 'true' && !cancelled()
       with:
         keep_latest: 3
         delete_tags: true
