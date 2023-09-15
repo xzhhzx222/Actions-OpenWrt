@@ -37,6 +37,8 @@ git clone https://github.com/sirpdboy/luci-app-advanced.git package/xzhhzx222/lu
 # 添加vernesong/OpenClash
 # svn export https://github.com/vernesong/OpenClash/trunk/luci-app-openclash package/xzhhzx222/luci-app-openclash
 git clone https://github.com/vernesong/OpenClash.git package/xzhhzx222/OpenClash --depth=1
+mv package/xzhhzx222/OpenClash/luci-app-openclash package/xzhhzx222/
+rm -rf package/xzhhzx222/OpenClash
 # 添加tty228/luci-app-wechatpush
 git clone https://github.com/tty228/luci-app-wechatpush.git package/xzhhzx222/luci-app-wechatpush
 # git clone -b openwrt-18.06 https://github.com/tty228/luci-app-wechatpush.git package/xzhhzx222/luci-app-wechatpush
