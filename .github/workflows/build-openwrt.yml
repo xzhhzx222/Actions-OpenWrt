@@ -24,7 +24,7 @@ env:
   # REPO_BRANCH: master
   # DEPENDS_UBUNTU: diy/depends-lede
   REPO_URL: https://github.com/openwrt/openwrt
-  REPO_BRANCH: 22.03
+  REPO_BRANCH: openwrt-22.03
   DEPENDS_UBUNTU: diy/depends-openwrt
   FEEDS_CONF: feeds.conf.default
   # CONFIG_FILE: diy/configs/samwrt.config
