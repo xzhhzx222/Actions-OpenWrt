@@ -27,7 +27,7 @@ echo 'src-git helloworld https://github.com/fw876/helloworld' >>feeds.conf.defau
 echo 'src-git lienol https://github.com/Lienol/openwrt-package.git;main' >>feeds.conf.default
 echo 'src-git other https://github.com/Lienol/openwrt-package.git;other' >>feeds.conf.default
 # 添加sundaqiang/openwrt-packages
-echo 'src-git sundaqiang https://github.com/sundaqiang/openwrt-packages;main' >>feeds.conf.default
+echo 'src-git sundaqiang https://github.com/sundaqiang/openwrt-packages;master' >>feeds.conf.default
 
 # 添加sirpdboy/luci-app-advanced
 git clone https://github.com/sirpdboy/luci-app-advanced.git package/xzhhzx222/luci-app-advanced
