@@ -25,3 +25,10 @@ rm -rf package/feeds/luci/luci-app-serverchan
 
 # 替换update_cloudflare_com_v4.sh
 # wget -O package/feeds/packages/ddns-scripts/files/update_cloudflare_com_v4.sh https://raw.githubusercontent.com/openwrt/packages/master/net/ddns-scripts/files/usr/lib/ddns/update_cloudflare_com_v4.sh
+
+# 翻译增加软链
+for pkg in $(find package/feeds/*/luci-app*/po -maxdepth 0 -type d); do
+  if [ ! -d "$pkg/zh_Hans" ] && [ -d "$pkg/zh-cn" ]; then 
+    ln -sf zh-cn "$pkg/zh_Hans"
+  fi
+done
