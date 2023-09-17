@@ -97,10 +97,13 @@ jobs:
         [ -e $CONFIG_FILE ] && mv $CONFIG_FILE openwrt/.config
         #[ -e $DIY_LOGO ] && mv -f $DIY_LOGO openwrt/package/xzhhzx222/luci-app-wechatpush/root/usr/share/serverchan/api/logo.jpg
         [ -e $DIY_LOGO ] && mv -f $DIY_LOGO openwrt/package/xzhhzx222/luci-app-wechatpush/root/usr/share/wechatpush/api/logo.jpg
-        if [ "$REPO_URL" = "https://github.com/coolsnowwolf/lede" ]; then
-          [ -e $DIY_SETTING ] && mv -f $DIY_SETTING openwrt/package/lean/default-settings/files/zzz-default-settings
-          sed -i 's/VER_DATE/'"$(date +%y.%m.%d)"'/g' openwrt/package/lean/default-settings/files/zzz-default-settings
+        if [ "$REPO_URL" = "https://github.com/openwrt/openwrt" ]; then
+          svn export https://github.com/Lienol/openwrt/branches/22.03/package/default-settings openwrt/package/default-settings
+        else
+          mv openwrt/package/lean/default-settings openwrt/package/
         fi
+        [ -e $DIY_SETTING ] && mv -f $DIY_SETTING openwrt/package/default-settings/files/zzz-default-settings /
+        && sed -i 's/VER_DATE/'"$(date +%y.%m.%d)"'/g' openwrt/package/default-settings/files/zzz-default-settings
         chmod +x $DIY_P2_SH
         cd openwrt
         $GITHUB_WORKSPACE/$DIY_P2_SH
