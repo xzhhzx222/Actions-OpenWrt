@@ -32,8 +32,8 @@ env:
   #REPO_BRANCH: master
   REPO_URL: https://github.com/Lienol/openwrt
   REPO_BRANCH: 22.03
-  # REPO_URL: https://github.com/openwrt/openwrt
-  # REPO_BRANCH: openwrt-22.03
+  #REPO_URL: https://github.com/openwrt/openwrt
+  #REPO_BRANCH: openwrt-22.03
   FEEDS_CONF: feeds.conf.default
   CONFIG_FILE: .config
   DIY_P1_SH: diy-part1.sh
@@ -56,8 +56,9 @@ jobs:
     - name: Initialization environment
       env:
         DEBIAN_FRONTEND: noninteractive
-        #DEPENDS_UBUNTU: diy/depends-lede
-        DEPENDS_UBUNTU: diy/depends-openwrt
+        #DEPENDS_UBUNTU: diy/depends/depends.lede
+        DEPENDS_UBUNTU: diy/depends/depends.lienol
+        #DEPENDS_UBUNTU: diy/depends/depends.openwrt
       run: |
         sudo rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /opt/ghc
         sudo -E apt-get -qq update
@@ -92,7 +93,7 @@ jobs:
     - name: Load custom configuration
       env:
         CONFIG_FILE: diy/configs/${{github.event.inputs.version}}.config
-        DIY_SETTING: diy/default-settings/${{github.event.inputs.version}}-settings
+        DIY_SETTING: diy/settings/${{github.event.inputs.version}}.settings
         DIY_LOGO: diy/${{github.event.inputs.version}}.jpg
       run: |
         if [ "$REPO_URL" = "https://github.com/openwrt/openwrt" ]; then
