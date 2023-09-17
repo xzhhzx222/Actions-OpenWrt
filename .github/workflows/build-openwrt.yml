@@ -99,9 +99,11 @@ jobs:
         if [ "$REPO_URL" = "https://github.com/openwrt/openwrt" ]; then
           [ -e $DIY_LOGO ] && mv -vf $DIY_LOGO package/xzhhzx222/luci-app-wechatpush/root/usr/share/wechatpush/api/logo.jpg
           svn export https://github.com/Lienol/openwrt/branches/22.03/package/default-settings package/default-settings
-        else
+        elseif [ "$REPO_URL" = "https://github.com/coolsnowwolf/lede" ]; then
           [ -e $DIY_LOGO ] && mv -vf $DIY_LOGO package/xzhhzx222/luci-app-wechatpush/root/usr/share/serverchan/api/logo.jpg
           mv -v package/lean/default-settings package/
+        else
+          [ -e $DIY_LOGO ] && mv -vf $DIY_LOGO package/xzhhzx222/luci-app-wechatpush/root/usr/share/wechatpush/api/logo.jpg
         fi
         [ -e $DIY_SETTING ] && mv -vf $DIY_SETTING package/default-settings/files/zzz-default-settings
         sed -i 's/VER_DATE/'"$(date +%y.%m.%d)"'/g' package/default-settings/files/zzz-default-settings
