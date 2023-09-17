@@ -23,8 +23,8 @@ echo 'src-git helloworld https://github.com/fw876/helloworld' >>feeds.conf.defau
 # echo 'src-git passwall_pkg https://github.com/xiaorouji/openwrt-passwall;packages' >>feeds.conf.default
 # echo 'src-git passwall https://github.com/xiaorouji/openwrt-passwall;luci' >>feeds.conf.default
 # echo 'src-git passwall2 https://github.com/xiaorouji/openwrt-passwall2' >>feeds.conf.default
-# 添加Lienol/openwrt-package
-echo 'src-git lienol https://github.com/Lienol/openwrt-package.git;main' >>feeds.conf.default
+# # 添加Lienol/openwrt-package
+# echo 'src-git lienol https://github.com/Lienol/openwrt-package.git;main' >>feeds.conf.default
 # echo 'src-git other https://github.com/Lienol/openwrt-package.git;other' >>feeds.conf.default
 # 添加sundaqiang/openwrt-packages
 echo 'src-git sundaqiang https://github.com/sundaqiang/openwrt-packages;master' >>feeds.conf.default
