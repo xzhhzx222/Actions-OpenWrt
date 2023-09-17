@@ -18,7 +18,7 @@ if [ "$REPO_URL" = "https://github.com/openwrt/openwrt" ]; then
   svn export https://github.com/Lienol/openwrt/branches/22.03/package/default-settings package/default-settings
 else
   [ -e $DIY_LOGO ] && mv -f $DIY_LOGO package/xzhhzx222/luci-app-wechatpush/root/usr/share/serverchan/api/logo.jpg
-  mv openwrt/package/lean/default-settings package/
+  mv package/lean/default-settings package/
 fi
 [ -e $DIY_SETTING ] && mv -f $DIY_SETTING package/default-settings/files/zzz-default-settings
 sed -i 's/VER_DATE/'"$(date +%y.%m.%d)"'/g' package/default-settings/files/zzz-default-settings
