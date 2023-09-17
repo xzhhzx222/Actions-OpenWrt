@@ -13,16 +13,6 @@
 # Modify default IP
 #sed -i 's/192.168.1.1/192.168.50.5/g' package/base-files/files/bin/config_generate
 
-if [ "$REPO_URL" = "https://github.com/openwrt/openwrt" ]; then
-  [ -e $DIY_LOGO ] && mv -f $DIY_LOGO package/xzhhzx222/luci-app-wechatpush/root/usr/share/wechatpush/api/logo.jpg
-  svn export https://github.com/Lienol/openwrt/branches/22.03/package/default-settings package/default-settings
-else
-  [ -e $DIY_LOGO ] && mv -f $DIY_LOGO package/xzhhzx222/luci-app-wechatpush/root/usr/share/serverchan/api/logo.jpg
-  mv package/lean/default-settings package/
-fi
-[ -e $DIY_SETTING ] && mv -f $DIY_SETTING package/default-settings/files/zzz-default-settings
-sed -i 's/VER_DATE/'"$(date +%y.%m.%d)"'/g' package/default-settings/files/zzz-default-settings
-
 # 更改默认主题
 rm -rf package/feeds/luci/luci-theme-argon
 sed -i 's/luci-theme-bootstrap/luci-theme-argon/g' package/feeds/luci/luci/Makefile
