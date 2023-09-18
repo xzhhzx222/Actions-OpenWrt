@@ -117,7 +117,7 @@ jobs:
       run: |
         if [ "${{github.event.inputs.branch}}" == "openwrt-22.03" ] || [ "${{github.event.inputs.branch}}" == "openwrt-23.05" ]; then
           svn export https://github.com/Lienol/openwrt/branches/22.03/package/default-settings openwrt/package/default-settings
-          git clone https://github.com/tty228/luci-app-wechatpush.git package/xzhhzx222/luci-app-wechatpush
+          git clone https://github.com/tty228/luci-app-wechatpush.git openwrt/package/xzhhzx222/luci-app-wechatpush
           git clone https://github.com/jerrykuku/luci-theme-argon.git openwrt/package/xzhhzx222/luci-theme-argon
           sed -i '/LUCI_DEPENDS:=/s/$/ +@LUCI_LANG_zh_Hans/' openwrt/package/feeds/luci/luci-base/Makefile
           for pkg in $(find openwrt/package/feeds/*/luci-app*/po -maxdepth 0 -type d); do
@@ -129,7 +129,7 @@ jobs:
           rm -rf openwrt/package/feeds/luci/luci-theme-argon
           git clone -b 18.06 https://github.com/jerrykuku/luci-theme-argon.git openwrt/package/xzhhzx222/luci-theme-argon
           rm -rf openwrt/package/feeds/luci/luci-app-serverchan
-          git clone -b openwrt-18.06 https://github.com/tty228/luci-app-wechatpush.git package/xzhhzx222/luci-app-wechatpush
+          git clone -b openwrt-18.06 https://github.com/tty228/luci-app-wechatpush.git openwrt/package/xzhhzx222/luci-app-wechatpush
         fi
         [ -e $DIY_LOGO ] && mv -vf $DIY_LOGO $LOGO_FILE
         [ -e $DIY_SETTING ] && mv -vf $DIY_SETTING $SET_FILE
