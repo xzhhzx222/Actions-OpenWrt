@@ -24,8 +24,8 @@ on:
         default: 'official-22.03'
         type: choice
         options:
-          - 'official-22.03'
-          - 'official-23.05'
+          - 'openwrt-22.03'
+          - 'openwrt-23.05'
           # - 'lienol'
           - 'lede'
       version:
