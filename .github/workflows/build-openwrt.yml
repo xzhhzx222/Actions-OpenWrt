@@ -21,7 +21,7 @@ on:
       branch:
         description: 'Openwrt Build Branch'
         required: true
-        default: 'official-22.03'
+        default: 'openwrt-22.03'
         type: choice
         options:
           - 'openwrt-22.03'
