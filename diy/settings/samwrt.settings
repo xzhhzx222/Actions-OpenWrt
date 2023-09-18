@@ -17,6 +17,7 @@ uci commit fstab
 ln -sf /sbin/ip /usr/bin/ip
 
 sed -i '/helloworld/d' /etc/opkg/distfeeds.conf
+sed -i '/lienol/d' /etc/opkg/distfeeds.conf
 sed -i '/passwall/d' /etc/opkg/distfeeds.conf
 sed -i '/sundaqiang/d' /etc/opkg/distfeeds.conf
 #sed -i 's#downloads.openwrt.org#mirrors.cloud.tencent.com/lede#g' /etc/opkg/distfeeds.conf
