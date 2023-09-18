@@ -96,21 +96,21 @@ jobs:
         DIY_SETTING: diy/settings/${{github.event.inputs.version}}.settings
         DIY_LOGO: diy/imgs/${{github.event.inputs.version}}.jpg
       run: |
+        if [ "$REPO_URL" = "https://github.com/openwrt/openwrt" ]; then
+          [ -e $DIY_LOGO ] && mv -vf $DIY_LOGO openwrt/package/xzhhzx222/luci-app-wechatpush/root/usr/share/wechatpush/api/logo.jpg
+          svn export https://github.com/Lienol/openwrt/branches/22.03/package/default-settings openwrt/package/default-settings
+        elif [ "$REPO_URL" = "https://github.com/coolsnowwolf/lede" ]; then
+          [ -e $DIY_LOGO ] && mv -vf $DIY_LOGO openwrt/package/xzhhzx222/luci-app-wechatpush/root/usr/share/serverchan/api/logo.jpg
+          mv -v openwrt/package/lean/default-settings openwrt/package/
+        else
+          [ -e $DIY_LOGO ] && mv -vf $DIY_LOGO openwrt/package/xzhhzx222/luci-app-wechatpush/root/usr/share/wechatpush/api/logo.jpg
+        fi
+        [ -e $DIY_SETTING ] && mv -vf $DIY_SETTING openwrt/package/default-settings/files/zzz-default-settings
+        sed -i 's/VER_DATE/'"$(date +%y.%m.%d)"'/g' openwrt/package/default-settings/files/zzz-default-settings
         [ -e files ] && mv files openwrt/files
         [ -e $CONFIG_FILE ] && mv $CONFIG_FILE openwrt/.config
         chmod +x $DIY_P2_SH
         cd openwrt
-        if [ "$REPO_URL" = "https://github.com/openwrt/openwrt" ]; then
-          [ -e $DIY_LOGO ] && mv -vf $DIY_LOGO package/xzhhzx222/luci-app-wechatpush/root/usr/share/wechatpush/api/logo.jpg
-          svn export https://github.com/Lienol/openwrt/branches/22.03/package/default-settings package/default-settings
-        elif [ "$REPO_URL" = "https://github.com/coolsnowwolf/lede" ]; then
-          [ -e $DIY_LOGO ] && mv -vf $DIY_LOGO package/xzhhzx222/luci-app-wechatpush/root/usr/share/serverchan/api/logo.jpg
-          mv -v package/lean/default-settings package/
-        else
-          [ -e $DIY_LOGO ] && mv -vf $DIY_LOGO package/xzhhzx222/luci-app-wechatpush/root/usr/share/wechatpush/api/logo.jpg
-        fi
-        [ -e $DIY_SETTING ] && mv -vf $DIY_SETTING package/default-settings/files/zzz-default-settings
-        sed -i 's/VER_DATE/'"$(date +%y.%m.%d)"'/g' package/default-settings/files/zzz-default-settings
         $GITHUB_WORKSPACE/$DIY_P2_SH
 
     #- name: SSH connection to Actions
