@@ -66,13 +66,13 @@ jobs:
           echo "REPO_URL=https://github.com/openwrt/openwrt" >> $GITHUB_ENV
           echo "REPO_BRANCH=${{github.event.inputs.branch}}" >> $GITHUB_ENV
           echo "LOGO_FILE=openwrt/package/xzhhzx222/luci-app-wechatpush/root/usr/share/wechatpush/api/logo.jpg" >> $GITHUB_ENV
-          echo "SET_FILE=openwrt/package/default-settings/files/zzz-default-settings"
+          echo "SET_FILE=openwrt/package/default-settings/files/zzz-default-settings" >> $GITHUB_ENV
         elif [ "${{github.event.inputs.branch}}" == "lede" ]; then
           echo "DEPENDS_UBUNTU=diy/depends/depends.lede" >> $GITHUB_ENV
           echo "REPO_URL=https://github.com/coolsnowwolf/lede" >> $GITHUB_ENV
           echo "REPO_BRANCH=master" >> $GITHUB_ENV
           echo "LOGO_FILE=openwrt/package/xzhhzx222/luci-app-wechatpush/root/usr/share/serverchan/api/logo.jpg" >> $GITHUB_ENV
-          echo "SET_FILE=openwrt/package/lean/default-settings/files/zzz-default-settings"
+          echo "SET_FILE=openwrt/package/lean/default-settings/files/zzz-default-settings" >> $GITHUB_ENV
         fi
     
     - name: Initialization environment
