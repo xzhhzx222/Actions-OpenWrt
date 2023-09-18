@@ -38,12 +38,12 @@ on:
           - 'jimmywrt'
 
 env:
-  #REPO_URL: https://github.com/coolsnowwolf/lede
-  #REPO_BRANCH: master
-  #REPO_URL: https://github.com/Lienol/openwrt
-  #REPO_BRANCH: 22.03
-  REPO_URL: https://github.com/openwrt/openwrt
-  REPO_BRANCH: openwrt-22.03
+  # REPO_URL: https://github.com/coolsnowwolf/lede
+  # REPO_BRANCH: master
+  # REPO_URL: https://github.com/Lienol/openwrt
+  # REPO_BRANCH: 22.03
+  # REPO_URL: https://github.com/openwrt/openwrt
+  # REPO_BRANCH: openwrt-22.03
   FEEDS_CONF: feeds.conf.default
   CONFIG_FILE: .config
   DIY_P1_SH: diy-part1.sh
@@ -63,12 +63,16 @@ jobs:
     - name: Checkout
       uses: actions/checkout@main
 
+    - name: Decide Branch and Version
+      run: |
+        
+    
     - name: Initialization environment
-      env:
-        DEBIAN_FRONTEND: noninteractive
-        #DEPENDS_UBUNTU: diy/depends/depends.lede
-        #DEPENDS_UBUNTU: diy/depends/depends.lienol
-        DEPENDS_UBUNTU: diy/depends/depends.openwrt
+      # env:
+      #   DEBIAN_FRONTEND: noninteractive
+      #   DEPENDS_UBUNTU: diy/depends/depends.lede
+      #   DEPENDS_UBUNTU: diy/depends/depends.lienol
+      #   DEPENDS_UBUNTU: diy/depends/depends.openwrt
       run: |
         sudo rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /opt/ghc
         sudo -E apt-get -qq update
