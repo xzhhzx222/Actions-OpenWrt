@@ -17,7 +17,7 @@
 # rm -rf package/feeds/luci/luci-theme-argon
 # sed -i 's/luci-theme-bootstrap/luci-theme-argon/g' package/feeds/luci/luci/Makefile
 
-# 更改编译语言
+# # 更改编译语言
 # sed -i '/LUCI_DEPENDS:=/s/$/ +@LUCI_LANG_zh_Hans/' package/feeds/luci/luci-base/Makefile
 
 # # 删除serverchan
