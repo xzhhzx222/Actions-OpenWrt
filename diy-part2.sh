@@ -13,7 +13,7 @@
 # Modify default IP
 #sed -i 's/192.168.1.1/192.168.50.5/g' package/base-files/files/bin/config_generate
 
-if [ "$BUILD_BRANCH" == "openwrt-"* ]; then
+if [ $BUILD_BRANCH == openwrt-* ]; then
   LOGO_FILE=package/xzhhzx222/luci-app-wechatpush/root/usr/share/wechatpush/api/logo.jpg
   SET_FILE=package/default-settings/files/zzz-default-settings
   svn export https://github.com/Lienol/openwrt/branches/22.03/package/default-settings package/default-settings
@@ -25,7 +25,7 @@ if [ "$BUILD_BRANCH" == "openwrt-"* ]; then
       ln -sf zh-cn "$pkg/zh_Hans"
     fi
   done
-elif [ "$BUILD_BRANCH" == "lede" ]; then
+elif [ $BUILD_BRANCH == lede ]; then
   LOGO_FILE=package/xzhhzx222/luci-app-wechatpush/root/usr/share/serverchan/api/logo.jpg
   SET_FILE=package/lean/default-settings/files/zzz-default-settings
   rm -rf package/feeds/luci/luci-theme-argon
