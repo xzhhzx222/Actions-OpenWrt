@@ -84,8 +84,8 @@ jobs:
         DIY_SET: ${{env.GITHUB_WORKSPACE}}/diy/settings/${{env.BUILD_VER}}.settings
         DIY_LOGO: ${{env.GITHUB_WORKSPACE}}/diy/imgs/${{env.BUILD_VER}}.jpg
       run: |
-        chmod +x ./diy.sh
-        ./diy.sh
+        chmod +x $GITHUB_WORKSPACE/diy.sh
+        $GITHUB_WORKSPACE/diy.sh
     
     #- name: Initialization environment
     #  env:
