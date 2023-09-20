@@ -66,7 +66,7 @@ jobs:
         if [[ $BUILD_BRANCH == openwrt-* ]]; then
           echo "DEPENDS_UBUNTU=diy/depends/depends.openwrt" >> $GITHUB_ENV
           echo "REPO_URL=https://github.com/openwrt/openwrt" >> $GITHUB_ENV
-          echo "REPO_BRANCH=${{github.event.inputs.branch}}" >> $GITHUB_ENV
+          echo "REPO_BRANCH=${{ env.BUILD_BRANCH }}" >> $GITHUB_ENV
         elif [[ $BUILD_BRANCH == lede ]]; then
           echo "DEPENDS_UBUNTU=diy/depends/depends.lede" >> $GITHUB_ENV
           echo "REPO_URL=https://github.com/coolsnowwolf/lede" >> $GITHUB_ENV
@@ -80,6 +80,9 @@ jobs:
         sudo rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /opt/ghc
         sudo -E apt-get -qq update
         # sudo -E apt-get -qq install $(curl -fsSL git.io/depends-ubuntu-2004)
+        echo "-------- Check Start --------"
+        echo "DEPENDS_UBUNTU=$DEPENDS_UBUNTU"
+        echo "--------- Check End ---------"
         sudo -E apt-get -qq install $(cat $DEPENDS_UBUNTU)
         sudo -E apt-get -qq autoremove --purge
         sudo -E apt-get -qq clean
@@ -91,6 +94,10 @@ jobs:
       working-directory: /workdir
       run: |
         df -hT $PWD
+        echo "-------- Check Start --------"
+        echo "REPO_URL=$REPO_URL"
+        echo "REPO_BRANCH=$REPO_BRANCH"
+        echo "--------- Check End ---------"
         git clone $REPO_URL -b $REPO_BRANCH openwrt
         ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
 
@@ -113,8 +120,10 @@ jobs:
         DIY_SET: ${{ env.GITHUB_WORKSPACE }}/diy/settings/${{ env.BUILD_BRANCH }}.settings
         DIY_LOGO: ${{ env.GITHUB_WORKSPACE }}/diy/imgs/${{ env.BUILD_BRANCH }}.jpg
       run: |
-        [ -e files ] && mv files openwrt/files
-        [ -e $CONFIG_FILE ] && mv $CONFIG_FILE openwrt/.config
+        # [ -e files ] && mv files openwrt/files
+        # [ -e $CONFIG_FILE ] && mv $CONFIG_FILE openwrt/.config
+        [ -e files ] && mv -v files openwrt/files
+        [ -e $CONFIG_FILE ] && mv -v $CONFIG_FILE openwrt/.config
         chmod +x $DIY_P2_SH
         cd openwrt
         $GITHUB_WORKSPACE/$DIY_P2_SH
