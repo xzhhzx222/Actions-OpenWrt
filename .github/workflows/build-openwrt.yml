@@ -41,7 +41,7 @@ env:
   # REPO_URL: https://github.com/coolsnowwolf/lede
   # REPO_BRANCH: master
   FEEDS_CONF: feeds.conf.default
-  CONFIG_FILE: .config
+  # CONFIG_FILE: .config
   DIY_P1_SH: diy-part1.sh
   DIY_P2_SH: diy-part2.sh
   UPLOAD_BIN_DIR: false
@@ -64,11 +64,11 @@ jobs:
     - name: Decide Branch and Version
       run: |
         if [[ $BUILD_BRANCH == openwrt-* ]]; then
-          echo "DEPENDS_UBUNTU=diy/depends/depends.openwrt" >> $GITHUB_ENV
+          echo "DEPENDS_UBUNTU=diy/dep/openwrt.depends" >> $GITHUB_ENV
           echo "REPO_URL=https://github.com/openwrt/openwrt" >> $GITHUB_ENV
           echo "REPO_BRANCH=${{ env.BUILD_BRANCH }}" >> $GITHUB_ENV
         elif [[ $BUILD_BRANCH == lede ]]; then
-          echo "DEPENDS_UBUNTU=diy/depends/depends.lede" >> $GITHUB_ENV
+          echo "DEPENDS_UBUNTU=diy/dep/lede.depends" >> $GITHUB_ENV
           echo "REPO_URL=https://github.com/coolsnowwolf/lede" >> $GITHUB_ENV
           echo "REPO_BRANCH=master" >> $GITHUB_ENV
         fi
@@ -116,7 +116,7 @@ jobs:
 
     - name: Load custom configuration
       env:
-        CONFIG_FILE: diy/configs/${{ env.BUILD_VER }}.config
+        CONFIG_FILE: diy/cfg/${{ env.BUILD_VER }}.config
       run: |
         # [ -e files ] && mv files openwrt/files
         # [ -e $CONFIG_FILE ] && mv $CONFIG_FILE openwrt/.config
