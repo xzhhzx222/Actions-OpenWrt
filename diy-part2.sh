@@ -38,9 +38,9 @@ elif [ $BUILD_BRANCH == lede ]; then
   LOGO_FILE=package/xzhhzx222/luci-app-wechatpush/root/usr/share/serverchan/api/logo.jpg
   SET_FILE=package/lean/default-settings/files/zzz-default-settings
   # wget -O package/feeds/packages/ddns-scripts/files/update_cloudflare_com_v4.sh https://raw.githubusercontent.com/openwrt/packages/master/net/ddns-scripts/files/usr/lib/ddns/update_cloudflare_com_v4.sh
+  git clone -b openwrt-18.06 https://github.com/tty228/luci-app-wechatpush.git package/xzhhzx222/luci-app-wechatpush
   rm -rf package/feeds/luci/luci-theme-argon
   git clone -b 18.06 https://github.com/jerrykuku/luci-theme-argon.git package/xzhhzx222/luci-theme-argon
-  git clone -b openwrt-18.06 https://github.com/tty228/luci-app-wechatpush.git package/xzhhzx222/luci-app-wechatpush
 fi
 
 echo "-------- Check Start --------"
@@ -50,10 +50,9 @@ echo "--------- Check End ---------"
 
 [ -e $DIY_LOGO ] && mv -vf $DIY_LOGO $LOGO_FILE
 [ -e $DIY_SET ] && mv -vf $DIY_SET $SET_FILE
-sed -i "s/DISTRIB_REVISION='.*'/DISTRIB_REVISION=\'Ver $(date +%y.%m.%d)\'/" $SET_FILE
 
-sed -i 's/luci-theme-bootstrap/luci-theme-argon/g' package/feeds/luci/luci/Makefile
+sed -i "s/DISTRIB_REVISION='.*'/DISTRIB_REVISION=\'Ver $(date +%y.%m.%d)\'/" $SET_FILE
 
 rm -rf package/feeds/luci/luci-app-serverchan
 
-
+sed -i 's/luci-theme-bootstrap/luci-theme-argon/g' package/feeds/luci/luci/Makefile
