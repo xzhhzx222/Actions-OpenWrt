@@ -1,0 +1,26 @@
+name: test
+
+on:
+  repository_dispatch:
+  workflow_dispatch:
+    inputs:
+      test:
+        description: 'Test'
+        default: 'test'
+
+jobs:
+  test:
+    runs-on: ubuntu-20.04
+    
+    steps:
+    - name: Set env var
+      env:
+        MY_VAR: hello
+      
+    - name: Use env var
+      run: |
+        echo $MY_VAR
+        
+    - name: Use in another step
+      run: | 
+        echo $MY_VAR
