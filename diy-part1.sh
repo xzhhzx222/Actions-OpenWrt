@@ -26,7 +26,7 @@ echo 'src-git helloworld https://github.com/fw876/helloworld' >>feeds.conf.defau
 # # 添加xiaorouji/openwrt-passwall
 # #
 # echo 'src-git passwall_pkg https://github.com/xiaorouji/openwrt-passwall;packages' >>feeds.conf.default
-# echo 'src-git passwall https://github.com/xiaorouji/openwrt-passwall;luci' >>feeds.conf.default
+# echo 'src-git passwall_luci https://github.com/xiaorouji/openwrt-passwall;luci' >>feeds.conf.default
 # echo 'src-git passwall2 https://github.com/xiaorouji/openwrt-passwall2' >>feeds.conf.default
 
 #
@@ -54,17 +54,4 @@ git clone https://github.com/sirpdboy/luci-app-advanced.git package/xzhhzx222/lu
 #
 # 添加vernesong/OpenClash
 #
-# svn export https://github.com/vernesong/OpenClash/trunk/luci-app-openclash package/xzhhzx222/luci-app-openclash
 git clone https://github.com/vernesong/OpenClash.git package/xzhhzx222/OpenClash --depth=1
-
-# #
-# # 添加tty228/luci-app-wechatpush
-# #
-# git clone https://github.com/tty228/luci-app-wechatpush.git package/xzhhzx222/luci-app-wechatpush
-# git clone -b openwrt-18.06 https://github.com/tty228/luci-app-wechatpush.git package/xzhhzx222/luci-app-wechatpush
-
-# #
-# # 添加argon
-# #
-# git clone -b 18.06 https://github.com/jerrykuku/luci-theme-argon.git package/xzhhzx222/luci-theme-argon
-# git clone https://github.com/jerrykuku/luci-theme-argon.git package/xzhhzx222/luci-theme-argon
