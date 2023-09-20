@@ -16,11 +16,11 @@
 DIY_SET=$GITHUB_WORKSPACE/diy/settings/$BUILD_VER.settings
 DIY_LOGO=$GITHUB_WORKSPACE/diy/imgs/$BUILD_VER.jpg
 
-echo "-------- Check Start --------"
+echo "------------ Check Start ------------"
 echo "CONFIG_FILE=$CONFIG_FILE"
 echo "DIY_SET=$DIY_SET"
 echo "DIY_LOGO=$DIY_LOGO"
-echo "--------- Check End ---------"
+echo "------------- Check End -------------"
 
 if [[ $BUILD_BRANCH == openwrt-* ]]; then
   LOGO_FILE=package/xzhhzx222/luci-app-wechatpush/root/usr/share/wechatpush/api/logo.jpg
@@ -43,10 +43,10 @@ elif [ $BUILD_BRANCH == lede ]; then
   git clone -b 18.06 https://github.com/jerrykuku/luci-theme-argon.git package/xzhhzx222/luci-theme-argon
 fi
 
-echo "-------- Check Start --------"
+echo "------------ Check Start ------------"
 echo "LOGO_FILE=$LOGO_FILE"
 echo "SET_FILE=$SET_FILE"
-echo "--------- Check End ---------"
+echo "------------- Check End -------------"
 
 [ -e $DIY_LOGO ] && mv -vf $DIY_LOGO $LOGO_FILE
 [ -e $DIY_SET ] && mv -vf $DIY_SET $SET_FILE
