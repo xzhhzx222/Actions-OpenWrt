@@ -50,7 +50,6 @@ env:
   # UPLOAD_WETRANSFER: false
   UPLOAD_RELEASE: true
   TZ: Asia/Shanghai
-  TEST_VER: test version
 
 jobs:
   build:
