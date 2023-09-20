@@ -1,0 +1,1 @@
+echo "DISTRIB_REVISION='Ver 23.09.20'" >> /etc/openwrt_release
