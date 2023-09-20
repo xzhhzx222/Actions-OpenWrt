@@ -125,7 +125,9 @@ jobs:
         [ -e files ] && mv -v files openwrt/files
         [ -e $CONFIG_FILE ] && mv -v $CONFIG_FILE openwrt/.config
         chmod +x $DIY_P2_SH
+        echo "GITHUB_WORKSPACE_BEFORE=$GITHUB_WORKSPACE"
         cd openwrt
+        echo "GITHUB_WORKSPACE_AFTER=$GITHUB_WORKSPACE"
         $GITHUB_WORKSPACE/$DIY_P2_SH
 
     # - name: SSH connection to Actions
