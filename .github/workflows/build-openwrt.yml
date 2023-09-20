@@ -61,18 +61,20 @@ jobs:
 
     - name: Decide Branch and Version
       run: |
-        if [ "${{github.event.inputs.branch}}" == "openwrt-22.03" ] || [ "${{github.event.inputs.branch}}" == "openwrt-23.05" ]; then
+        if [ "${{github.event.inputs.branch}}" == "openwrt-*" ] then
+          echo "BUILD_VER=openwrt" >> $GITHUB_ENV
           echo "DEPENDS_UBUNTU=diy/depends/depends.openwrt" >> $GITHUB_ENV
           echo "REPO_URL=https://github.com/openwrt/openwrt" >> $GITHUB_ENV
           echo "REPO_BRANCH=${{github.event.inputs.branch}}" >> $GITHUB_ENV
-          echo "LOGO_FILE=openwrt/package/xzhhzx222/luci-app-wechatpush/root/usr/share/wechatpush/api/logo.jpg" >> $GITHUB_ENV
-          echo "SET_FILE=openwrt/package/default-settings/files/zzz-default-settings" >> $GITHUB_ENV
+          # echo "LOGO_FILE=openwrt/package/xzhhzx222/luci-app-wechatpush/root/usr/share/wechatpush/api/logo.jpg" >> $GITHUB_ENV
+          # echo "SET_FILE=openwrt/package/default-settings/files/zzz-default-settings" >> $GITHUB_ENV
         elif [ "${{github.event.inputs.branch}}" == "lede" ]; then
+          echo "BUILD_VER=lede" >> $GITHUB_ENV
           echo "DEPENDS_UBUNTU=diy/depends/depends.lede" >> $GITHUB_ENV
           echo "REPO_URL=https://github.com/coolsnowwolf/lede" >> $GITHUB_ENV
           echo "REPO_BRANCH=master" >> $GITHUB_ENV
-          echo "LOGO_FILE=openwrt/package/xzhhzx222/luci-app-wechatpush/root/usr/share/serverchan/api/logo.jpg" >> $GITHUB_ENV
-          echo "SET_FILE=openwrt/package/lean/default-settings/files/zzz-default-settings" >> $GITHUB_ENV
+          # echo "LOGO_FILE=openwrt/package/xzhhzx222/luci-app-wechatpush/root/usr/share/serverchan/api/logo.jpg" >> $GITHUB_ENV
+          # echo "SET_FILE=openwrt/package/lean/default-settings/files/zzz-default-settings" >> $GITHUB_ENV
         fi
     
     - name: Initialization environment
@@ -110,29 +112,29 @@ jobs:
       run: cd openwrt && ./scripts/feeds install -a
 
     - name: Load custom configuration
-      env:
-        CONFIG_FILE: diy/configs/${{github.event.inputs.version}}.config
-        DIY_SETTING: diy/settings/${{github.event.inputs.version}}.settings
-        DIY_LOGO: diy/imgs/${{github.event.inputs.version}}.jpg
+      # env:
+      #   CONFIG_FILE: diy/configs/${{github.event.inputs.version}}.config
+      #   DIY_SETTING: diy/settings/${{github.event.inputs.version}}.settings
+      #   DIY_LOGO: diy/imgs/${{github.event.inputs.version}}.jpg
       run: |
-        if [ "${{github.event.inputs.branch}}" == "openwrt-22.03" ] || [ "${{github.event.inputs.branch}}" == "openwrt-23.05" ]; then
-          svn export https://github.com/Lienol/openwrt/branches/22.03/package/default-settings openwrt/package/default-settings
-          git clone https://github.com/tty228/luci-app-wechatpush.git openwrt/package/xzhhzx222/luci-app-wechatpush
-          git clone https://github.com/jerrykuku/luci-theme-argon.git openwrt/package/xzhhzx222/luci-theme-argon
-          sed -i '/LUCI_DEPENDS:=/s/$/ +@LUCI_LANG_zh_Hans/' openwrt/package/feeds/luci/luci-base/Makefile
-          for pkg in $(find openwrt/package/feeds/*/luci-app*/po -maxdepth 0 -type d); do
-            if [ ! -d "$pkg/zh_Hans" ] && [ -d "$pkg/zh-cn" ]; then 
-              ln -sf zh-cn "$pkg/zh_Hans"
-            fi
-          done
-        elif [ "${{github.event.inputs.branch}}" == "lede" ]; then
-          rm -rf openwrt/package/feeds/luci/luci-theme-argon
-          git clone -b 18.06 https://github.com/jerrykuku/luci-theme-argon.git openwrt/package/xzhhzx222/luci-theme-argon
-          git clone -b openwrt-18.06 https://github.com/tty228/luci-app-wechatpush.git openwrt/package/xzhhzx222/luci-app-wechatpush
-        fi
-        [ -e $DIY_LOGO ] && mv -vf $DIY_LOGO $LOGO_FILE
-        [ -e $DIY_SETTING ] && mv -vf $DIY_SETTING $SET_FILE
-        sed -i 's/VER_DATE/'"$(date +%y.%m.%d)"'/g' $SET_FILE
+        # if [ "${{github.event.inputs.branch}}" == "openwrt-22.03" ] || [ "${{github.event.inputs.branch}}" == "openwrt-23.05" ]; then
+        #   svn export https://github.com/Lienol/openwrt/branches/22.03/package/default-settings openwrt/package/default-settings
+        #   git clone https://github.com/tty228/luci-app-wechatpush.git openwrt/package/xzhhzx222/luci-app-wechatpush
+        #   git clone https://github.com/jerrykuku/luci-theme-argon.git openwrt/package/xzhhzx222/luci-theme-argon
+        #   sed -i '/LUCI_DEPENDS:=/s/$/ +@LUCI_LANG_zh_Hans/' openwrt/package/feeds/luci/luci-base/Makefile
+        #   for pkg in $(find openwrt/package/feeds/*/luci-app*/po -maxdepth 0 -type d); do
+        #     if [ ! -d "$pkg/zh_Hans" ] && [ -d "$pkg/zh-cn" ]; then 
+        #       ln -sf zh-cn "$pkg/zh_Hans"
+        #     fi
+        #   done
+        # elif [ "${{github.event.inputs.branch}}" == "lede" ]; then
+        #   rm -rf openwrt/package/feeds/luci/luci-theme-argon
+        #   git clone -b 18.06 https://github.com/jerrykuku/luci-theme-argon.git openwrt/package/xzhhzx222/luci-theme-argon
+        #   git clone -b openwrt-18.06 https://github.com/tty228/luci-app-wechatpush.git openwrt/package/xzhhzx222/luci-app-wechatpush
+        # fi
+        # [ -e $DIY_LOGO ] && mv -vf $DIY_LOGO $LOGO_FILE
+        # [ -e $DIY_SETTING ] && mv -vf $DIY_SETTING $SET_FILE
+        # sed -i 's/VER_DATE/'"$(date +%y.%m.%d)"'/g' $SET_FILE
         [ -e files ] && mv files openwrt/files
         [ -e $CONFIG_FILE ] && mv $CONFIG_FILE openwrt/.config
         chmod +x $DIY_P2_SH
