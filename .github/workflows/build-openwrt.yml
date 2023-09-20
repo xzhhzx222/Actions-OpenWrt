@@ -61,14 +61,14 @@ jobs:
 
     - name: Decide Branch and Version
       run: |
-        echo "BUILD_VER=${{github.event.inputs.branch}}" >> $GITHUB_ENV
-        if [ "$BUILD_VER" == "openwrt-*" ]; then
+        echo "BUILD_BRANCH=${{github.event.inputs.branch}}" >> $GITHUB_ENV
+        if [ "$BUILD_BRANCH" == "openwrt-*" ]; then
           echo "DEPENDS_UBUNTU=diy/depends/depends.openwrt" >> $GITHUB_ENV
           echo "REPO_URL=https://github.com/openwrt/openwrt" >> $GITHUB_ENV
           echo "REPO_BRANCH=${{github.event.inputs.branch}}" >> $GITHUB_ENV
           # echo "LOGO_FILE=openwrt/package/xzhhzx222/luci-app-wechatpush/root/usr/share/wechatpush/api/logo.jpg" >> $GITHUB_ENV
           # echo "SET_FILE=openwrt/package/default-settings/files/zzz-default-settings" >> $GITHUB_ENV
-        elif [ "$BUILD_VER" == "lede" ]; then
+        elif [ "$BUILD_BRANCH" == "lede" ]; then
           echo "DEPENDS_UBUNTU=diy/depends/depends.lede" >> $GITHUB_ENV
           echo "REPO_URL=https://github.com/coolsnowwolf/lede" >> $GITHUB_ENV
           echo "REPO_BRANCH=master" >> $GITHUB_ENV
@@ -111,10 +111,10 @@ jobs:
       run: cd openwrt && ./scripts/feeds install -a
 
     - name: Load custom configuration
-      # env:
-      #   CONFIG_FILE: diy/configs/${{github.event.inputs.version}}.config
-      #   DIY_SETTING: diy/settings/${{github.event.inputs.version}}.settings
-      #   DIY_LOGO: diy/imgs/${{github.event.inputs.version}}.jpg
+      env:
+        CONFIG_FILE: $GITHUB_WORKSPACE/diy/configs/$BUILD_BRANCH.config
+        DIY_SETTING: $GITHUB_WORKSPACE/diy/settings/$BUILD_BRANCH.settings
+        DIY_LOGO: $GITHUB_WORKSPACE/diy/imgs/$BUILD_BRANCH.jpg
       run: |
         # if [ "${{github.event.inputs.branch}}" == "openwrt-22.03" ] || [ "${{github.event.inputs.branch}}" == "openwrt-23.05" ]; then
         #   svn export https://github.com/Lienol/openwrt/branches/22.03/package/default-settings openwrt/package/default-settings
