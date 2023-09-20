@@ -78,6 +78,7 @@ jobs:
         
     - name: Echo
       run: |
+        chmod +x ./diy.sh
         ./diy.sh
     #- name: Initialization environment
     #  env:
