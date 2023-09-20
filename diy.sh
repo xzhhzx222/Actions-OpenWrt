@@ -1,0 +1,3 @@
+echo "CONFIG_FILE=$CONFIG_FILE"
+echo "DIY_SET=$DIY_SET"
+echo "DIY_LOGO=$DIY_LOGO"
