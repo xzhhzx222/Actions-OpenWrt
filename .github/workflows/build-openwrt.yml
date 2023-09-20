@@ -62,7 +62,7 @@ jobs:
     - name: Decide Branch and Version
       run: |
         echo "BUILD_BRANCH=${{github.event.inputs.branch}}" >> $GITHUB_ENV
-        if [ "$BUILD_BRANCH" == "openwrt-*" ]; then
+        if [ "$BUILD_BRANCH" == "openwrt-"* ]; then
           echo "DEPENDS_UBUNTU=diy/depends/depends.openwrt" >> $GITHUB_ENV
           echo "REPO_URL=https://github.com/openwrt/openwrt" >> $GITHUB_ENV
           echo "REPO_BRANCH=${{github.event.inputs.branch}}" >> $GITHUB_ENV
