@@ -50,6 +50,7 @@ env:
   # UPLOAD_WETRANSFER: false
   UPLOAD_RELEASE: true
   TZ: Asia/Shanghai
+  TEST_VER: test version
 
 jobs:
   build:
@@ -60,8 +61,6 @@ jobs:
       uses: actions/checkout@main
 
     - name: Decide Branch and Version
-      env:
-        TEST_VER: test
       run: |
         if [ "${{github.event.inputs.branch}}" == "openwrt-22.03" ] || [ "${{github.event.inputs.branch}}" == "openwrt-23.05" ]; then
           echo "DEPENDS_UBUNTU=diy/depends/depends.openwrt" >> $GITHUB_ENV
