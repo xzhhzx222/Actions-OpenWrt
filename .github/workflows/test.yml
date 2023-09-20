@@ -86,7 +86,7 @@ jobs:
         DIY_SET: $GITHUB_WORKSPACE/diy/settings/$BUILD_BRANCH.settings
         DIY_LOGO: $GITHUB_WORKSPACE/diy/imgs/$BUILD_BRANCH.jpg
       run: |
-        chmod +x .diy.sh
+        chmod +x ./diy.sh
         ./diy.sh
     
     #- name: Initialization environment
