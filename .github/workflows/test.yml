@@ -78,7 +78,7 @@ jobs:
         
     - name: Echo
       run: |
-        echo $TEST_VER
+        ./diy.sh
     #- name: Initialization environment
     #  env:
     #    DEBIAN_FRONTEND: noninteractive
