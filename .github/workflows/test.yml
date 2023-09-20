@@ -80,7 +80,7 @@ jobs:
     - name: Echo
       env:
         CONFIG_FILE: ${{env.GITHUB_WORKSPACE}}/diy/configs/${{env.BUILD_BRANCH}}.config
-        DIY_SET: ${{env.GITHUB_WORKSPACE}}E/diy/settings/${{env.BUILD_BRANCH}}.settings
+        DIY_SET: ${{env.GITHUB_WORKSPACE}}/diy/settings/${{env.BUILD_BRANCH}}.settings
         DIY_LOGO: ${{env.GITHUB_WORKSPACE}}/diy/imgs/${{env.BUILD_BRANCH}}.jpg
       run: |
         chmod +x ./diy.sh
