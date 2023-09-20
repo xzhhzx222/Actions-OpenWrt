@@ -61,15 +61,14 @@ jobs:
 
     - name: Decide Branch and Version
       run: |
-        if [ "${{github.event.inputs.branch}}" == "openwrt-*" ] then
-          echo "BUILD_VER=openwrt" >> $GITHUB_ENV
+        echo "BUILD_VER=${{github.event.inputs.branch}}" >> $GITHUB_ENV
+        if [ "$BUILD_VER" == "openwrt-*" ] then
           echo "DEPENDS_UBUNTU=diy/depends/depends.openwrt" >> $GITHUB_ENV
           echo "REPO_URL=https://github.com/openwrt/openwrt" >> $GITHUB_ENV
           echo "REPO_BRANCH=${{github.event.inputs.branch}}" >> $GITHUB_ENV
           # echo "LOGO_FILE=openwrt/package/xzhhzx222/luci-app-wechatpush/root/usr/share/wechatpush/api/logo.jpg" >> $GITHUB_ENV
           # echo "SET_FILE=openwrt/package/default-settings/files/zzz-default-settings" >> $GITHUB_ENV
-        elif [ "${{github.event.inputs.branch}}" == "lede" ]; then
-          echo "BUILD_VER=lede" >> $GITHUB_ENV
+        elif [ "$BUILD_VER" == "lede" ]; then
           echo "DEPENDS_UBUNTU=diy/depends/depends.lede" >> $GITHUB_ENV
           echo "REPO_URL=https://github.com/coolsnowwolf/lede" >> $GITHUB_ENV
           echo "REPO_BRANCH=master" >> $GITHUB_ENV
