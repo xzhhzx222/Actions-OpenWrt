@@ -1,5 +1,17 @@
 #!/bin/bash
 
+echo $DEPENDS_UBUNTU
+echo $REPO_URL
+echo $REPO_BRANCH
+
+CONFIG_FILE=$1
+$DIY_SET=$2
+$DIY_LOGO=$3
+
+echo $CONFIG_FILE
+echo $DIY_SET
+echo $DIY_LOGO
+
 if [ "$BUILD_BRANCH" == "openwrt-22.03" ] || [ "$BUILD_BRANCH" == "openwrt-23.05" ]; then
   LOGO_FILE=package/xzhhzx222/luci-app-wechatpush/root/usr/share/wechatpush/api/logo.jpg
   SET_FILE=package/default-settings/files/zzz-default-settings
@@ -24,8 +36,5 @@ fi
 #[ -e $DIY_SET ] && mv -vf $DIY_SET $SET_FILE
 #sed -i 's/VER_DATE/'"$(date +%y.%m.%d)"'/g' $SET_FILE
 
-echo $CONFIG_FILE
-echo $DIY_SET
-echo $DIY_LOGO
 echo $LOGO_FILE
 echo $SET_FILE
