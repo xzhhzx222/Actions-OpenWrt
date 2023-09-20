@@ -14,8 +14,22 @@ on:
   repository_dispatch:
   workflow_dispatch:
     inputs:
+      # ssh:
+      #   description: 'SSH connection to Actions'
+      #   required: false
+      #   default: 'false'
+      branch:
+        description: 'Openwrt Build Branch'
+        required: true
+        default: 'openwrt-22.03'
+        type: choice
+        options:
+          - 'openwrt-22.03'
+          - 'openwrt-23.05'
+          # - 'lienol'
+          - 'lede'
       version:
-        description: 'Test'
+        description: 'Openwrt Build Version'
         required: true
         default: 'samwrt'
         type: choice
