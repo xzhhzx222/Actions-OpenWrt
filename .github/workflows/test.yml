@@ -50,6 +50,7 @@ env:
   # UPLOAD_WETRANSFER: false
   UPLOAD_RELEASE: true
   TZ: Asia/Shanghai
+  BUILD_BRANCH: ${{github.event.inputs.branch}}
 
 jobs:
   build:
@@ -61,24 +62,33 @@ jobs:
 
     - name: Decide Branch and Version
       run: |
-        if [ "${{github.event.inputs.branch}}" == "openwrt-22.03" ] || [ "${{github.event.inputs.branch}}" == "openwrt-23.05" ]; then
+        if [ "$BUILD_BRANCH" == "openwrt-22.03" ] || [ "$BUILD_BRANCH" == "openwrt-23.05" ]; then
           echo "DEPENDS_UBUNTU=diy/depends/depends.openwrt" >> $GITHUB_ENV
           echo "REPO_URL=https://github.com/openwrt/openwrt" >> $GITHUB_ENV
           echo "REPO_BRANCH=${{github.event.inputs.branch}}" >> $GITHUB_ENV
-          echo "LOGO_FILE=openwrt/package/xzhhzx222/luci-app-wechatpush/root/usr/share/wechatpush/api/logo.jpg" >> $GITHUB_ENV
-          echo "SET_FILE=openwrt/package/default-settings/files/zzz-default-settings" >> $GITHUB_ENV
-        elif [ "${{github.event.inputs.branch}}" == "lede" ]; then
+          # echo "LOGO_FILE=openwrt/package/xzhhzx222/luci-app-wechatpush/root/usr/share/wechatpush/api/logo.jpg" >> $GITHUB_ENV
+          # echo "SET_FILE=openwrt/package/default-settings/files/zzz-default-settings" >> $GITHUB_ENV
+        elif [ $BUILD_BRANCH == lede ]; then
           echo "DEPENDS_UBUNTU=diy/depends/depends.lede" >> $GITHUB_ENV
           echo "REPO_URL=https://github.com/coolsnowwolf/lede" >> $GITHUB_ENV
           echo "REPO_BRANCH=master" >> $GITHUB_ENV
-          echo "LOGO_FILE=openwrt/package/xzhhzx222/luci-app-wechatpush/root/usr/share/serverchan/api/logo.jpg" >> $GITHUB_ENV
-          echo "SET_FILE=openwrt/package/lean/default-settings/files/zzz-default-settings" >> $GITHUB_ENV
+          # echo "LOGO_FILE=openwrt/package/xzhhzx222/luci-app-wechatpush/root/usr/share/serverchan/api/logo.jpg" >> $GITHUB_ENV
+          # echo "SET_FILE=openwrt/package/lean/default-settings/files/zzz-default-settings" >> $GITHUB_ENV
         fi
-        
+        echo $BUILD_BRANCH
+        echo $DEPENDS_UBUNTU
+        echo $REPO_URL
+        echo $REPO_BRANCH
+    
     - name: Echo
+      env:
+        CONFIG_FILE: $GITHUB_WORKSPACE/diy/configs/$BUILD_BRANCH.config
+        DIY_SET: $GITHUB_WORKSPACE/diy/settings/$BUILD_BRANCH.settings
+        DIY_LOGO: $GITHUB_WORKSPACE/diy/imgs/$BUILD_BRANCH.jpg
       run: |
-        chmod +x ./diy.sh
+        chmod +x .diy.sh
         ./diy.sh
+    
     #- name: Initialization environment
     #  env:
     #    DEBIAN_FRONTEND: noninteractive
@@ -92,7 +102,7 @@ jobs:
     #    sudo timedatectl set-timezone "$TZ"
     #    sudo mkdir -p /workdir
     #    sudo chown $USER:$GROUPS /workdir
-    #
+
     #- name: Clone source code
     #  working-directory: /workdir
     #  run: |
@@ -106,50 +116,50 @@ jobs:
     #    chmod +x $DIY_P1_SH
     #    cd openwrt
     #    $GITHUB_WORKSPACE/$DIY_P1_SH
-    #
+
     #- name: Update feeds
     #  run: cd openwrt && ./scripts/feeds update -a
     #
     #- name: Install feeds
     #  run: cd openwrt && ./scripts/feeds install -a
-    #
+
     #- name: Load custom configuration
     #  env:
-    #    CONFIG_FILE: diy/configs/${{github.event.inputs.version}}.config
-    #    DIY_SETTING: diy/settings/${{github.event.inputs.version}}.settings
-    #    DIY_LOGO: diy/imgs/${{github.event.inputs.version}}.jpg
+    #    CONFIG_FILE: $GITHUB_WORKSPACE/diy/configs/$BUILD_BRANCH.config
+    #    DIY_SET: $GITHUB_WORKSPACE/diy/settings/$BUILD_BRANCH.settings
+    #    DIY_LOGO: $GITHUB_WORKSPACE/diy/imgs/$BUILD_BRANCH.jpg
     #  run: |
-    #    if [ "${{github.event.inputs.branch}}" == "openwrt-22.03" ] || [ "${{github.event.inputs.branch}}" == "openwrt-23.05" ]; then
-    #      svn export https://github.com/Lienol/openwrt/branches/22.03/package/default-settings openwrt/package/default-settings
-    #      git clone https://github.com/tty228/luci-app-wechatpush.git openwrt/package/xzhhzx222/luci-app-wechatpush
-    #      git clone https://github.com/jerrykuku/luci-theme-argon.git openwrt/package/xzhhzx222/luci-theme-argon
-    #      sed -i '/LUCI_DEPENDS:=/s/$/ +@LUCI_LANG_zh_Hans/' openwrt/package/feeds/luci/luci-base/Makefile
-    #      for pkg in $(find openwrt/package/feeds/*/luci-app*/po -maxdepth 0 -type d); do
-    #        if [ ! -d "$pkg/zh_Hans" ] && [ -d "$pkg/zh-cn" ]; then 
-    #          ln -sf zh-cn "$pkg/zh_Hans"
-    #        fi
-    #      done
-    #    elif [ "${{github.event.inputs.branch}}" == "lede" ]; then
-    #      rm -rf openwrt/package/feeds/luci/luci-theme-argon
-    #      git clone -b 18.06 https://github.com/jerrykuku/luci-theme-argon.git openwrt/package/xzhhzx222/luci-theme-argon
-    #      git clone -b openwrt-18.06 https://github.com/tty228/luci-app-wechatpush.git openwrt/package/xzhhzx222/luci-app-wechatpush
-    #    fi
-    #    [ -e $DIY_LOGO ] && mv -vf $DIY_LOGO $LOGO_FILE
-    #    [ -e $DIY_SETTING ] && mv -vf $DIY_SETTING $SET_FILE
-    #    sed -i 's/VER_DATE/'"$(date +%y.%m.%d)"'/g' $SET_FILE
+    #    # if [ "${{github.event.inputs.branch}}" == "openwrt-22.03" ] || [ "${{github.event.inputs.branch}}" == "openwrt-23.05" ]; then
+    #    #   svn export https://github.com/Lienol/openwrt/branches/22.03/package/default-settings openwrt/package/default-settings
+    #    #   git clone https://github.com/tty228/luci-app-wechatpush.git openwrt/package/xzhhzx222/luci-app-wechatpush
+    #    #   git clone https://github.com/jerrykuku/luci-theme-argon.git openwrt/package/xzhhzx222/luci-theme-argon
+    #    #   sed -i '/LUCI_DEPENDS:=/s/$/ +@LUCI_LANG_zh_Hans/' openwrt/package/feeds/luci/luci-base/Makefile
+    #    #   for pkg in $(find openwrt/package/feeds/*/luci-app*/po -maxdepth 0 -type d); do
+    #    #     if [ ! -d "$pkg/zh_Hans" ] && [ -d "$pkg/zh-cn" ]; then 
+    #    #       ln -sf zh-cn "$pkg/zh_Hans"
+    #    #     fi
+    #    #   done
+    #    # elif [ "${{github.event.inputs.branch}}" == "lede" ]; then
+    #    #   rm -rf openwrt/package/feeds/luci/luci-theme-argon
+    #    #   git clone -b 18.06 https://github.com/jerrykuku/luci-theme-argon.git openwrt/package/xzhhzx222/luci-theme-argon
+    #    #   git clone -b openwrt-18.06 https://github.com/tty228/luci-app-wechatpush.git openwrt/package/xzhhzx222/luci-app-wechatpush
+    #    # fi
+    #    # [ -e $DIY_LOGO ] && mv -vf $DIY_LOGO $LOGO_FILE
+    #    # [ -e $DIY_SETTING ] && mv -vf $DIY_SETTING $SET_FILE
+    #    # sed -i 's/VER_DATE/'"$(date +%y.%m.%d)"'/g' $SET_FILE
     #    [ -e files ] && mv files openwrt/files
     #    [ -e $CONFIG_FILE ] && mv $CONFIG_FILE openwrt/.config
     #    chmod +x $DIY_P2_SH
     #    cd openwrt
     #    $GITHUB_WORKSPACE/$DIY_P2_SH
-    #
+
     # - name: SSH connection to Actions
     #   uses: P3TERX/ssh2actions@v1.0.0
     #   if: (github.event.inputs.ssh == 'true' && github.event.inputs.ssh  != 'false') || contains(github.event.action, 'ssh')
     #   env:
     #    TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
     #    TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-    #
+
     #- name: Download package
     #  id: package
     #  run: |
@@ -158,7 +168,7 @@ jobs:
     #    make download -j8
     #    find dl -size -1024c -exec ls -l {} \;
     #    find dl -size -1024c -exec rm -f {} \;
-    #
+
     #- name: Compile the firmware
     #  id: compile
     #  run: |
@@ -170,11 +180,11 @@ jobs:
     #    grep '^CONFIG_TARGET.*DEVICE.*=y' .config | sed -r 's/.*DEVICE_(.*)=y/\1/' > DEVICE_NAME
     #    [ -s DEVICE_NAME ] && echo "DEVICE_NAME=_$(cat DEVICE_NAME)" >> $GITHUB_ENV
     #    echo "FILE_DATE=_$(date +"%Y%m%d%H%M")" >> $GITHUB_ENV
-    #
+
     #- name: Check space usage
     #  if: (!cancelled())
     #  run: df -hT
-    #
+
     #- name: Upload bin directory
     #  uses: actions/upload-artifact@main
     #  if: steps.compile.outputs.status == 'success' && env.UPLOAD_BIN_DIR == 'true'
@@ -206,7 +216,7 @@ jobs:
     #    # name: OpenWrt_firmware${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
     #    name: ${{github.event.inputs.version}}_firmware${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
     #    path: ${{ env.FIRMWARE }}
-    #
+
     # - name: Upload firmware to cowtransfer
     #   id: cowtransfer
     #   if: steps.organize.outputs.status == 'success' && env.UPLOAD_COWTRANSFER == 'true' && !cancelled()
@@ -215,7 +225,7 @@ jobs:
     #    ./transfer cow --block 2621440 -s -p 64 --no-progress ${FIRMWARE} 2>&1 | tee cowtransfer.log
     #    echo "::warning file=cowtransfer.com::$(cat cowtransfer.log | grep https)"
     #    echo "::set-output name=url::$(cat cowtransfer.log | grep https | cut -f3 -d" ")"
-    #
+
     # - name: Upload firmware to WeTransfer
     #   id: wetransfer
     #   if: steps.organize.outputs.status == 'success' && env.UPLOAD_WETRANSFER == 'true' && !cancelled()
@@ -224,7 +234,7 @@ jobs:
     #    ./transfer wet -s -p 16 --no-progress ${FIRMWARE} 2>&1 | tee wetransfer.log
     #    echo "::warning file=wetransfer.com::$(cat wetransfer.log | grep https)"
     #    echo "::set-output name=url::$(cat wetransfer.log | grep https | cut -f3 -d" ")"
-    #
+
     #- name: Generate release tag
     #  id: tag
     #  # if: env.UPLOAD_RELEASE == 'true' && !cancelled()
