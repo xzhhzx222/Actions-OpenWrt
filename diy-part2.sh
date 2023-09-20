@@ -35,7 +35,7 @@ fi
 
 [ -e $DIY_LOGO ] && mv -vf $DIY_LOGO $LOGO_FILE
 [ -e $DIY_SET ] && mv -vf $DIY_SET $SET_FILE
-sed -i 's/VER_DATE/'"$(date +%y.%m.%d)"'/g' $SET_FILE
+sed -i "s/DISTRIB_REVISION='.*'/DISTRIB_REVISION=\'Ver $(date +%y.%m.%d)\'/" $SET_FILE
 
 # 更改默认主题
 # rm -rf package/feeds/luci/luci-theme-argon
