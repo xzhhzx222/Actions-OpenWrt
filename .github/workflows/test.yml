@@ -58,8 +58,8 @@ jobs:
     runs-on: ubuntu-20.04
 
     steps:
-    # - name: Checkout
-    #   uses: actions/checkout@main
+    - name: Checkout
+      uses: actions/checkout@main
 
     - name: Decide Branch and Version
       run: |
