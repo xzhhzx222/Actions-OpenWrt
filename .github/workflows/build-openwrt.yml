@@ -113,7 +113,7 @@ jobs:
     - name: Load custom configuration
       env:
         CONFIG_FILE: $GITHUB_WORKSPACE/diy/configs/$BUILD_BRANCH.config
-        DIY_SETTING: $GITHUB_WORKSPACE/diy/settings/$BUILD_BRANCH.settings
+        DIY_SET: $GITHUB_WORKSPACE/diy/settings/$BUILD_BRANCH.settings
         DIY_LOGO: $GITHUB_WORKSPACE/diy/imgs/$BUILD_BRANCH.jpg
       run: |
         # if [ "${{github.event.inputs.branch}}" == "openwrt-22.03" ] || [ "${{github.event.inputs.branch}}" == "openwrt-23.05" ]; then
