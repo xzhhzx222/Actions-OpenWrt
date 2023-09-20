@@ -21,10 +21,10 @@ if [ "$BUILD_BRANCH" == "openwrt-*" ]; then
 	git clone https://github.com/jerrykuku/luci-theme-argon.git package/xzhhzx222/luci-theme-argon
 	sed -i '/LUCI_DEPENDS:=/s/$/ +@LUCI_LANG_zh_Hans/' package/feeds/luci/luci-base/Makefile
 	for pkg in $(find package/feeds/*/luci-app*/po -maxdepth 0 -type d); do
-	 if [ ! -d "$pkg/zh_Hans" ] && [ -d "$pkg/zh-cn" ]; then 
-	   ln -sf zh-cn "$pkg/zh_Hans"
-	 fi
-	done
+	if [ ! -d "$pkg/zh_Hans" ] && [ -d "$pkg/zh-cn" ]; then 
+		ln -sf zh-cn "$pkg/zh_Hans"
+	fi
+done
 elif [ "$BUILD_BRANCH" == "lede" ]; then
 	LOGO_FILE=package/xzhhzx222/luci-app-wechatpush/root/usr/share/serverchan/api/logo.jpg
 	SET_FILE=package/lean/default-settings/files/zzz-default-settings
