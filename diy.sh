@@ -4,10 +4,6 @@ echo $DEPENDS_UBUNTU
 echo $REPO_URL
 echo $REPO_BRANCH
 
-CONFIG_FILE=$1
-$DIY_SET=$2
-$DIY_LOGO=$3
-
 echo $CONFIG_FILE
 echo $DIY_SET
 echo $DIY_LOGO
