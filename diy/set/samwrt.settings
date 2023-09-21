@@ -32,7 +32,7 @@ uci set ddns.cf_root.use_ipv6='0'
 uci set ddns.cf_root.service_name='cloudflare.com-v4'
 uci set ddns.cf_root.domain='xzhhzx222.com'
 uci set ddns.cf_root.username='Bearer'
-uci set ddns.cf_root.password='password'
+#uci set ddns.cf_root.password='password'
 uci set ddns.cf_root.ip_source='interface'
 uci set ddns.cf_root.ip_interface='pppoe-wan'
 uci set ddns.cf_root.interface='wan'
@@ -48,7 +48,7 @@ uci set ddns.cf_www.use_ipv6='0'
 uci set ddns.cf_www.service_name='cloudflare.com-v4'
 uci set ddns.cf_www.domain='www@xzhhzx222.com'
 uci set ddns.cf_www.username='Bearer'
-uci set ddns.cf_www.password='password'
+#uci set ddns.cf_www.password='password'
 uci set ddns.cf_www.ip_source='interface'
 uci set ddns.cf_www.ip_interface='pppoe-wan'
 uci set ddns.cf_www.interface='wan'
@@ -64,7 +64,7 @@ uci set ddns.cf_pan.use_ipv6='0'
 uci set ddns.cf_pan.service_name='cloudflare.com-v4'
 uci set ddns.cf_pan.domain='pan@xzhhzx222.com'
 uci set ddns.cf_pan.username='Bearer'
-uci set ddns.cf_pan.password='password'
+#uci set ddns.cf_pan.password='password'
 uci set ddns.cf_pan.ip_source='interface'
 uci set ddns.cf_pan.ip_interface='pppoe-wan'
 uci set ddns.cf_pan.interface='wan'
@@ -82,7 +82,8 @@ uci set dhcp.@dnsmasq[0].cachesize='0'
 # Delete dhcp.host
 for i in $(seq 0 4);do uci del dhcp.@host[0];done
 # Add dhcp.host
-for i in $(seq 0 4);do uci add dhcp host && uci set dhcp.@host[$i].dns='1' && uci set dhcp.@host[$i].ip='10.0.0.1'$i'' && uci set dhcp.@host[$i].leasetime='infinite';done
+#for i in $(seq 0 4);do uci add dhcp host && uci set dhcp.@host[$i].dns='1' && uci set dhcp.@host[$i].ip='10.0.0.1'$i'' && uci set dhcp.@host[$i].leasetime='infinite';done
+for i in $(seq 0 4);do uci add dhcp host && uci set dhcp.@host[$i].ip='10.0.0.1'$i'' && uci set dhcp.@host[$i].leasetime='infinite';done
 # Set dhcp.host
 uci set dhcp.@host[0].name='Sam-Desktop'
 uci set dhcp.@host[0].mac='70:4D:7B:63:0A:37'
