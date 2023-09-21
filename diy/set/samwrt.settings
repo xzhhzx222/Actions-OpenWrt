@@ -115,7 +115,7 @@ uci commit dhcp
 #for i in 2 2;do uci del firewall.@zone[$i];done
 uci del firewall.@zone[2]
 # Delete firewall.zone list
-#uci del_list firewall.@zone[1].network='wan6'
+uci del_list firewall.@zone[1].network='wan6'
 # Add firewall.zone
 #for i in 2 3;do uci add firewall zone && uci set firewall.@zone[$i].input='ACCEPT' && uci set firewall.@zone[$i].output='ACCEPT' && uci set firewall.@zone[$i].forward='ACCEPT';done
 # Set firewall.zone
@@ -194,8 +194,6 @@ uci set firewall.@redirect[11].enabled='0'
 for i in $(seq 3 6);do uci set firewall.@rule[$i].enabled='0';done
 uci commit firewall
 
-#uci del network.globals
-#uci del network.wan6
 # Adjust network.lan
 uci set network.lan.proto='static'
 uci set network.lan.device='br-lan'
@@ -211,6 +209,7 @@ uci set network.wan.device='eth5'
 uci set network.wan.ipv6='0'
 uci set network.wan.delegate='0'
 #uci set network.wan.ifname='eth5'
+uci del network.wan6
 # Adjust network.lan
 uci del network.iptv
 #uci add network interface
@@ -221,12 +220,17 @@ uci set network.iptv.device='br-iptv'
 uci set network.iptv.delegate='0'
 uci set network.@device[0].ports='eth0 eth1 eth2 eth3 eth4 tap_vpn'
 uci set network.@device[0].ipv6='0'
+uci set network.@device[0].promisc='1'
+uci set network.@device[0].acceptlocal='1'
 uci del network.@device[1]
 uci add network device
 uci set network.@device[-1].type='bridge'
 uci set network.@device[-1].name='br-iptv'
 uci set network.@device[-1].ports='eth4.51 eth5.51 eth4.85 eth5.85'
 uci set network.@device[-1].ipv6='0'
+uci set network.@device[-1].promisc='1'
+uci set network.@device[-1].acceptlocal='1'
+uci del network.globals.ula_prefix
 #uci set network.vlan85=interface
 #uci set network.vlan85.type='bridge'
 #uci set network.vlan85.proto='none'
