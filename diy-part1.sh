@@ -52,6 +52,11 @@ git clone https://github.com/sirpdboy/luci-app-advanced.git package/xzhhzx222/lu
 # git clone https://github.com/jerrykuku/luci-app-vssr.git package/xzhhzx222/luci-app-vssr
 
 #
+# 添加destan19/OpenAppFilter
+#
+git clone https://github.com/destan19/OpenAppFilter.git package/xzhhzx222/OpenAppFilter
+
+#
 # 添加vernesong/OpenClash
 #
 git clone https://github.com/vernesong/OpenClash.git package/xzhhzx222/OpenClash --depth=1

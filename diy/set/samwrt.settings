@@ -106,7 +106,7 @@ uci set dhcp.@host[4].mac='BE:36:F0:5E:0F:67'
 #uci set dhcp.@domain[1].name='samwrt.com'
 #uci set dhcp.@domain[2].name='samnas.com'
 # Set dhcp.lan
-uci set dhcp.lan.start='10'
+uci set dhcp.lan.start='20'
 uci set dhcp.lan.limit='99'
 uci set dhcp.lan.force='1'
 uci del dhcp.lan.ra
