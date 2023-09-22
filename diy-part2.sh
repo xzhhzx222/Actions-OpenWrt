@@ -26,6 +26,7 @@ if [[ $BUILD_BRANCH == openwrt-* ]]; then
   LOGO_FILE=package/xzhhzx222/luci-app-wechatpush/root/usr/share/wechatpush/api/logo.jpg
   SET_FILE=package/default-settings/files/zzz-default-settings
   svn export https://github.com/Lienol/openwrt/branches/22.03/package/default-settings package/default-settings
+  rm -rf package/feeds/lienol/luci-app-upnp
   git clone https://github.com/tty228/luci-app-wechatpush.git package/xzhhzx222/luci-app-wechatpush
   git clone https://github.com/jerrykuku/luci-theme-argon.git package/xzhhzx222/luci-theme-argon
   sed -i '/LUCI_DEPENDS:=/s/$/ +@LUCI_LANG_zh_Hans/' package/feeds/luci/luci-base/Makefile
