@@ -177,7 +177,7 @@ jobs:
         cd openwrt/bin/targets/*/*
         rm -rf packages
         rm -rf *.bin
-        # rm -rf *.json
+        rm -rf *.json
         # rm -rf *.manifest
         rm -rf *rootfs.img.gz
         # rm -rf sha256sums
