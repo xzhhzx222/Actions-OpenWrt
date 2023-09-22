@@ -85,7 +85,7 @@ uci set dhcp.@dnsmasq[0].cachesize='0'
 for i in $(seq 0 4);do uci del dhcp.@host[0];done
 # Add dhcp.host
 #for i in $(seq 0 4);do uci add dhcp host && uci set dhcp.@host[$i].dns='1' && uci set dhcp.@host[$i].ip='10.0.0.1'$i'' && uci set dhcp.@host[$i].leasetime='infinite';done
-for i in $(seq 0 4);do uci add dhcp host && uci set dhcp.@host[$i].ip='10.0.0.1'$i'' && uci set dhcp.@host[$i].leasetime='infinite';done
+for i in $(seq 0 4);do uci add dhcp host && uci set dhcp.@host[-1].ip='10.0.0.1'$i'' && uci set dhcp.@host[-1].leasetime='infinite';done
 # Set dhcp.host
 uci set dhcp.@host[0].name='Sam-Desktop'
 uci set dhcp.@host[0].mac='70:4D:7B:63:0A:37'
