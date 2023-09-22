@@ -25,6 +25,8 @@ sed -i '/sundaqiang/d' /etc/opkg/distfeeds.conf
 #sed -i 's#downloads.openwrt.org#mirrors.cloud.tencent.com/lede#g' /etc/opkg/distfeeds.conf
 sed -i "s/# //g" /etc/opkg/distfeeds.conf
 
+uci del ddns.myddns_ipv4
+uci del ddns.myddns_ipv6
 uci set ddns.cf_root=service
 uci set ddns.cf_root.enabled='1'
 uci set ddns.cf_root.lookup_host='xzhhzx222.com'
@@ -96,13 +98,13 @@ uci set dhcp.@host[3].mac='92:BC:DB:B7:C6:CE'
 uci set dhcp.@host[4].name='Dad-K40S'
 uci set dhcp.@host[4].mac='BE:36:F0:5E:0F:67'
 # Delete dhcp.domain
-for i in $(seq 0 2);do uci del dhcp.@domain[0];done
+#for i in $(seq 0 2);do uci del dhcp.@domain[0];done
 # Add dhcp.domain
-for i in $(seq 0 2);do uci add dhcp domain && uci set dhcp.@domain[$i].ip='10.0.0.'$(($i+1))'';done
+#for i in $(seq 0 2);do uci add dhcp domain && uci set dhcp.@domain[$i].ip='10.0.0.'$(($i+1))'';done
 # Set dhcp.domain
-uci set dhcp.@domain[0].name='samesxi.com'
-uci set dhcp.@domain[1].name='samwrt.com'
-uci set dhcp.@domain[2].name='samnas.com'
+#uci set dhcp.@domain[0].name='samesxi.com'
+#uci set dhcp.@domain[1].name='samwrt.com'
+#uci set dhcp.@domain[2].name='samnas.com'
 # Set dhcp.lan
 uci set dhcp.lan.start='10'
 uci set dhcp.lan.limit='99'
@@ -132,64 +134,55 @@ uci set firewall.@zone[-1].forward='ACCEPT'
 # Delete firewall.redirect
 for i in $(seq 0 11);do uci del firewall.@redirect[0];done
 # Add firewall.redirect
-for i in $(seq 0 11);do uci add firewall redirect && uci set firewall.@redirect[$i].target='DNAT' && uci set firewall.@redirect[$i].src='wan' && uci set firewall.@redirect[$i].dest='lan' && uci set firewall.@redirect[$i].proto='tcp';done
+#for i in $(seq 0 11);do uci add firewall redirect && uci set firewall.@redirect[$i].target='DNAT' && uci set firewall.@redirect[$i].family='ipv4' && uci add_list firewall.@redirect[$i].proto='tcp' && uci set firewall.@redirect[$i].src='wan' && uci set firewall.@redirect[$i].dest='lan';done
+for i in $(seq 0 11);do uci add firewall redirect && uci set firewall.@redirect[-1].target='DNAT' && uci set firewall.@redirect[-1].family='ipv4' && uci add_list firewall.@redirect[-1].proto='tcp' && uci set firewall.@redirect[-1].src='wan' && uci set firewall.@redirect[-1].dest='lan';done
 # Adjust firewall.redirect
 #for i in 8 12;do uci set firewall.@redirect[$i].proto='tcp udp';done
-#for i in 3 13;do uci set firewall.@redirect[$i].enabled='0';done
-for i in $(seq 1 4);do uci set firewall.@redirect[$i].dest_ip='10.0.0.2';done
+for i in $(seq 0 1);do uci set firewall.@redirect[$i].dest_ip='10.0.0.1';done
+for i in $(seq 2 4);do uci set firewall.@redirect[$i].dest_ip='10.0.0.2';done
 for i in $(seq 5 10);do uci set firewall.@redirect[$i].dest_ip='10.0.0.3';done
+for i in $(seq 0 1) $(seq 3 6) 11;do uci set firewall.@redirect[$i].enabled='0';done
+
 # Set firewall.redirect
-uci set firewall.@redirect[0].dest_ip='10.0.0.1'
-uci set firewall.@redirect[0].src_dport='27444'
-uci set firewall.@redirect[0].dest_port='443'
-uci set firewall.@redirect[0].name='SamEsxi WebUI'
-uci set firewall.@redirect[0].enabled='0'
-uci set firewall.@redirect[1].src_dport='7893'
-uci set firewall.@redirect[1].dest_port='7893'
-uci set firewall.@redirect[1].name='SamWrt OpenClash Socks'
-uci set firewall.@redirect[1].enabled='1'
-uci set firewall.@redirect[2].src_dport='9090'
-uci set firewall.@redirect[2].dest_port='9090'
-uci set firewall.@redirect[2].name='SamWrt OpenClash WebUI'
-uci set firewall.@redirect[2].enabled='0'
+uci set firewall.@redirect[0].name='SamEsxi SSH'
+uci set firewall.@redirect[0].src_dport='22022'
+uci set firewall.@redirect[0].dest_port='22'
+uci set firewall.@redirect[1].name='SamEsxi WebUI'
+uci set firewall.@redirect[1].src_dport='22443'
+uci set firewall.@redirect[1].dest_port='443'
+uci set firewall.@redirect[2].name='SamWrt OpenClash Socks'
+uci set firewall.@redirect[2].src_dport='7893'
+uci set firewall.@redirect[2].dest_port='7893'
+uci set firewall.@redirect[3].name='SamWrt SSH'
 uci set firewall.@redirect[3].src_dport='27022'
 uci set firewall.@redirect[3].dest_port='22'
-uci set firewall.@redirect[3].name='SamWrt SSH'
-uci set firewall.@redirect[3].enabled='0'
+uci set firewall.@redirect[4].name='SamWrt WebUI'
 uci set firewall.@redirect[4].src_dport='27081'
 uci set firewall.@redirect[4].dest_port='80'
-uci set firewall.@redirect[4].name='SamWrt WebUI'
-uci set firewall.@redirect[4].enabled='0'
+uci set firewall.@redirect[5].name='SamNas qb 8999'
 uci set firewall.@redirect[5].src_dport='8999'
 uci set firewall.@redirect[5].dest_port='8999'
-uci set firewall.@redirect[5].name='SamNas qbittorrent 8999'
-uci set firewall.@redirect[5].enabled='0'
+uci set firewall.@redirect[6].name='SamNas portainer 9000'
 uci set firewall.@redirect[6].src_dport='9000'
 uci set firewall.@redirect[6].dest_port='9000'
-uci set firewall.@redirect[6].name='SamNas portainer 9000'
-uci set firewall.@redirect[6].enabled='0'
+uci set firewall.@redirect[7].name='SamNas qb 16888'
+uci set firewall.@redirect[7].proto='tcp udp'
 uci set firewall.@redirect[7].src_dport='16888'
 uci set firewall.@redirect[7].dest_port='16888'
-uci set firewall.@redirect[7].proto='tcp udp'
-uci set firewall.@redirect[7].name='SamNas qbittorrent 16888'
-uci set firewall.@redirect[7].enabled='1'
+uci set firewall.@redirect[8].name='SamNas SSH'
 uci set firewall.@redirect[8].src_dport='27023'
 uci set firewall.@redirect[8].dest_port='22'
-uci set firewall.@redirect[8].name='SamNas SSH'
-uci set firewall.@redirect[8].enabled='1'
+uci set firewall.@redirect[9].name='SamNas traefik http'
 uci set firewall.@redirect[9].src_dport='27080'
 uci set firewall.@redirect[9].dest_port='27080'
-uci set firewall.@redirect[9].name='SamNas traefik http'
-uci set firewall.@redirect[9].enabled='1'
+uci set firewall.@redirect[10].name='SamNas traefik https'
 uci set firewall.@redirect[10].src_dport='27443'
 uci set firewall.@redirect[10].dest_port='27443'
-uci set firewall.@redirect[10].name='SamNas traefik https'
-uci set firewall.@redirect[10].enabled='1'
-uci set firewall.@redirect[11].dest_ip='10.0.0.10'
-uci set firewall.@redirect[11].src_dport='3389'
-uci set firewall.@redirect[11].dest_port='3389'
 uci set firewall.@redirect[11].name='Remote Desktop'
-uci set firewall.@redirect[11].enabled='0'
+uci set firewall.@redirect[11].src_dport='3389'
+uci set firewall.@redirect[11].dest_ip='10.0.0.10'
+uci set firewall.@redirect[11].dest_port='3389'
+
 # Disable firewall.rule
 for i in $(seq 3 6);do uci set firewall.@rule[$i].enabled='0';done
 uci commit firewall
