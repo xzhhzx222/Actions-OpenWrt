@@ -304,7 +304,7 @@ rm -rf /usr/lib/lua/luci/view/admin_status/index
 #sed -i 's/\"control\"/\"services\"/g' /usr/lib/lua/luci/controller/timecontrol.lua
 #sed -i 's/\"control\"/\"services\"/g' /usr/lib/lua/luci/view/weburl/index.htm
 #sed -i 's/\"control\"/\"services\"/g' /usr/lib/lua/luci/view/timecontrol/index.htm
-sed -i 's/service/control/' /usr/share/luci/menu.d/luci-app-wol.json
+sed -i 's/services/control/' /usr/share/luci/menu.d/luci-app-wol.json
 
 /etc/init.d/php7-fastcgi disable 2>/dev/null
 /etc/init.d/php7-fpm disable 2>/dev/null
