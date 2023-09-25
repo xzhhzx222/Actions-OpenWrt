@@ -34,7 +34,7 @@ if [[ $BUILD_BRANCH == openwrt-* ]]; then
       ln -sf zh-cn "$pkg/zh_Hans"
     fi
   done
-elif [ $BUILD_BRANCH == lede ]; then
+elif [[ $BUILD_BRANCH == lede ]]; then
   LOGO_FILE=package/xzhhzx222/luci-app-wechatpush/root/usr/share/serverchan/api/logo.jpg
   SET_FILE=package/lean/default-settings/files/zzz-default-settings
   # wget -O package/feeds/packages/ddns-scripts/files/update_cloudflare_com_v4.sh https://raw.githubusercontent.com/openwrt/packages/master/net/ddns-scripts/files/usr/lib/ddns/update_cloudflare_com_v4.sh
