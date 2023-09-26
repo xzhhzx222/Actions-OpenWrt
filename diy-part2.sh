@@ -32,8 +32,6 @@ if [[ $BUILD_BRANCH == openwrt-* ]]; then
   for pkg in $(find package/feeds/*/luci-app*/po -maxdepth 0 -type d); do
     if [ ! -d "$pkg/zh_Hans" ] && [ -d "$pkg/zh-cn" ]; then 
       ln -sf zh-cn "$pkg/zh_Hans"
-      echo $pkg
-      ls -l $pkg
     fi
   done
 elif [ $BUILD_BRANCH = lede ]; then
