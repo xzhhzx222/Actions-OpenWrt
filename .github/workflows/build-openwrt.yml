@@ -73,6 +73,7 @@ jobs:
             echo "DEPENDS_UBUNTU=diy/dep/lienol.depends" >> $GITHUB_ENV
             echo "REPO_URL=https://github.com/Lienol/openwrt" >> $GITHUB_ENV
             echo "REPO_BRANCH=22.03" >> $GITHUB_ENV
+            ;;
           lede)
             echo "DEPENDS_UBUNTU=diy/dep/lede.depends" >> $GITHUB_ENV
             echo "REPO_URL=https://github.com/coolsnowwolf/lede" >> $GITHUB_ENV
