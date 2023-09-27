@@ -26,7 +26,7 @@ if [[ $BUILD_BRANCH == openwrt-* ]]; then
   LOGO_FILE=package/xzhhzx222/luci-app-wechatpush/root/usr/share/wechatpush/api/logo.jpg
   SET_FILE=package/default-settings/files/zzz-default-settings
   rm -rf package/network/config/firewall
-  # rm -rf package/network/utils/iptables
+  rm -rf package/network/utils/iptables
   rm -rf package/feeds/luci/luci-app-firewall
   rm -rf package/feeds/lienol/luci-app-softethervpn/
   #svn export https://github.com/coolsnowwolf/lede/trunk/package/network/config/firewall package/network/config/firewall
