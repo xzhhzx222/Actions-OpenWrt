@@ -32,7 +32,9 @@ echo 'src-git helloworld https://github.com/fw876/helloworld' >>feeds.conf.defau
 #
 # 添加Lienol/openwrt-package
 #
-echo 'src-git lienol https://github.com/Lienol/openwrt-package.git;main' >>feeds.conf.default
+if [[ $BUILD_BRANCH == openwrt-* ]]; then
+	echo 'src-git lienol https://github.com/Lienol/openwrt-package.git;main' >>feeds.conf.default
+end if
 # echo 'src-git other https://github.com/Lienol/openwrt-package.git;other' >>feeds.conf.default
 
 # #
