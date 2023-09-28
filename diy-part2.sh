@@ -31,7 +31,9 @@ case $BUILD_BRANCH in
     LOGO_FILE=package/feeds/luci/luci-app-wechatpush/root/usr/share/wechatpush/api/logo.jpg
     SET_FILE=package/emortal/default-settings/files/99-default-settings
     rm -rf package/feeds/luci/luci-app-openclash
+    rm -rf package/feeds/luci/luci-app-passwall
     rm -rf package/feeds/luci/luci-app-ssr-plus
+    rm -rf package/feeds/luci/luci-app-vssr
     rm -rf package/feeds/luci/luci-theme-argon
     git clone https://github.com/jerrykuku/luci-theme-argon.git package/xzhhzx222/luci-theme-argon
     ;;
