@@ -21,13 +21,14 @@ on:
       branch:
         description: 'Openwrt Build Branch'
         required: true
-        default: 'openwrt-22.03'
+        default: 'immortalwrt'
         type: choice
         options:
+          - 'immortalwrt'
+          - 'lede'
+          - 'lienol'
           - 'openwrt-22.03'
           - 'openwrt-23.05'
-          - 'lienol'
-          - 'lede'
       version:
         description: 'Openwrt Build Version'
         required: true
@@ -64,20 +65,25 @@ jobs:
     - name: Decide Branch and Version
       run: |
         case $BUILD_BRANCH in
-          openwrt-*)
-            echo "DEPENDS_UBUNTU=diy/dep/openwrt.depends" >> $GITHUB_ENV
-            echo "REPO_URL=https://github.com/openwrt/openwrt" >> $GITHUB_ENV
-            echo "REPO_BRANCH=${{ env.BUILD_BRANCH }}" >> $GITHUB_ENV
+          immortalwrt)
+            echo "DEPENDS_UBUNTU=diy/dep/immortalwrt.depends" >> $GITHUB_ENV
+            echo "REPO_URL=https://github.com/immortalwrt/immortalwrt" >> $GITHUB_ENV
+            echo "REPO_BRANCH=openwrt-21.02" >> $GITHUB_ENV
+            ;;
+          lede)
+            echo "DEPENDS_UBUNTU=diy/dep/lede.depends" >> $GITHUB_ENV
+            echo "REPO_URL=https://github.com/coolsnowwolf/lede" >> $GITHUB_ENV
+            echo "REPO_BRANCH=master" >> $GITHUB_ENV
             ;;
           lienol)
             echo "DEPENDS_UBUNTU=diy/dep/lienol.depends" >> $GITHUB_ENV
             echo "REPO_URL=https://github.com/Lienol/openwrt" >> $GITHUB_ENV
             echo "REPO_BRANCH=22.03" >> $GITHUB_ENV
             ;;
-          lede)
-            echo "DEPENDS_UBUNTU=diy/dep/lede.depends" >> $GITHUB_ENV
-            echo "REPO_URL=https://github.com/coolsnowwolf/lede" >> $GITHUB_ENV
-            echo "REPO_BRANCH=master" >> $GITHUB_ENV
+          openwrt-*)
+            echo "DEPENDS_UBUNTU=diy/dep/openwrt.depends" >> $GITHUB_ENV
+            echo "REPO_URL=https://github.com/openwrt/openwrt" >> $GITHUB_ENV
+            echo "REPO_BRANCH=${{ env.BUILD_BRANCH }}" >> $GITHUB_ENV
             ;;
         esac
     
