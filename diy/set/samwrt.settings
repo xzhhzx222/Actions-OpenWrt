@@ -1,6 +1,6 @@
 #!/bin/sh
 
-touch /etc/crontabs/root
+#touch /etc/crontabs/root
 
 uci set luci.main.lang=zh_cn
 uci commit luci
@@ -10,20 +10,15 @@ uci set system.@system[0].timezone=CST-8
 uci set system.@system[0].zonename=Asia/Shanghai
 uci set system.ntp.enable_server='1'
 uci set system.ntp.use_dhcp='0'
-uci set system.ntp.server='ntp.aliyun.com time1.cloud.tencent.com time.ustc.edu.cn cn.pool.ntp.org'
+uci del system.ntp.server
+uci add_list system.ntp.server='ntp.aliyun.com'
+uci add_list system.ntp.server='time1.cloud.tencent.com'
+uci add_list system.ntp.server='time.ustc.edu.cn'
+uci add_list system.ntp.server='cn.pool.ntp.org'
 uci commit system
 
 uci set fstab.@global[0].anon_mount=1
 uci commit fstab
-
-ln -sf /sbin/ip /usr/bin/ip
-
-sed -i '/helloworld/d' /etc/opkg/distfeeds.conf
-sed -i '/lienol/d' /etc/opkg/distfeeds.conf
-sed -i '/passwall/d' /etc/opkg/distfeeds.conf
-sed -i '/sundaqiang/d' /etc/opkg/distfeeds.conf
-#sed -i 's#downloads.openwrt.org#mirrors.cloud.tencent.com/lede#g' /etc/opkg/distfeeds.conf
-sed -i "s/# //g" /etc/opkg/distfeeds.conf
 
 uci del ddns.myddns_ipv4
 uci del ddns.myddns_ipv6
@@ -271,8 +266,8 @@ uci commit network
 #uci set turboacc.config.bbr_cca='0'
 #uci commit turboacc
 
-uci set uhttpd.main.rfc1918_filter='0'
-uci commit uhttpd
+#uci set uhttpd.main.rfc1918_filter='0'
+#uci commit uhttpd
 
 uci set upnpd.config.enabled='1'
 uci commit upnpd
@@ -284,6 +279,16 @@ uci set wolplus.pc1.name='Sam-Desktop'
 uci set wolplus.pc1.maceth='br-lan'
 uci set wolplus.pc1.macaddr='70:4D:7B:63:0A:37'
 uci commit wolplus
+
+ln -sf /sbin/ip /usr/bin/ip
+
+sed -i '/helloworld/d' /etc/opkg/distfeeds.conf
+sed -i '/lienol/d' /etc/opkg/distfeeds.conf
+sed -i '/other/d' /etc/opkg/distfeeds.conf
+sed -i '/passwall/d' /etc/opkg/distfeeds.conf
+sed -i '/sundaqiang/d' /etc/opkg/distfeeds.conf
+#sed -i 's#downloads.openwrt.org#mirrors.cloud.tencent.com/lede#g' /etc/opkg/distfeeds.conf
+#sed -i "s/# //g" /etc/opkg/distfeeds.conf
 
 sed -i '/log-facility/d' /etc/dnsmasq.conf
 sed -i '/dhcp-option/d' /etc/dnsmasq.conf
@@ -298,27 +303,17 @@ echo "DISTRIB_REVISION='R'" >> /etc/openwrt_release
 sed -i '/DISTRIB_DESCRIPTION/d' /etc/openwrt_release
 echo "DISTRIB_DESCRIPTION='SamWrt '" >> /etc/openwrt_release
 
-rm -rf /usr/lib/lua/luci/view/admin_status/index
+#rm -rf /usr/lib/lua/luci/view/admin_status/index
 
 #sed -i 's/\"control\"/\"services\"/g' /usr/lib/lua/luci/controller/weburl.lua
 #sed -i 's/\"control\"/\"services\"/g' /usr/lib/lua/luci/controller/timecontrol.lua
 #sed -i 's/\"control\"/\"services\"/g' /usr/lib/lua/luci/view/weburl/index.htm
 #sed -i 's/\"control\"/\"services\"/g' /usr/lib/lua/luci/view/timecontrol/index.htm
-sed -i 's/services/control/' /usr/share/luci/menu.d/luci-app-wol.json
+#sed -i 's/services/control/' /usr/share/luci/menu.d/luci-app-wol.json
 
-/etc/init.d/php7-fastcgi disable 2>/dev/null
-/etc/init.d/php7-fpm disable 2>/dev/null
-/etc/init.d/php8-fastcgi disable 2>/dev/null
-/etc/init.d/php8-fpm disable 2>/dev/null
-/etc/init.d/softethervpnbridge disable 2>/dev/null
-/etc/init.d/softethervpnserver disable 2>/dev/null
-/etc/init.d/softethervpnclient disable 2>/dev/null
-/etc/init.d/haproxy disable 2>/dev/null
-/etc/init.d/kcptun disable 2>/dev/null
+#chmod 0755 /etc/init.d/*
 
-chmod 0755 /etc/init.d/*
-
-echo 'hsts=0' > /root/.wgetrc
+#echo 'hsts=0' > /root/.wgetrc
 
 rm -rf /tmp/luci-*cache
 
