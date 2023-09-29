@@ -20,7 +20,9 @@
 #
 # 添加fw876/helloworld
 #
-echo 'src-git helloworld https://github.com/fw876/helloworld' >>feeds.conf.default
+if [ $BUILD_BRANCH != immortalwrt ]; then
+	echo 'src-git helloworld https://github.com/fw876/helloworld' >>feeds.conf.default
+fi
 
 # #
 # # 添加xiaorouji/openwrt-passwall
