@@ -15,6 +15,7 @@ uci add_list system.ntp.server='ntp.aliyun.com'
 uci add_list system.ntp.server='time1.cloud.tencent.com'
 uci add_list system.ntp.server='time.ustc.edu.cn'
 uci add_list system.ntp.server='cn.pool.ntp.org'
+uci del system.@imm_init[0]
 uci commit system
 
 uci set fstab.@global[0].anon_mount=1
@@ -105,7 +106,14 @@ uci set dhcp.lan.start='20'
 uci set dhcp.lan.limit='99'
 uci set dhcp.lan.force='1'
 uci del dhcp.lan.ra
+uci del dhcp.lan.ra_slaac
 uci del dhcp.lan.dhcpv6
+uci del dhcp.lan.ndp
+uci del dhcp.lan.ra_flags
+uci add_list dhcp.lan.ra_flags='none'
+# Set dhcp.wan
+uci del dhcp.wan.ra_flags
+uci add_list dhcp.wan.ra_flags='none'
 uci commit dhcp
 
 # Delete firewall.zone
@@ -187,7 +195,9 @@ uci set network.lan.proto='static'
 uci set network.lan.device='br-lan'
 uci set network.lan.ipaddr='10.0.0.2'
 uci set network.lan.netmask='255.0.0.0'
-uci set network.lan.dns='119.29.29.29 114.114.114.114'
+uci del network.lan.dns
+uci add_list network.lan.dns='119.29.29.29'
+uci add_list network.lan.dns='114.114.114.114'
 uci set network.lan.delegate='0'
 uci del network.lan.ip6assign
 #uci set network.lan.ifname='eth0 eth1 eth2 eth3 eth4 tap_vpn'
@@ -200,13 +210,17 @@ uci set network.wan.delegate='0'
 uci del network.wan6
 # Adjust network.lan
 uci del network.iptv
-#uci add network interface
 uci set network.iptv=interface
-#uci rename network.@interface[-1]='iptv'
 uci set network.iptv.proto='none'
 uci set network.iptv.device='br-iptv'
 uci set network.iptv.delegate='0'
-uci set network.@device[0].ports='eth0 eth1 eth2 eth3 eth4 tap_vpn'
+uci del network.@device[0].ports
+uci add_list network.@device[0].ports='eth0'
+uci add_list network.@device[0].ports='eth1'
+uci add_list network.@device[0].ports='eth2'
+uci add_list network.@device[0].ports='eth3'
+uci add_list network.@device[0].ports='eth4'
+uci add_list network.@device[0].ports='tap_vpn'
 uci set network.@device[0].ipv6='0'
 #uci set network.@device[0].promisc='1'
 #uci set network.@device[0].acceptlocal='1'
@@ -214,8 +228,11 @@ uci del network.@device[1]
 uci add network device
 uci set network.@device[-1].type='bridge'
 uci set network.@device[-1].name='br-iptv'
-uci set network.@device[-1].ports='eth4.51 eth5.51 eth4.85 eth5.85'
-uci set network.@device[-1].ipv6='0'
+uci add_list network.@device[-1].ports='eth4.51'
+uci add_list network.@device[-1].ports='eth5.51'
+uci add_list network.@device[-1].ports='eth4.85'
+uci add_list network.@device[-1].ports='eth5.85'
+uci add_list network.@device[-1].ipv6='0'
 #uci set network.@device[-1].promisc='1'
 #uci set network.@device[-1].acceptlocal='1'
 uci del network.globals.ula_prefix
@@ -234,32 +251,31 @@ uci del network.globals.ula_prefix
 uci commit network
 
 #uci del serverchan.serverchan.cpuload
-#uci set serverchan.serverchan.serverchan_enable='1'
 #uci set serverchan.serverchan.serverchan_up='0'
 #uci set serverchan.serverchan.serverchan_down='0'
 #uci set serverchan.serverchan.cpuload_enable='0'
-#uci set serverchan.serverchan.jsonpath='/usr/share/serverchan/api/qywx_mpnews.json'
-#uci set serverchan.serverchan.mediapath='/usr/share/serverchan/api/logo.jpg'
-#uci set serverchan.serverchan.device_name='SamWrt'
-#uci set serverchan.serverchan.serverchan_ipv4='1'
-#uci set serverchan.serverchan.ipv4_interface='pppoe-wan'
-#uci set serverchan.serverchan.web_logged='1'
-#uci set serverchan.serverchan.ssh_logged='1'
-#uci set serverchan.serverchan.web_login_failed='1'
-#uci set serverchan.serverchan.ssh_login_failed='1'
 #uci set serverchan.serverchan.web_login_black='0'
 #uci set serverchan.serverchan.login_max_num='1'
-#uci set serverchan.serverchan.crontab='2'
-#uci set serverchan.serverchan.interval_time='4'
-#uci set serverchan.serverchan.send_title='路由状态'
-#uci set serverchan.serverchan.router_status='1'
-#uci set serverchan.serverchan.router_temp='0'
-#uci set serverchan.serverchan.router_wan='1'
-#uci set serverchan.serverchan.client_list='1'
-#uci set serverchan.serverchan.serverchan_sheep='2'
-#uci set serverchan.serverchan.starttime='0'
-#uci set serverchan.serverchan.endtime='8'
-#uci commit serverchan
+uci set serverchan.serverchan.serverchan_enable='1'
+uci set serverchan.serverchan.device_name='SamWrt'
+uci set serverchan.serverchan.jsonpath='/usr/share/serverchan/api/qywx_mpnews.json'
+uci set serverchan.serverchan.serverchan_ipv4='1'
+uci set serverchan.serverchan.ipv4_interface='pppoe-wan'
+uci set serverchan.serverchan.web_logged='1'
+uci set serverchan.serverchan.ssh_logged='1'
+uci set serverchan.serverchan.web_login_failed='1'
+uci set serverchan.serverchan.ssh_login_failed='1'
+uci set serverchan.serverchan.crontab='2'
+uci set serverchan.serverchan.interval_time='4'
+uci set serverchan.serverchan.send_title='路由状态'
+uci set serverchan.serverchan.router_status='1'
+uci set serverchan.serverchan.router_temp='0'
+uci set serverchan.serverchan.router_wan='1'
+uci set serverchan.serverchan.client_list='1'
+uci set serverchan.serverchan.serverchan_sheep='2'
+uci set serverchan.serverchan.starttime='0'
+uci set serverchan.serverchan.endtime='8'
+uci commit serverchan
 
 #uci set turboacc.config.sfe_flow='0'
 #uci set turboacc.config.fullcone_nat='1'
@@ -281,6 +297,8 @@ uci set wolplus.pc1.macaddr='70:4D:7B:63:0A:37'
 uci commit wolplus
 
 ln -sf /sbin/ip /usr/bin/ip
+
+[ ! -e "/bin/bash" ] || sed -i "s|root:x:0:0:root:/root:/bin/ash|root:x:0:0:root:/root:/bin/bash|g" "/etc/passwd"
 
 sed -i '/helloworld/d' /etc/opkg/distfeeds.conf
 sed -i '/lienol/d' /etc/opkg/distfeeds.conf
