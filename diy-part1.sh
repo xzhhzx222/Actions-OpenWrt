@@ -21,7 +21,7 @@
 # 添加fw876/helloworld
 #
 if [ $BUILD_BRANCH != immortalwrt ]; then
-	echo 'src-git helloworld https://github.com/fw876/helloworld' >>feeds.conf.default
+  echo 'src-git helloworld https://github.com/fw876/helloworld' >>feeds.conf.default
 fi
 
 # #
@@ -35,7 +35,7 @@ fi
 # 添加Lienol/openwrt-package
 #
 if [[ $BUILD_BRANCH == openwrt-* ]]; then
-	echo 'src-git lienol https://github.com/Lienol/openwrt-package.git;main' >>feeds.conf.default
+  echo 'src-git lienol https://github.com/Lienol/openwrt-package.git;main' >>feeds.conf.default
 fi
 # echo 'src-git other https://github.com/Lienol/openwrt-package.git;other' >>feeds.conf.default
 
