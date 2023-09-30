@@ -37,8 +37,8 @@ case $BUILD_BRANCH in
     rm -vrf package/feeds/luci/luci-app-vssr
     rm -vrf package/feeds/luci/luci-app-wechatpush
     rm -vrf package/feeds/luci/luci-theme-argon
-    rm -vrf package/packages/net/wget
-    svn export https://github.com/openwrt/packages/branches/openwrt-21.02/net/wet package/packages/net/wget
+    rm -vrf package/feeds/packages/net/wget
+    svn export https://github.com/openwrt/packages/branches/openwrt-21.02/net/wet package/feeds/packages/net/wget
     git clone -b openwrt-18.06 https://github.com/tty228/luci-app-wechatpush.git package/xzhhzx222/luci-app-wechatpush
     git clone https://github.com/jerrykuku/luci-theme-argon.git package/xzhhzx222/luci-theme-argon
     ;;
