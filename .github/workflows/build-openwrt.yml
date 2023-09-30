@@ -112,7 +112,8 @@ jobs:
         echo "REPO_URL=$REPO_URL"
         echo "REPO_BRANCH=$REPO_BRANCH"
         echo "------------- Check End -------------"
-        git clone $REPO_URL -b $REPO_BRANCH openwrt
+        # git clone $REPO_URL -b $REPO_BRANCH openwrt
+        git clone $REPO_URL -b $REPO_BRANCH --single-branch --filter=blob:none openwrt
         ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
 
     - name: Load custom feeds
