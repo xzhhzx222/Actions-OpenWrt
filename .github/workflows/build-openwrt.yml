@@ -68,7 +68,8 @@ jobs:
           immortalwrt)
             echo "DEPENDS_UBUNTU=diy/dep/immortalwrt.depends" >> $GITHUB_ENV
             echo "REPO_URL=https://github.com/immortalwrt/immortalwrt" >> $GITHUB_ENV
-            echo "REPO_BRANCH=openwrt-21.02" >> $GITHUB_ENV
+            # echo "REPO_BRANCH=openwrt-21.02" >> $GITHUB_ENV
+            echo "REPO_BRANCH=openwrt-23.05" >> $GITHUB_ENV
             ;;
           lede)
             echo "DEPENDS_UBUNTU=diy/dep/lede.depends" >> $GITHUB_ENV

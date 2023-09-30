@@ -30,15 +30,13 @@ case $BUILD_BRANCH in
   immortalwrt)
     LOGO_FILE=package/xzhhzx222/luci-app-wechatpush/root/usr/share/serverchan/api/logo.jpg
     SET_FILE=package/emortal/default-settings/files/99-default-settings
-    rm -rf "$SET_FILE-chinese"
+    rm -vrf "$SET_FILE-chinese"
     touch "$SET_FILE-chinese"
     rm -vrf package/feeds/luci/luci-app-openclash
     rm -vrf package/feeds/luci/luci-app-passwall
     rm -vrf package/feeds/luci/luci-app-vssr
     rm -vrf package/feeds/luci/luci-app-wechatpush
     rm -vrf package/feeds/luci/luci-theme-argon
-    rm -vrf package/feeds/packages/wget
-    svn export https://github.com/openwrt/packages/branches/openwrt-21.02/net/wget package/feeds/packages/wget
     git clone -b openwrt-18.06 https://github.com/tty228/luci-app-wechatpush.git package/xzhhzx222/luci-app-wechatpush
     git clone https://github.com/jerrykuku/luci-theme-argon.git package/xzhhzx222/luci-theme-argon
     ;;
@@ -47,22 +45,22 @@ case $BUILD_BRANCH in
     SET_FILE=package/lean/default-settings/files/zzz-default-settings
     # wget -O package/feeds/packages/ddns-scripts/files/update_cloudflare_com_v4.sh https://raw.githubusercontent.com/openwrt/packages/master/net/ddns-scripts/files/usr/lib/ddns/update_cloudflare_com_v4.sh
     git clone -b openwrt-18.06 https://github.com/tty228/luci-app-wechatpush.git package/xzhhzx222/luci-app-wechatpush
-    rm -rf package/feeds/luci/luci-theme-argon
+    rm -vrf package/feeds/luci/luci-theme-argon
     git clone -b 18.06 https://github.com/jerrykuku/luci-theme-argon.git package/xzhhzx222/luci-theme-argon
     ;;
   lienol)
     LOGO_FILE=package/xzhhzx222/luci-app-wechatpush/root/usr/share/wechatpush/api/logo.jpg
     SET_FILE=package/default-settings/files/zzz-default-settings
-    rm -rf package/feeds/lienol/luci-app-softethervpn
+    rm -vrf package/feeds/lienol/luci-app-softethervpn
     svn export https://github.com/coolsnowwolf/luci/trunk/applications/luci-app-softethervpn package/xzhhzx222/luci-app-softethervpn
     git clone https://github.com/tty228/luci-app-wechatpush.git package/xzhhzx222/luci-app-wechatpush
-    rm -rf package/feeds/luci/luci-theme-argon
+    rm -vrf package/feeds/luci/luci-theme-argon
     git clone https://github.com/jerrykuku/luci-theme-argon.git package/xzhhzx222/luci-theme-argon
     ;;
   openwrt-*)
     LOGO_FILE=package/xzhhzx222/luci-app-wechatpush/root/usr/share/wechatpush/api/logo.jpg
     SET_FILE=package/default-settings/files/zzz-default-settings
-    rm -rf package/feeds/lienol/luci-app-softethervpn
+    rm -vrf package/feeds/lienol/luci-app-softethervpn
     svn export https://github.com/immortalwrt/luci/trunk/luci.mk package/feeds/luci.mk
      svn export https://github.com/Lienol/openwrt/branches/22.03/package/default-settings package/default-settings
     svn export https://github.com/coolsnowwolf/luci/trunk/applications/luci-app-softethervpn package/xzhhzx222/luci-app-softethervpn
@@ -87,6 +85,6 @@ echo "------------- Check End -------------"
 
 sed -i "s/DISTRIB_REVISION='.*'/DISTRIB_REVISION=\'Ver $(date +%y.%m.%d)\'/" $SET_FILE
 
-rm -rf package/feeds/luci/luci-app-serverchan
+rm -vrf package/feeds/luci/luci-app-serverchan
 
 sed -i 's/luci-theme-bootstrap/luci-theme-argon/g' package/feeds/luci/luci/Makefile
