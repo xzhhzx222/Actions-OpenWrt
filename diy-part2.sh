@@ -32,11 +32,13 @@ case $BUILD_BRANCH in
     SET_FILE=package/emortal/default-settings/files/99-default-settings
     rm -rf "$SET_FILE-chinese"
     touch "$SET_FILE-chinese"
-    rm -rf package/feeds/luci/luci-app-openclash
-    rm -rf package/feeds/luci/luci-app-passwall
-    rm -rf package/feeds/luci/luci-app-vssr
-    rm -rf package/feeds/luci/luci-app-wechatpush
-    rm -rf package/feeds/luci/luci-theme-argon
+    rm -vrf package/feeds/luci/luci-app-openclash
+    rm -vrf package/feeds/luci/luci-app-passwall
+    rm -vrf package/feeds/luci/luci-app-vssr
+    rm -vrf package/feeds/luci/luci-app-wechatpush
+    rm -vrf package/feeds/luci/luci-theme-argon
+    rm -vrf package/packages/net/wget
+    svn export https://github.com/openwrt/packages/branches/openwrt-21.02/net/wet package/packages/net/wget
     git clone -b openwrt-18.06 https://github.com/tty228/luci-app-wechatpush.git package/xzhhzx222/luci-app-wechatpush
     git clone https://github.com/jerrykuku/luci-theme-argon.git package/xzhhzx222/luci-theme-argon
     ;;
