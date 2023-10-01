@@ -32,6 +32,9 @@ case $BUILD_BRANCH in
     SET_FILE=package/emortal/default-settings/files/99-default-settings
     rm -vrf "$SET_FILE-chinese"
     touch "$SET_FILE-chinese"
+    echo "------------ Check Start ------------"
+    cat "$SET_FILE-chinese"
+    echo "------------- Check End -------------"
     rm -vrf package/feeds/luci/luci-app-openclash
     rm -vrf package/feeds/luci/luci-app-passwall
     rm -vrf package/feeds/luci/luci-app-vssr
@@ -40,6 +43,9 @@ case $BUILD_BRANCH in
     git clone -b openwrt-18.06 https://github.com/tty228/luci-app-wechatpush.git package/xzhhzx222/luci-app-wechatpush
     git clone https://github.com/jerrykuku/luci-theme-argon.git package/xzhhzx222/luci-theme-argon
     sed -i 's/luci-theme-bootstrap/luci-theme-argon/g' package/feeds/luci/luci-light/Makefile
+    echo "------------ Check Start ------------"
+    cat package/feeds/luci/luci-light/Makefile
+    echo "------------- Check End -------------"
     ;;
   lede)
     LOGO_FILE=package/xzhhzx222/luci-app-wechatpush/root/usr/share/serverchan/api/logo.jpg
@@ -85,6 +91,9 @@ echo "------------- Check End -------------"
 [ -e $DIY_SET ] && mv -vf $DIY_SET $SET_FILE
 
 sed -i "s/DISTRIB_REVISION=/DISTRIB_REVISION=\'Ver $(date +%y.%m.%d)\'/" $SET_FILE
+echo "------------ Check Start ------------"
+cat $SET_FILE
+echo "------------- Check End -------------"
 
 rm -vrf package/feeds/luci/luci-app-serverchan
 
