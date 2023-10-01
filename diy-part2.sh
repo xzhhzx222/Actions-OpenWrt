@@ -39,6 +39,7 @@ case $BUILD_BRANCH in
     rm -vrf package/feeds/luci/luci-theme-argon
     git clone -b openwrt-18.06 https://github.com/tty228/luci-app-wechatpush.git package/xzhhzx222/luci-app-wechatpush
     git clone https://github.com/jerrykuku/luci-theme-argon.git package/xzhhzx222/luci-theme-argon
+    sed -i 's/luci-theme-bootstrap/luci-theme-argon/g' package/feeds/luci/luci-light/Makefile
     ;;
   lede)
     LOGO_FILE=package/xzhhzx222/luci-app-wechatpush/root/usr/share/serverchan/api/logo.jpg
@@ -83,7 +84,7 @@ echo "------------- Check End -------------"
 [ -e $DIY_LOGO ] && mv -vf $DIY_LOGO $LOGO_FILE
 [ -e $DIY_SET ] && mv -vf $DIY_SET $SET_FILE
 
-sed -i "s/DISTRIB_REVISION='.*'/DISTRIB_REVISION=\'Ver $(date +%y.%m.%d)\'/" $SET_FILE
+sed -i "s/DISTRIB_REVISION=/DISTRIB_REVISION=\'Ver $(date +%y.%m.%d)\'/" $SET_FILE
 
 rm -vrf package/feeds/luci/luci-app-serverchan
 
