@@ -32,9 +32,6 @@ case $BUILD_BRANCH in
     SET_FILE=package/emortal/default-settings/files/99-default-settings
     rm -vrf "$SET_FILE-chinese"
     touch "$SET_FILE-chinese"
-    echo "------------ Check Start ------------"
-    cat "$SET_FILE-chinese"
-    echo "------------- Check End -------------"
     rm -vrf package/feeds/luci/luci-app-openclash
     rm -vrf package/feeds/luci/luci-app-passwall
     rm -vrf package/feeds/luci/luci-app-vssr
@@ -69,7 +66,7 @@ case $BUILD_BRANCH in
     SET_FILE=package/default-settings/files/zzz-default-settings
     rm -vrf package/feeds/lienol/luci-app-softethervpn
     svn export https://github.com/immortalwrt/luci/trunk/luci.mk package/feeds/luci.mk
-     svn export https://github.com/Lienol/openwrt/branches/22.03/package/default-settings package/default-settings
+    svn export https://github.com/Lienol/openwrt/branches/22.03/package/default-settings package/default-settings
     svn export https://github.com/coolsnowwolf/luci/trunk/applications/luci-app-softethervpn package/xzhhzx222/luci-app-softethervpn
     git clone https://github.com/tty228/luci-app-wechatpush.git package/xzhhzx222/luci-app-wechatpush
     git clone https://github.com/jerrykuku/luci-theme-argon.git package/xzhhzx222/luci-theme-argon
@@ -92,7 +89,7 @@ echo "------------- Check End -------------"
 
 sed -i "s/DISTRIB_REVISION=/DISTRIB_REVISION=\'Ver $(date +%y.%m.%d)\'/" $SET_FILE
 echo "------------ Check Start ------------"
-cat $SET_FILE
+grep "DISTRIB_REVISION=" $SET_FILE
 echo "------------- Check End -------------"
 
 rm -vrf package/feeds/luci/luci-app-serverchan
