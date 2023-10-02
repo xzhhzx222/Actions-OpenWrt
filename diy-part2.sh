@@ -27,7 +27,7 @@ echo "------------- Check End -------------"
 # fi
 
 case $BUILD_BRANCH in
-  immortalwrt)
+  immortalwrt-*)
     LOGO_FILE=package/xzhhzx222/luci-app-wechatpush/root/usr/share/serverchan/api/logo.jpg
     SET_FILE=package/emortal/default-settings/files/99-default-settings
     rm -vrf "$SET_FILE-chinese"

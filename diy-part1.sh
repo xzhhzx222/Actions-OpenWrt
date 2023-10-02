@@ -20,7 +20,7 @@
 #
 # 添加fw876/helloworld
 #
-if [ $BUILD_BRANCH != immortalwrt ]; then
+if [[ $BUILD_BRANCH !== immortalwrt-* ]]; then
   echo 'src-git helloworld https://github.com/fw876/helloworld' >>feeds.conf.default
 fi
 
