@@ -63,4 +63,15 @@ git clone https://github.com/sirpdboy/luci-app-advanced.git package/xzhhzx222/lu
 #
 # 添加vernesong/OpenClash
 #
-git clone https://github.com/vernesong/OpenClash.git package/xzhhzx222/OpenClash --depth=1
+CORE_DIR=package/xzhhzx222/OpenClash/luci-app-openclash/root/etc/core
+
+echo "------------ Check Start ------------"
+echo "CORE_DIR=$CORE_DIR"
+echo "------------- Check End -------------"
+
+git clone --depth=1 https://github.com/vernesong/OpenClash.git package/xzhhzx222/OpenClash
+mkdir -p $CORE_DIR
+curl -Ls -o $CORE_DIR/core.tar.gz https://raw.githubusercontent.com/vernesong/OpenClash/core/master/meta/clash-linux-amd64.tar.gz
+tar zxf $CORE_DIR/core.tar.gz -C $CORE_DIR
+mv -v $CORE_DIR/clash $CORE_DIR/clash_meta
+rm -vrf $CORE_DIR/core.tar.gz

@@ -51,6 +51,7 @@ case $BUILD_BRANCH in
     git clone -b openwrt-18.06 https://github.com/tty228/luci-app-wechatpush.git package/xzhhzx222/luci-app-wechatpush
     rm -vrf package/feeds/luci/luci-theme-argon
     git clone -b 18.06 https://github.com/jerrykuku/luci-theme-argon.git package/xzhhzx222/luci-theme-argon
+    sed -i 's/luci-theme-bootstrap/luci-theme-argon/g' package/feeds/luci/luci/Makefile
     ;;
   lienol)
     LOGO_FILE=package/xzhhzx222/luci-app-wechatpush/root/usr/share/wechatpush/api/logo.jpg
@@ -60,6 +61,7 @@ case $BUILD_BRANCH in
     git clone https://github.com/tty228/luci-app-wechatpush.git package/xzhhzx222/luci-app-wechatpush
     rm -vrf package/feeds/luci/luci-theme-argon
     git clone https://github.com/jerrykuku/luci-theme-argon.git package/xzhhzx222/luci-theme-argon
+    sed -i 's/luci-theme-bootstrap/luci-theme-argon/g' package/feeds/luci/luci/Makefile
     ;;
   openwrt-*)
     LOGO_FILE=package/xzhhzx222/luci-app-wechatpush/root/usr/share/wechatpush/api/logo.jpg
@@ -70,6 +72,7 @@ case $BUILD_BRANCH in
     svn export https://github.com/coolsnowwolf/luci/trunk/applications/luci-app-softethervpn package/xzhhzx222/luci-app-softethervpn
     git clone https://github.com/tty228/luci-app-wechatpush.git package/xzhhzx222/luci-app-wechatpush
     git clone https://github.com/jerrykuku/luci-theme-argon.git package/xzhhzx222/luci-theme-argon
+    sed -i 's/luci-theme-bootstrap/luci-theme-argon/g' package/feeds/luci/luci/Makefile
     sed -i '/LUCI_DEPENDS:=/s/$/ +@LUCI_LANG_zh_Hans/' package/feeds/luci/luci-base/Makefile
     for pkg in $(find package/feeds/*/luci-app*/po -maxdepth 0 -type d); do
       if [ ! -d "$pkg/zh_Hans" ] && [ -d "$pkg/zh-cn" ]; then 
@@ -93,5 +96,3 @@ grep "DISTRIB_REVISION=" $SET_FILE
 echo "------------- Check End -------------"
 
 rm -vrf package/feeds/luci/luci-app-serverchan
-
-sed -i 's/luci-theme-bootstrap/luci-theme-argon/g' package/feeds/luci/luci/Makefile
