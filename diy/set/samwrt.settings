@@ -24,7 +24,7 @@ uci commit fstab
 uci del ddns.myddns_ipv4
 uci del ddns.myddns_ipv6
 uci set ddns.cf_root=service
-uci set ddns.cf_root.enabled='0'
+#uci set ddns.cf_root.enabled='0'
 uci set ddns.cf_root.lookup_host='xzhhzx222.com'
 uci set ddns.cf_root.use_ipv6='0'
 uci set ddns.cf_root.service_name='cloudflare.com-v4'
@@ -40,7 +40,7 @@ uci set ddns.cf_root.check_unit='minutes'
 uci set ddns.cf_root.force_interval='24'
 uci set ddns.cf_root.force_unit='hours'
 uci set ddns.cf_www=service
-uci set ddns.cf_www.enabled='0'
+#uci set ddns.cf_www.enabled='0'
 uci set ddns.cf_www.lookup_host='www.xzhhzx222.com'
 uci set ddns.cf_www.use_ipv6='0'
 uci set ddns.cf_www.service_name='cloudflare.com-v4'
@@ -56,7 +56,7 @@ uci set ddns.cf_www.check_unit='minutes'
 uci set ddns.cf_www.force_interval='24'
 uci set ddns.cf_www.force_unit='hours'
 uci set ddns.cf_pan=service
-uci set ddns.cf_pan.enabled='0'
+#uci set ddns.cf_pan.enabled='0'
 uci set ddns.cf_pan.lookup_host='pan.xzhhzx222.com'
 uci set ddns.cf_pan.use_ipv6='0'
 uci set ddns.cf_pan.service_name='cloudflare.com-v4'
@@ -137,10 +137,8 @@ uci set firewall.@zone[-1].forward='ACCEPT'
 # Delete firewall.redirect
 for i in $(seq 0 11);do uci del firewall.@redirect[0];done
 # Add firewall.redirect
-#for i in $(seq 0 11);do uci add firewall redirect && uci set firewall.@redirect[$i].target='DNAT' && uci set firewall.@redirect[$i].family='ipv4' && uci add_list firewall.@redirect[$i].proto='tcp' && uci set firewall.@redirect[$i].src='wan' && uci set firewall.@redirect[$i].dest='lan';done
 for i in $(seq 0 11);do uci add firewall redirect && uci set firewall.@redirect[-1].target='DNAT' && uci set firewall.@redirect[-1].family='ipv4' && uci add_list firewall.@redirect[-1].proto='tcp' && uci set firewall.@redirect[-1].src='wan' && uci set firewall.@redirect[-1].dest='lan';done
 # Adjust firewall.redirect
-#for i in 8 12;do uci set firewall.@redirect[$i].proto='tcp udp';done
 for i in $(seq 0 1);do uci set firewall.@redirect[$i].dest_ip='10.0.0.1';done
 for i in $(seq 2 4);do uci set firewall.@redirect[$i].dest_ip='10.0.0.2';done
 for i in $(seq 5 10);do uci set firewall.@redirect[$i].dest_ip='10.0.0.3';done
@@ -222,8 +220,6 @@ uci add_list network.@device[0].ports='eth3'
 uci add_list network.@device[0].ports='eth4'
 uci add_list network.@device[0].ports='tap_vpn'
 uci set network.@device[0].ipv6='0'
-#uci set network.@device[0].promisc='1'
-#uci set network.@device[0].acceptlocal='1'
 uci del network.@device[1]
 uci add network device
 uci set network.@device[-1].type='bridge'
@@ -233,8 +229,6 @@ uci add_list network.@device[-1].ports='eth5.51'
 uci add_list network.@device[-1].ports='eth4.85'
 uci add_list network.@device[-1].ports='eth5.85'
 uci add_list network.@device[-1].ipv6='0'
-#uci set network.@device[-1].promisc='1'
-#uci set network.@device[-1].acceptlocal='1'
 uci del network.globals.ula_prefix
 #uci set network.vlan85=interface
 #uci set network.vlan85.type='bridge'
@@ -333,7 +327,7 @@ uci commit upnpd
 
 ln -sf /sbin/ip /usr/bin/ip
 
-[ ! -e "/bin/bash" ] || sed -i "s|root:x:0:0:root:/root:/bin/ash|root:x:0:0:root:/root:/bin/bash|g" "/etc/passwd"
+#[ ! -e "/bin/bash" ] || sed -i "s|root:x:0:0:root:/root:/bin/ash|root:x:0:0:root:/root:/bin/bash|g" "/etc/passwd"
 
 sed -i '/helloworld/d' /etc/opkg/distfeeds.conf
 sed -i '/lienol/d' /etc/opkg/distfeeds.conf
@@ -343,13 +337,19 @@ sed -i '/passwall/d' /etc/opkg/distfeeds.conf
 #sed -i 's#downloads.openwrt.org#mirrors.cloud.tencent.com/lede#g' /etc/opkg/distfeeds.conf
 #sed -i "s/# //g" /etc/opkg/distfeeds.conf
 
-sed -i '/log-facility/d' /etc/dnsmasq.conf
 sed -i '/dhcp-option/d' /etc/dnsmasq.conf
+sed -i '/log-facility/d' /etc/dnsmasq.conf
 echo "log-facility=/dev/null" >> /etc/dnsmasq.conf
-echo 'dhcp-option-force=125,00:00:00:00:1a:02:06:48:47:57:2d:43:54:03:04:5a:58:48:4e:0a:02:20:00:0b:02:00:55:0d:02:00:2e' >>/etc/dnsmasq.conf
-echo 'dhcp-option=15' >>/etc/dnsmasq.conf
-echo 'dhcp-option=28' >>/etc/dnsmasq.conf
-echo 'dhcp-option=60,00:00:01:06:68:75:61:71:69:6E:02:0A:48:47:55:34:32:31:4E:20:76:33:03:0A:48:47:55:34:32:31:4E:20:76:33:04:10:32:30:30:2E:55:59:59:2E:30:2E:41:2E:30:2E:53:48:05:04:00:01:00:50' >>/etc/dnsmasq.conf
+#echo 'dhcp-option-force=125,00:00:00:00:1a:02:06:48:47:57:2d:43:54:03:04:5a:58:48:4e:0a:02:20:00:0b:02:00:55:0d:02:00:2e' >>/etc/dnsmasq.conf
+#echo 'dhcp-option=15' >>/etc/dnsmasq.conf
+#echo 'dhcp-option=28' >>/etc/dnsmasq.conf
+#echo 'dhcp-option=60,00:00:01:06:68:75:61:71:69:6E:02:0A:48:47:55:34:32:31:4E:20:76:33:03:0A:48:47:55:34:32:31:4E:20:76:33:04:10:32:30:30:2E:55:59:59:2E:30:2E:41:2E:30:2E:53:48:05:04:00:01:00:50' >>/etc/dnsmasq.conf
+cat >> /etc/dnsmasq.conf <<EOF
+dhcp-option-force=125,00:00:00:00:1a:02:06:48:47:57:2d:43:54:03:04:5a:58:48:4e:0a:02:20:00:0b:02:00:55:0d:02:00:2e
+dhcp-option=15
+dhcp-option=28
+dhcp-option=60,00:00:01:06:68:75:61:71:69:6E:02:0A:48:47:55:34:32:31:4E:20:76:33:03:0A:48:47:55:34:32:31:4E:20:76:33:04:10:32:30:30:2E:55:59:59:2E:30:2E:41:2E:30:2E:53:48:05:04:00:01:00:50
+EOF
 
 sed -i '/DISTRIB_REVISION/d' /etc/openwrt_release
 echo "DISTRIB_REVISION=" >> /etc/openwrt_release
