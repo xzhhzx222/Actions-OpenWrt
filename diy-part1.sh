@@ -63,7 +63,7 @@ git clone https://github.com/sirpdboy/luci-app-advanced.git package/xzhhzx222/lu
 #
 # 添加vernesong/OpenClash
 #
-CORE_DIR=package/xzhhzx222/OpenClash/luci-app-openclash/root/etc/core
+CORE_DIR=package/xzhhzx222/OpenClash/luci-app-openclash/root/etc/openclash/core/
 
 echo "------------ Check Start ------------"
 echo "CORE_DIR=$CORE_DIR"
