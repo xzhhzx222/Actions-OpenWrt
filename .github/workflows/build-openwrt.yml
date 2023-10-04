@@ -27,8 +27,8 @@ on:
           - 'immortalwrt-21.02'
           - 'immortalwrt-23.05'
           - 'immortalwrt-master'
-          - 'lede'
-          - 'lienol'
+          - 'lede-18.06'
+          - 'lienol-21.02'
           - 'openwrt-22.03'
           - 'openwrt-23.05'
       version:
@@ -76,12 +76,12 @@ jobs:
               echo "REPO_BRANCH=${BUILD_BRANCH: -6}" >> $GITHUB_ENV
             fi
             ;;
-          lede)
+          lede-*)
             echo "DEPENDS_UBUNTU=diy/dep/lede.depends" >> $GITHUB_ENV
             echo "REPO_URL=https://github.com/coolsnowwolf/lede" >> $GITHUB_ENV
             echo "REPO_BRANCH=master" >> $GITHUB_ENV
             ;;
-          lienol)
+          lienol-*)
             echo "DEPENDS_UBUNTU=diy/dep/lienol.depends" >> $GITHUB_ENV
             echo "REPO_URL=https://github.com/Lienol/openwrt" >> $GITHUB_ENV
             echo "REPO_BRANCH=22.03" >> $GITHUB_ENV

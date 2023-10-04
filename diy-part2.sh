@@ -44,7 +44,7 @@ case $BUILD_BRANCH in
     cat package/feeds/luci/luci-light/Makefile
     echo "------------- Check End -------------"
     ;;
-  lede)
+  lede-*)
     LOGO_FILE=package/xzhhzx222/luci-app-wechatpush/root/usr/share/serverchan/api/logo.jpg
     SET_FILE=package/lean/default-settings/files/zzz-default-settings
     # wget -O package/feeds/packages/ddns-scripts/files/update_cloudflare_com_v4.sh https://raw.githubusercontent.com/openwrt/packages/master/net/ddns-scripts/files/usr/lib/ddns/update_cloudflare_com_v4.sh
@@ -53,7 +53,7 @@ case $BUILD_BRANCH in
     git clone -b 18.06 https://github.com/jerrykuku/luci-theme-argon.git package/xzhhzx222/luci-theme-argon
     sed -i 's/luci-theme-bootstrap/luci-theme-argon/g' package/feeds/luci/luci/Makefile
     ;;
-  lienol)
+  lienol-*)
     LOGO_FILE=package/xzhhzx222/luci-app-wechatpush/root/usr/share/wechatpush/api/logo.jpg
     SET_FILE=package/default-settings/files/zzz-default-settings
     rm -vrf package/feeds/lienol/luci-app-softethervpn
