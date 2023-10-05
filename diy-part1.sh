@@ -63,15 +63,18 @@ git clone https://github.com/sirpdboy/luci-app-advanced.git package/xzhhzx222/lu
 #
 # 添加vernesong/OpenClash
 #
-CORE_DIR=package/xzhhzx222/OpenClash/luci-app-openclash/root/etc/openclash/core
+CLASH_DIR=package/xzhhzx222/OpenClash/luci-app-openclash/root/etc/openclash
 
 echo "------------ Check Start ------------"
-echo "CORE_DIR=$CORE_DIR"
+echo "CLASH_DIR=$CLASH_DIR"
 echo "------------- Check End -------------"
 
 git clone --depth=1 https://github.com/vernesong/OpenClash.git package/xzhhzx222/OpenClash
-mkdir -p $CORE_DIR
-curl -Ls -o $CORE_DIR/core.tar.gz https://raw.githubusercontent.com/vernesong/OpenClash/core/master/meta/clash-linux-amd64.tar.gz
-tar zxf $CORE_DIR/core.tar.gz -C $CORE_DIR
-mv -v $CORE_DIR/clash $CORE_DIR/clash_meta
-rm -vrf $CORE_DIR/core.tar.gz
+rm -rf $CLASH_DIR/Geo*
+curl -Ls -o $CLASH_DIR/GeoIP.dat https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geoip.dat
+curl -Ls -o $CLASH_DIR/GeoSite.dat https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geosite.dat
+mkdir -p $CLASH_DIR/core
+curl -Ls -o $CLASH_DIR/core/core.tar.gz https://raw.githubusercontent.com/vernesong/OpenClash/core/master/meta/clash-linux-amd64.tar.gz
+tar zxf $CLASH_DIR/core/core.tar.gz -C $CLASH_DIR/core
+mv -v $CLASH_DIR/core/clash $CLASH_DIR/core/clash_meta
+rm -vrf $CLASH_DIR/core/core.tar.gz
