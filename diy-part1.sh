@@ -70,7 +70,7 @@ echo "CLASH_DIR=$CLASH_DIR"
 echo "------------- Check End -------------"
 
 git clone --depth=1 https://github.com/vernesong/OpenClash.git package/xzhhzx222/OpenClash
-rm -rf $CLASH_DIR/Geo*
+rm -vrf $CLASH_DIR/Geo*
 curl -Ls -o $CLASH_DIR/GeoIP.dat https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geoip.dat
 curl -Ls -o $CLASH_DIR/GeoSite.dat https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geosite.dat
 mkdir -p $CLASH_DIR/core

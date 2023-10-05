@@ -13,8 +13,8 @@
 # Modify default IP
 #sed -i 's/192.168.1.1/192.168.50.5/g' package/base-files/files/bin/config_generate
 
-DIY_SET=$GITHUB_WORKSPACE/diy/set/${BUILD_VER, , }.settings
-DIY_LOGO=$GITHUB_WORKSPACE/diy/img/${$BUILD_VER, , }.jpg
+DIY_SET=$GITHUB_WORKSPACE/diy/set/${BUILD_VER,,}.settings
+DIY_LOGO=$GITHUB_WORKSPACE/diy/img/${BUILD_VER,,}.jpg
 
 echo "------------ Check Start ------------"
 echo "CONFIG_FILE=$CONFIG_FILE"
