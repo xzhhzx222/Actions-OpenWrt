@@ -93,34 +93,34 @@ jobs:
             ;;
         esac
     
-    #- name: Initialization environment
-    #  env:
-    #    DEBIAN_FRONTEND: noninteractive
-    #  run: |
-    #    sudo rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /opt/ghc
-    #    sudo -E apt-get -qq update
-    #    # sudo -E apt-get -qq install $(curl -fsSL git.io/depends-ubuntu-2004)
-    #    echo "------------ Check Start ------------"
-    #    echo "DEPENDS_UBUNTU=$DEPENDS_UBUNTU"
-    #    echo "------------- Check End -------------"
-    #    sudo -E apt-get -qq install $(cat $DEPENDS_UBUNTU)
-    #    sudo -E apt-get -qq autoremove --purge
-    #    sudo -E apt-get -qq clean
-    #    sudo timedatectl set-timezone "$TZ"
-    #    sudo mkdir -p /workdir
-    #    sudo chown $USER:$GROUPS /workdir
+    - name: Initialization environment
+      env:
+        DEBIAN_FRONTEND: noninteractive
+      run: |
+        sudo rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /opt/ghc
+        sudo -E apt-get -qq update
+        # sudo -E apt-get -qq install $(curl -fsSL git.io/depends-ubuntu-2004)
+        echo "------------ Check Start ------------"
+        echo "DEPENDS_UBUNTU=$DEPENDS_UBUNTU"
+        echo "------------- Check End -------------"
+        sudo -E apt-get -qq install $(cat $DEPENDS_UBUNTU)
+        sudo -E apt-get -qq autoremove --purge
+        sudo -E apt-get -qq clean
+        sudo timedatectl set-timezone "$TZ"
+        sudo mkdir -p /workdir
+        sudo chown $USER:$GROUPS /workdir
 
-    #- name: Clone source code
-    #  working-directory: /workdir
-    #  run: |
-    #    df -hT $PWD
-    #    echo "------------ Check Start ------------"
-    #    echo "REPO_URL=$REPO_URL"
-    #    echo "REPO_BRANCH=$REPO_BRANCH"
-    #    echo "------------- Check End -------------"
-    #    # git clone $REPO_URL -b $REPO_BRANCH openwrt
-    #    git clone $REPO_URL -b $REPO_BRANCH --single-branch --filter=blob:none openwrt
-    #    ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
+    - name: Clone source code
+      working-directory: /workdir
+      run: |
+        df -hT $PWD
+        echo "------------ Check Start ------------"
+        echo "REPO_URL=$REPO_URL"
+        echo "REPO_BRANCH=$REPO_BRANCH"
+        echo "------------- Check End -------------"
+        # git clone $REPO_URL -b $REPO_BRANCH openwrt
+        git clone $REPO_URL -b $REPO_BRANCH --single-branch --filter=blob:none openwrt
+        ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
 
     - name: Load custom feeds
       run: |
@@ -129,11 +129,11 @@ jobs:
         cd openwrt
         $GITHUB_WORKSPACE/$DIY_P1_SH
 
-    #- name: Update feeds
-    #  run: cd openwrt && ./scripts/feeds update -a
-    #
-    #- name: Install feeds
-    #  run: cd openwrt && ./scripts/feeds install -a
+    - name: Update feeds
+      run: cd openwrt && ./scripts/feeds update -a
+
+    - name: Install feeds
+      run: cd openwrt && ./scripts/feeds install -a
 
     - name: Load custom configuration
       env:
