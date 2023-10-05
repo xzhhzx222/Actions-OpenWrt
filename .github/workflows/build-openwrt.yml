@@ -243,10 +243,12 @@ jobs:
       run: |
         # echo "::set-output name=release_tag::$(date +"%Y.%m.%d-%H%M")"
         echo "release_name=Ver$(date +"%y.%m.%d-%H%M")" >> $GITHUB_OUTPUT
-        echo "release_tag=${{ env.BUILD_BRANCH }} ${{ env.BUILD_VER }}" >> $GITHUB_OUTPUT
+        echo "release_tag=$(date +"%Y.%m.%d-%H%M")" >> $GITHUB_OUTPUT
         touch release.txt
         # [ $UPLOAD_COWTRANSFER = true ] && echo "🔗 [Cowtransfer](${{ steps.cowtransfer.outputs.url }})" >> release.txt
         # [ $UPLOAD_WETRANSFER = true ] && echo "🔗 [WeTransfer](${{ steps.wetransfer.outputs.url }})" >> release.txt
+        echo "[Build Branch]: ${{ env.BUILD_BRANCH }}" >> release.txt
+        echo "[Build Version]: ${{ env.BUILD_VER }}" >> release.txt
         # echo "::set-output name=status::success"
         echo "status=success" >> $GITHUB_OUTPUT
 
