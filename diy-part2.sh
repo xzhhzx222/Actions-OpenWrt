@@ -39,9 +39,6 @@ case $BUILD_BRANCH in
     git clone -b openwrt-18.06 https://github.com/tty228/luci-app-wechatpush.git package/xzhhzx222/luci-app-wechatpush
     git clone https://github.com/jerrykuku/luci-theme-argon.git package/xzhhzx222/luci-theme-argon
     sed -i 's/luci-theme-bootstrap/luci-theme-argon/g' package/feeds/luci/luci-light/Makefile
-    echo "------------ Check Start ------------"
-    cat package/feeds/luci/luci-light/Makefile
-    echo "------------- Check End -------------"
     ;;
   lede-*)
     LOGO_FILE=package/xzhhzx222/luci-app-wechatpush/root/usr/share/serverchan/api/logo.jpg
