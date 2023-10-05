@@ -77,4 +77,4 @@ mkdir -p $CLASH_DIR/core
 curl -Ls -o $CLASH_DIR/core/core.tar.gz https://raw.githubusercontent.com/vernesong/OpenClash/core/master/meta/clash-linux-amd64.tar.gz
 tar zxf $CLASH_DIR/core/core.tar.gz -C $CLASH_DIR/core
 mv -v $CLASH_DIR/core/clash $CLASH_DIR/core/clash_meta
-rm -vrf $CLASH_DIR/core/core.tar.gz
+rm -vf $CLASH_DIR/core/core.tar.gz
