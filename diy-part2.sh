@@ -17,7 +17,6 @@ DIY_SET=$GITHUB_WORKSPACE/diy/set/${BUILD_VER,,}.settings
 DIY_LOGO=$GITHUB_WORKSPACE/diy/img/${BUILD_VER,,}.jpg
 
 echo "------------ Check Start ------------"
-echo "CONFIG_FILE=$CONFIG_FILE"
 echo "DIY_SET=$DIY_SET"
 echo "DIY_LOGO=$DIY_LOGO"
 echo "------------- Check End -------------"
