@@ -224,8 +224,6 @@ uci del network.@device[1]
 uci add network device
 uci set network.@device[-1].type='bridge'
 uci set network.@device[-1].name='br-iptv'
-uci add_list network.@device[-1].ports='eth4.51'
-uci add_list network.@device[-1].ports='eth5.51'
 uci add_list network.@device[-1].ports='eth4.85'
 uci add_list network.@device[-1].ports='eth5.85'
 uci add_list network.@device[-1].ipv6='0'
