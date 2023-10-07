@@ -19,6 +19,11 @@ rm -vrf package/feeds/luci/luci-theme-argon*
 sed -i 's/luci-theme-bootstrap/luci-theme-argon/g' package/feeds/luci/luci/Makefile
 sed -i 's/luci-theme-bootstrap/luci-theme-argon/g' package/feeds/luci/luci-light/Makefile
 
+if [[ $BUILD_BRANCH != lienol-* || openwrt-* ]]; then
+  svn export https://github.com/Lienol/openwrt-package/trunk/luci-app-control-timewol package/xzhhzx222/luci-app-control-timewol
+  svn export https://github.com/Lienol/openwrt-package/trunk/luci-app-control-weburl package/xzhhzx222/luci-app-control-weburl
+fi
+
 if [[ $BUILD_BRANCH != lede-* ]]; then
   git clone https://github.com/tty228/luci-app-wechatpush.git package/xzhhzx222/luci-app-wechatpush
   sed -i 's/\${str_linefeed}/\\\\n/g' package/xzhhzx222/luci-app-wechatpush/root/usr/share/wechatpush/api/qywx_mpnews.json
@@ -29,6 +34,7 @@ if [[ $BUILD_BRANCH != lede-* ]]; then
       SET_FILE=package/emortal/default-settings/files/99-default-settings
       rm -vrf "$SET_FILE-chinese"
       touch "$SET_FILE-chinese"
+      rm -vrf package/emortal/ipv6-helper
       rm -vrf package/feeds/luci/luci-app-openclash
       rm -vrf package/feeds/luci/luci-app-passwall
       rm -vrf package/feeds/luci/luci-app-vssr
