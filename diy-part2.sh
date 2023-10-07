@@ -25,12 +25,12 @@ if [[ $BUILD_BRANCH != lienol-* || openwrt-* ]]; then
 fi
 
 if [[ $BUILD_BRANCH != lede-* ]]; then
+  LOGO_FILE=package/xzhhzx222/luci-app-wechatpush/root/usr/share/wechatpush/api/logo.jpg
   git clone https://github.com/tty228/luci-app-wechatpush.git package/xzhhzx222/luci-app-wechatpush
   sed -i 's/\${str_linefeed}/\\\\n/g' package/xzhhzx222/luci-app-wechatpush/root/usr/share/wechatpush/api/qywx_mpnews.json
   git clone https://github.com/jerrykuku/luci-theme-argon.git package/xzhhzx222/luci-theme-argon
   case $BUILD_BRANCH in
     immortalwrt-*)
-      LOGO_FILE=package/xzhhzx222/luci-app-wechatpush/root/usr/share/serverchan/api/logo.jpg
       SET_FILE=package/emortal/default-settings/files/99-default-settings
       rm -vrf "$SET_FILE-chinese"
       touch "$SET_FILE-chinese"
@@ -40,11 +40,9 @@ if [[ $BUILD_BRANCH != lede-* ]]; then
       rm -vrf package/feeds/luci/luci-app-vssr
       ;;
     lienol-*)
-      LOGO_FILE=package/xzhhzx222/luci-app-wechatpush/root/usr/share/wechatpush/api/logo.jpg
       SET_FILE=package/default-settings/files/zzz-default-settings
       ;;
     openwrt-*)
-      LOGO_FILE=package/xzhhzx222/luci-app-wechatpush/root/usr/share/wechatpush/api/logo.jpg
       SET_FILE=package/default-settings/files/zzz-default-settings
       rm -vrf package/feeds/lienol/luci-app-softethervpn
       svn export https://github.com/immortalwrt/luci/trunk/luci.mk package/feeds/luci.mk
