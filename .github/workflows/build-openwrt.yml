@@ -21,7 +21,7 @@ on:
       branch:
         description: 'Openwrt Build Branch'
         required: true
-        default: 'immortalwrt-23.05'
+        default: 'immortalwrt-21.02'
         type: choice
         options:
           - 'immortalwrt-21.02'
