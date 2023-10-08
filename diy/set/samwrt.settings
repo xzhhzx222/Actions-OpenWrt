@@ -192,7 +192,7 @@ uci commit firewall
 uci set network.lan.proto='static'
 uci set network.lan.device='br-lan'
 uci set network.lan.ipaddr='10.0.0.2'
-uci set network.lan.netmask='255.0.0.0'
+uci set network.lan.netmask='255.255.255.0'
 uci del network.lan.dns
 uci add_list network.lan.dns='119.29.29.29'
 uci add_list network.lan.dns='114.114.114.114'
