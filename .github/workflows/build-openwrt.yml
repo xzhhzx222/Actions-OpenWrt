@@ -202,8 +202,9 @@ jobs:
         rm -vf *rootfs.img.gz
         # rm -vf sha256sums
         if [[ $BUILD_BRANCH == immortalwrt-* ]]; then
-          mv -v immortalwrt-x86-64-generic-squashfs-combined.img.gz openwrt-x86-64-generic-squashfs-combined.img.gz
-          mv -v immortalwrt-x86-64-generic-squashfs-combined-efi.img.gz openwrt-x86-64-generic-squashfs-combined-efi.img.gz
+          for filename in immortalwrt-*; do
+            mv -v "$filename" "openwrt-${filename#immortalwrt-}"
+          done
         fi
         echo "FIRMWARE=$PWD" >> $GITHUB_ENV
         # echo "::set-output name=status::success"
