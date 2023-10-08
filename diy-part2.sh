@@ -28,7 +28,6 @@ if [[ $BUILD_BRANCH != lede-* ]]; then
   LOGO_FILE=package/xzhhzx222/luci-app-wechatpush/root/usr/share/wechatpush/api/logo.jpg
   git clone https://github.com/tty228/luci-app-wechatpush.git package/xzhhzx222/luci-app-wechatpush
   sed -i 's/+IPV6:.* //' package/feeds/packages/miniupnpd/Makefile
-  sed -i 's/+IPV6:.\* //g' package/feeds/packages/miniupnpd/Makefile
   sed -i 's/\${str_linefeed}/\\\\n/g' package/xzhhzx222/luci-app-wechatpush/root/usr/share/wechatpush/api/qywx_mpnews.json
   git clone https://github.com/jerrykuku/luci-theme-argon.git package/xzhhzx222/luci-theme-argon
   case $BUILD_BRANCH in
