@@ -27,6 +27,7 @@ fi
 if [[ $BUILD_BRANCH != lede-* ]]; then
   LOGO_FILE=package/xzhhzx222/luci-app-wechatpush/root/usr/share/wechatpush/api/logo.jpg
   git clone https://github.com/tty228/luci-app-wechatpush.git package/xzhhzx222/luci-app-wechatpush
+  sed -i 's/+IPV6:libip6tc +IPV6:ip6tables //' package/feeds/packages/miniupnpd/Makefile
   sed -i 's/\${str_linefeed}/\\\\n/g' package/xzhhzx222/luci-app-wechatpush/root/usr/share/wechatpush/api/qywx_mpnews.json
   git clone https://github.com/jerrykuku/luci-theme-argon.git package/xzhhzx222/luci-theme-argon
   case $BUILD_BRANCH in
@@ -34,7 +35,6 @@ if [[ $BUILD_BRANCH != lede-* ]]; then
       SET_FILE=package/emortal/default-settings/files/99-default-settings
       rm -vrf "$SET_FILE-chinese"
       touch "$SET_FILE-chinese"
-      rm -vrf package/emortal/ipv6-helper
       rm -vrf package/feeds/luci/luci-app-openclash
       rm -vrf package/feeds/luci/luci-app-passwall
       rm -vrf package/feeds/luci/luci-app-vssr
