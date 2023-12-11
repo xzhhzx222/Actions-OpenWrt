@@ -31,7 +31,8 @@ if [[ $BUILD_BRANCH != lede-* ]]; then
   echo "------------ Check Start ------------"
   grep "DEPENDS:=" package/feeds/packages/miniupnpd/Makefile
   echo "------------- Check End -------------"
-  sed -i 's/\${str_linefeed}/\\\\n/g' package/xzhhzx222/luci-app-wechatpush/root/usr/share/wechatpush/api/qywx_mpnews.json
+  # sed -i 's/\${str_linefeed}/\\\\n/g' package/xzhhzx222/luci-app-wechatpush/root/usr/share/wechatpush/api/qywx_mpnews.json
+  sed -i 's/\${1} ${nowtime}/${nowtime}\\\\n${1}/g' package/xzhhzx222/luci-app-wechatpush/root/usr/share/wechatpush/api/qywx_mpnews.json
   git clone https://github.com/jerrykuku/luci-theme-argon.git package/xzhhzx222/luci-theme-argon
   case $BUILD_BRANCH in
     immortalwrt-*)

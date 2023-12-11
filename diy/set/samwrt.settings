@@ -268,6 +268,10 @@ uci set openclash.config.enable_meta_sniffer_pure_ip='0'
 uci set openclash.config.enable_custom_clash_rules='1'
 uci set openclash.@authentication[0].enabled='0'
 uci commit openclash
+cat >> /etc/openclash/custom/openclash_custom_chnroute_pass.list <<EOF
+
+bing.com
+EOF
 cat >> /etc/openclash/custom/openclash_custom_rules.list <<EOF
 
 - DOMAIN-SUFFIX,m-team.cc,DIRECT
