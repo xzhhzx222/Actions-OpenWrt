@@ -1,6 +1,6 @@
 #!/bin/sh
 
-#touch /etc/crontabs/root
+DISTRIB_ID=$(grep DISTRIB_ID /etc/openwrt_release | cut -d "'" -f 2)
 
 uci set luci.main.lang=zh_cn
 uci commit luci
@@ -10,12 +10,14 @@ uci set system.@system[0].timezone=CST-8
 uci set system.@system[0].zonename=Asia/Shanghai
 uci set system.ntp.enable_server='1'
 uci set system.ntp.use_dhcp='0'
-uci del system.ntp.server
-uci add_list system.ntp.server='ntp.aliyun.com'
-uci add_list system.ntp.server='time1.cloud.tencent.com'
-uci add_list system.ntp.server='time.ustc.edu.cn'
-uci add_list system.ntp.server='cn.pool.ntp.org'
-uci del system.@imm_init[0]
+if [ "$DISTRIB_ID" = "ImmortalWrt" ]; then
+	uci del system.ntp.server
+	uci add_list system.ntp.server='ntp.aliyun.com'
+	uci add_list system.ntp.server='time1.cloud.tencent.com'
+	uci add_list system.ntp.server='time.ustc.edu.cn'
+	uci add_list system.ntp.server='cn.pool.ntp.org'
+	uci del system.@imm_init[0]
+fi
 uci commit system
 
 uci set fstab.@global[0].anon_mount=1
@@ -30,7 +32,6 @@ uci set ddns.cf_root.use_ipv6='0'
 uci set ddns.cf_root.service_name='cloudflare.com-v4'
 uci set ddns.cf_root.domain='xzhhzx222.com'
 uci set ddns.cf_root.username='Bearer'
-#uci set ddns.cf_root.password='password'
 uci set ddns.cf_root.ip_source='interface'
 uci set ddns.cf_root.ip_interface='pppoe-wan'
 uci set ddns.cf_root.interface='wan'
@@ -46,7 +47,6 @@ uci set ddns.cf_www.use_ipv6='0'
 uci set ddns.cf_www.service_name='cloudflare.com-v4'
 uci set ddns.cf_www.domain='www@xzhhzx222.com'
 uci set ddns.cf_www.username='Bearer'
-#uci set ddns.cf_www.password='password'
 uci set ddns.cf_www.ip_source='interface'
 uci set ddns.cf_www.ip_interface='pppoe-wan'
 uci set ddns.cf_www.interface='wan'
@@ -62,7 +62,6 @@ uci set ddns.cf_pan.use_ipv6='0'
 uci set ddns.cf_pan.service_name='cloudflare.com-v4'
 uci set ddns.cf_pan.domain='pan@xzhhzx222.com'
 uci set ddns.cf_pan.username='Bearer'
-#uci set ddns.cf_pan.password='password'
 uci set ddns.cf_pan.ip_source='interface'
 uci set ddns.cf_pan.ip_interface='pppoe-wan'
 uci set ddns.cf_pan.interface='wan'
@@ -105,15 +104,17 @@ uci set dhcp.@host[4].mac='BE:36:F0:5E:0F:67'
 uci set dhcp.lan.start='20'
 uci set dhcp.lan.limit='99'
 uci set dhcp.lan.force='1'
-uci del dhcp.lan.ra
-uci del dhcp.lan.ra_slaac
-uci del dhcp.lan.dhcpv6
-uci del dhcp.lan.ndp
-uci del dhcp.lan.ra_flags
-uci add_list dhcp.lan.ra_flags='none'
-# Set dhcp.wan
-uci del dhcp.wan.ra_flags
-uci add_list dhcp.wan.ra_flags='none'
+if [ "$DISTRIB_ID" = "ImmortalWrt" ]; then
+	uci del dhcp.lan.ra
+	uci del dhcp.lan.ra_slaac
+	uci del dhcp.lan.dhcpv6
+	uci del dhcp.lan.ndp
+	uci del dhcp.lan.ra_flags
+	uci add_list dhcp.lan.ra_flags='none'
+	# Set dhcp.wan
+	uci del dhcp.wan.ra_flags
+	uci add_list dhcp.wan.ra_flags='none'
+fi
 uci commit dhcp
 
 # Delete firewall.zone
@@ -288,43 +289,73 @@ cat >> /etc/openclash/custom/openclash_custom_rules.list <<EOF
 - DOMAIN-SUFFIX,bwh81.net,DIRECT
 EOF
 
-uci set wechatpush.config.enable='0'
-uci set wechatpush.config.device_name='SamWrt'
-uci set wechatpush.config.jsonpath='/usr/share/wechatpush/api/qywx_mpnews.json'
-uci set wechatpush.config.oui_data='2'
-uci set wechatpush.config.reset_regularly='1'
-uci set wechatpush.config.debuglevel='1'
-uci set wechatpush.config.get_ipv4_mode='1'
-uci set wechatpush.config.ipv4_interface='pppoe-wan'
-uci del wechatpush.config.login_notification
-uci add_list wechatpush.config.login_notification='web_logged'
-uci add_list wechatpush.config.login_notification='ssh_logged'
-uci add_list wechatpush.config.login_notification='web_login_failed'
-uci add_list wechatpush.config.login_notification='ssh_login_failed'
-uci set wechatpush.config.login_max_num='3'
-uci set wechatpush.config.crontab='2'
-uci set wechatpush.config.interval_time='4'
-uci set wechatpush.config.send_title='路由状态'
-uci add_list wechatpush.config.send_notification
-uci add_list wechatpush.config.send_notification='router_status'
-uci add_list wechatpush.config.send_notification='router_temp'
-uci add_list wechatpush.config.send_notification='wan_info'
-uci add_list wechatpush.config.send_notification='ssh_login_failed'
-uci set wechatpush.config.do_not_disturb_mode='2'
-uci set wechatpush.config.do_not_disturb_starttime='0'
-uci set wechatpush.config.do_not_disturb_endtime='8'
-uci commit wechatpush
+if [ "$DISTRIB_ID" = "ImmortalWrt" ]; then
+	uci set wechatpush.config.enable='0'
+	uci set wechatpush.config.device_name='SamWrt'
+	uci set wechatpush.config.jsonpath='/usr/share/wechatpush/api/qywx_mpnews.json'
+	uci set wechatpush.config.oui_data='2'
+	uci set wechatpush.config.reset_regularly='1'
+	uci set wechatpush.config.debuglevel='1'
+	uci set wechatpush.config.get_ipv4_mode='1'
+	uci set wechatpush.config.ipv4_interface='pppoe-wan'
+	uci del wechatpush.config.login_notification
+	uci add_list wechatpush.config.login_notification='web_logged'
+	uci add_list wechatpush.config.login_notification='ssh_logged'
+	uci add_list wechatpush.config.login_notification='web_login_failed'
+	uci add_list wechatpush.config.login_notification='ssh_login_failed'
+	uci set wechatpush.config.login_max_num='3'
+	uci set wechatpush.config.crontab='2'
+	uci set wechatpush.config.interval_time='4'
+	uci set wechatpush.config.send_title='路由状态'
+	uci add_list wechatpush.config.send_notification
+	uci add_list wechatpush.config.send_notification='router_status'
+	uci add_list wechatpush.config.send_notification='router_temp'
+	uci add_list wechatpush.config.send_notification='wan_info'
+	uci add_list wechatpush.config.send_notification='ssh_login_failed'
+	uci set wechatpush.config.do_not_disturb_mode='2'
+	uci set wechatpush.config.do_not_disturb_starttime='0'
+	uci set wechatpush.config.do_not_disturb_endtime='8'
+	uci commit wechatpush
+else
+	uci del serverchan.serverchan.cpuload
+	uci set serverchan.serverchan.serverchan_enable='1'
+	uci set serverchan.serverchan.serverchan_up='0'
+	uci set serverchan.serverchan.serverchan_down='0'
+	uci set serverchan.serverchan.cpuload_enable='0'
+	uci set serverchan.serverchan.jsonpath='/usr/share/serverchan/api/qywx_mpnews.json'
+	uci set serverchan.serverchan.mediapath='/usr/share/serverchan/api/logo.jpg'
+	uci set serverchan.serverchan.device_name='SamWrt'
+	uci set serverchan.serverchan.serverchan_ipv4='1'
+	uci set serverchan.serverchan.ipv4_interface='pppoe-wan'
+	uci set serverchan.serverchan.web_logged='1'
+	uci set serverchan.serverchan.ssh_logged='1'
+	uci set serverchan.serverchan.web_login_failed='1'
+	uci set serverchan.serverchan.ssh_login_failed='1'
+	uci set serverchan.serverchan.web_login_black='0'
+	uci set serverchan.serverchan.login_max_num='1'
+	uci set serverchan.serverchan.crontab='2'
+	uci set serverchan.serverchan.interval_time='4'
+	uci set serverchan.serverchan.send_title='路由状态'
+	uci set serverchan.serverchan.router_status='1'
+	uci set serverchan.serverchan.router_temp='0'
+	uci set serverchan.serverchan.router_wan='1'
+	uci set serverchan.serverchan.client_list='1'
+	uci set serverchan.serverchan.serverchan_sheep='2'
+	uci set serverchan.serverchan.starttime='0'
+	uci set serverchan.serverchan.endtime='8'
+	uci commit serverchan
+fi
 
-#uci set turboacc.config.sfe_flow='0'
-#uci set turboacc.config.fullcone_nat='1'
-#uci set turboacc.config.bbr_cca='0'
-#uci commit turboacc
+uci set turboacc.config.sfe_flow='0'
+uci set turboacc.config.fullcone_nat='1'
+uci set turboacc.config.bbr_cca='0'
+uci commit turboacc
 
 #uci set uhttpd.main.rfc1918_filter='0'
 #uci commit uhttpd
 
-uci set upnpd.config.enabled='1'
-uci commit upnpd
+# uci set upnpd.config.enabled='1'
+# uci commit upnpd
 
 # Add wolplus.pc
 #uci set wolplus.pc1=macclient
@@ -334,21 +365,44 @@ uci commit upnpd
 #uci set wolplus.pc1.macaddr='70:4D:7B:63:0A:37'
 #uci commit wolplus
 
-ln -sf /sbin/ip /usr/bin/ip
+rm -f /usr/lib/lua/luci/view/admin_status/index/mwan.htm
+rm -f /usr/lib/lua/luci/view/admin_status/index/upnp.htm
+rm -f /usr/lib/lua/luci/view/admin_status/index/ddns.htm
+rm -f /usr/lib/lua/luci/view/admin_status/index/minidlna.htm
+#rm -rf /usr/lib/lua/luci/view/admin_status/index
 
-#[ ! -e "/bin/bash" ] || sed -i "s|root:x:0:0:root:/root:/bin/ash|root:x:0:0:root:/root:/bin/bash|g" "/etc/passwd"
+#sed -i 's/\"control\"/\"services\"/g' /usr/lib/lua/luci/controller/weburl.lua
+#sed -i 's/\"control\"/\"services\"/g' /usr/lib/lua/luci/controller/timecontrol.lua
+#sed -i 's/\"control\"/\"services\"/g' /usr/lib/lua/luci/view/weburl/index.htm
+#sed -i 's/\"control\"/\"services\"/g' /usr/lib/lua/luci/view/timecontrol/index.htm
+#sed -i 's/services/control/' /usr/share/luci/menu.d/luci-app-wol.json
+
+#ln -sf /sbin/ip /usr/bin/ip
 
 sed -i '/helloworld/d' /etc/opkg/distfeeds.conf
 sed -i '/lienol/d' /etc/opkg/distfeeds.conf
 sed -i '/other/d' /etc/opkg/distfeeds.conf
 sed -i '/passwall/d' /etc/opkg/distfeeds.conf
 #sed -i '/sundaqiang/d' /etc/opkg/distfeeds.conf
-#sed -i 's#downloads.openwrt.org#mirrors.cloud.tencent.com/lede#g' /etc/opkg/distfeeds.conf
-#sed -i "s/# //g" /etc/opkg/distfeeds.conf
 
-sed -i '/dhcp-option/d' /etc/dnsmasq.conf
+sed -i "s/# //g" /etc/opkg/distfeeds.conf
+sed -i '/openwrt_luci/ { s/snapshots/releases\/18.06.9/g; }'  /etc/opkg/distfeeds.conf
+
+sed -i '/check_signature/d' /etc/opkg.conf
+
+sed -i '/REDIRECT --to-ports 53/d' /etc/firewall.user
+
+#sed -i '/option disabled/d' /etc/config/wireless
+#sed -i '/set wireless.radio${devidx}.disabled/d' /lib/wifi/mac80211.sh
+
+sed -i '/DISTRIB_REVISION/d' /etc/openwrt_release
+echo "DISTRIB_REVISION=" >> /etc/openwrt_release
+sed -i '/DISTRIB_DESCRIPTION/d' /etc/openwrt_release
+echo "DISTRIB_DESCRIPTION='SamWrt '" >> /etc/openwrt_release
+
 sed -i '/log-facility/d' /etc/dnsmasq.conf
 echo "log-facility=/dev/null" >> /etc/dnsmasq.conf
+sed -i '/dhcp-option/d' /etc/dnsmasq.conf
 #cat >> /etc/dnsmasq.conf <<EOF
 #dhcp-option-force=125,00:00:00:00:1a:02:06:48:47:57:2d:43:54:03:04:5a:58:48:4e:0a:02:20:00:0b:02:00:55:0d:02:00:2e
 #dhcp-option=15
@@ -363,24 +417,8 @@ dhcp-option=lan,15
 dhcp-option=lan,28
 EOF
 
-sed -i '/DISTRIB_REVISION/d' /etc/openwrt_release
-echo "DISTRIB_REVISION=" >> /etc/openwrt_release
-sed -i '/DISTRIB_DESCRIPTION/d' /etc/openwrt_release
-echo "DISTRIB_DESCRIPTION='SamWrt '" >> /etc/openwrt_release
-
-#rm -rf /usr/lib/lua/luci/view/admin_status/index
-
-#sed -i 's/\"control\"/\"services\"/g' /usr/lib/lua/luci/controller/weburl.lua
-#sed -i 's/\"control\"/\"services\"/g' /usr/lib/lua/luci/controller/timecontrol.lua
-#sed -i 's/\"control\"/\"services\"/g' /usr/lib/lua/luci/view/weburl/index.htm
-#sed -i 's/\"control\"/\"services\"/g' /usr/lib/lua/luci/view/timecontrol/index.htm
-#sed -i 's/services/control/' /usr/share/luci/menu.d/luci-app-wol.json
-
-#chmod 0755 /etc/init.d/*
-
-#echo 'hsts=0' > /root/.wgetrc
-
-rm -f "/www/luci-static/resources/view/status/include/29_ethinfo.js"
-rm -rf /tmp/luci-*cache
+rm -rf /tmp/luci-modulecache/
+rm -f /tmp/luci-indexcache
+#rm -rf /tmp/luci-*cache
 
 exit 0
