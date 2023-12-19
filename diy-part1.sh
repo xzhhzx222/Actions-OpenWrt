@@ -42,11 +42,9 @@ git clone https://github.com/sirpdboy/luci-app-advanced.git package/xzhhzx222/lu
 
 # 添加vernesong/OpenClash
 CLASH_DIR=package/xzhhzx222/OpenClash/luci-app-openclash/root/etc/openclash
-
 echo "------------ Check Start ------------"
 echo "CLASH_DIR=$CLASH_DIR"
 echo "------------- Check End -------------"
-
 git clone --depth=1 https://github.com/vernesong/OpenClash.git package/xzhhzx222/OpenClash
 rm -vrf $CLASH_DIR/Geo*
 curl -Ls -o $CLASH_DIR/GeoIP.dat https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geoip.dat
