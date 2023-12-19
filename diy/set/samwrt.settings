@@ -211,11 +211,13 @@ done
 uci commit firewall
 
 # Adjust network.lan
-uci set network.lan.proto='static'
-uci set network.lan.device='br-lan'
 uci set network.lan.ipaddr='10.0.0.2'
 uci set network.lan.netmask='255.255.255.0'
+uci del network.lan.ip6assign
+uci set network.lan.delegate='0'
 if [ "$DISTRIB_ID" = "ImmortalWrt" ]; then
+	uci set network.lan.proto='static'
+	uci set network.lan.device='br-lan'
 	uci del network.lan.dns
 	uci add_list network.lan.dns='119.29.29.29'
 	uci add_list network.lan.dns='114.114.114.114'
@@ -231,21 +233,20 @@ else
 	uci set network.lan.dns='119.29.29.29 114.114.114.114'
 	uci set network.lan.ifname='eth0 eth1 eth2 eth3 eth4 tap_vpn'
 fi
-uci del network.lan.ip6assign
-uci set network.lan.delegate='0'
 
 # Adjust network.wan
+uci del network.wan6
 uci set network.wan.proto='pppoe'
 uci set network.wan.delegate='0'
+uci set network.wan.ipv6='0'
 if [ "$DISTRIB_ID" = "ImmortalWrt" ]; then
 	uci set network.wan.device='eth5'
-	uci set network.wan.ipv6='0'
 else
 	uci set network.wan.ifname='eth5'
 fi
-uci del network.wan6
 
 # Adjust network.iptv
+uci del network.globals.ula_prefix
 if [ "$DISTRIB_ID" = "ImmortalWrt" ]; then
 	uci del network.iptv
 	uci set network.iptv=interface
@@ -273,7 +274,6 @@ else
 	# uci set network.vlan51.auto='1'
 	# uci set network.vlan51.delegate='0'
 fi
-uci del network.globals.ula_prefix
 uci commit network
 
 uci set openclash.config.enable_meta_core='1'
