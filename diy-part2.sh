@@ -11,22 +11,24 @@
 #
 
 # Modify default IP
-#sed -i 's/192.168.1.1/192.168.50.5/g' package/base-files/files/bin/config_generate
+# sed -i 's/192.168.1.1/192.168.50.5/g' package/base-files/files/bin/config_generate
 
+rm -vrf package/feeds/luci/luci-app-openclash
+# rm -vrf package/feeds/luci/luci-app-passwall
 rm -vrf package/feeds/luci/luci-app-serverchan
+# rm -vrf package/feeds/luci/luci-app-vssr
 rm -vrf package/feeds/luci/luci-app-wechatpush
 rm -vrf package/feeds/luci/luci-theme-argon*
 sed -i 's/luci-theme-bootstrap/luci-theme-argon/g' package/feeds/luci/luci/Makefile
-sed -i 's/luci-theme-bootstrap/luci-theme-argon/g' package/feeds/luci/luci-light/Makefile
 
-if [[ $BUILD_BRANCH != lienol-* || openwrt-* ]]; then
-  svn export https://github.com/Lienol/openwrt-package/trunk/luci-app-control-timewol package/xzhhzx222/luci-app-control-timewol
-  svn export https://github.com/Lienol/openwrt-package/trunk/luci-app-control-weburl package/xzhhzx222/luci-app-control-weburl
-  svn export https://github.com/Lienol/openwrt-package/trunk/luci-app-timecontrol package/xzhhzx222/luci-app-timecontrol
-fi
+svn export https://github.com/Lienol/openwrt-package/trunk/luci-app-control-timewol package/xzhhzx222/luci-app-control-timewol
+svn export https://github.com/Lienol/openwrt-package/trunk/luci-app-control-weburl package/xzhhzx222/luci-app-control-weburl
+svn export https://github.com/Lienol/openwrt-package/trunk/luci-app-timecontrol package/xzhhzx222/luci-app-timecontrol
 
-if [[ $BUILD_BRANCH != lede-* ]]; then
+if [[ $BUILD_BRANCH == immortalwrt-* ]]; then
   LOGO_FILE=package/xzhhzx222/luci-app-wechatpush/root/usr/share/wechatpush/api/logo.jpg
+  SET_FILE=package/emortal/default-settings/files/99-default-settings
+  sed -i 's/luci-theme-bootstrap/luci-theme-argon/g' package/feeds/luci/luci-light/Makefile
   git clone https://github.com/tty228/luci-app-wechatpush.git package/xzhhzx222/luci-app-wechatpush
   # sed -i 's/+IPV6:.* //' package/feeds/packages/miniupnpd/Makefile
   # echo "------------ Check Start ------------"
@@ -35,32 +37,8 @@ if [[ $BUILD_BRANCH != lede-* ]]; then
   # sed -i 's/\${str_linefeed}/\\\\n/g' package/xzhhzx222/luci-app-wechatpush/root/usr/share/wechatpush/api/qywx_mpnews.json
   sed -i 's/\${1} ${nowtime}/${nowtime}\\\\n${1}/g' package/xzhhzx222/luci-app-wechatpush/root/usr/share/wechatpush/api/qywx_mpnews.json
   git clone https://github.com/jerrykuku/luci-theme-argon.git package/xzhhzx222/luci-theme-argon
-  case $BUILD_BRANCH in
-    immortalwrt-*)
-      SET_FILE=package/emortal/default-settings/files/99-default-settings
-      rm -vrf "$SET_FILE-chinese"
-      touch "$SET_FILE-chinese"
-      rm -vrf package/feeds/luci/luci-app-openclash
-      rm -vrf package/feeds/luci/luci-app-passwall
-      rm -vrf package/feeds/luci/luci-app-vssr
-      ;;
-    lienol-*)
-      SET_FILE=package/default-settings/files/zzz-default-settings
-      ;;
-    openwrt-*)
-      SET_FILE=package/default-settings/files/zzz-default-settings
-      rm -vrf package/feeds/lienol/luci-app-softethervpn
-      svn export https://github.com/immortalwrt/luci/trunk/luci.mk package/feeds/luci.mk
-      svn export https://github.com/Lienol/openwrt/branches/22.03/package/default-settings package/default-settings
-      svn export https://github.com/immortalwrt/luci/trunk/applications/luci-app-softethervpn package/xzhhzx222/luci-app-softethervpn
-      sed -i '/LUCI_DEPENDS:=/s/$/ +@LUCI_LANG_zh_Hans/' package/feeds/luci/luci-base/Makefile
-      for pkg in $(find package/feeds/*/luci-app*/po -maxdepth 0 -type d); do
-        if [ ! -d "$pkg/zh_Hans" ] && [ -d "$pkg/zh-cn" ]; then 
-          ln -sf zh-cn "$pkg/zh_Hans"
-        fi
-      done
-      ;;
-    esac
+  rm -vrf "$SET_FILE-chinese"
+  touch "$SET_FILE-chinese"
 else
   LOGO_FILE=package/xzhhzx222/luci-app-wechatpush/root/usr/share/serverchan/api/logo.jpg
   SET_FILE=package/lean/default-settings/files/zzz-default-settings

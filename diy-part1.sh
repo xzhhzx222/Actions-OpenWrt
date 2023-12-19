@@ -20,7 +20,7 @@
 #
 # 添加fw876/helloworld
 #
-if [[ $BUILD_BRANCH != immortalwrt-* ]]; then
+if [[ $BUILD_BRANCH == lede-* ]]; then
   echo 'src-git helloworld https://github.com/fw876/helloworld' >>feeds.conf.default
 fi
 
@@ -30,14 +30,6 @@ fi
 # echo 'src-git passwall_pkg https://github.com/xiaorouji/openwrt-passwall;packages' >>feeds.conf.default
 # echo 'src-git passwall_luci https://github.com/xiaorouji/openwrt-passwall;luci' >>feeds.conf.default
 # echo 'src-git passwall2 https://github.com/xiaorouji/openwrt-passwall2' >>feeds.conf.default
-
-#
-# 添加Lienol/openwrt-package
-#
-if [[ $BUILD_BRANCH == openwrt-* ]]; then
-  echo 'src-git lienol https://github.com/Lienol/openwrt-package.git;main' >>feeds.conf.default
-fi
-# echo 'src-git other https://github.com/Lienol/openwrt-package.git;other' >>feeds.conf.default
 
 # #
 # # 添加sundaqiang/openwrt-packages
