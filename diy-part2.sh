@@ -22,6 +22,7 @@ sed -i 's/luci-theme-bootstrap/luci-theme-argon/g' package/feeds/luci/luci-light
 if [[ $BUILD_BRANCH != lienol-* || openwrt-* ]]; then
   svn export https://github.com/Lienol/openwrt-package/trunk/luci-app-control-timewol package/xzhhzx222/luci-app-control-timewol
   svn export https://github.com/Lienol/openwrt-package/trunk/luci-app-control-weburl package/xzhhzx222/luci-app-control-weburl
+  svn export https://github.com/Lienol/openwrt-package/trunk/luci-app-timecontrol package/xzhhzx222/luci-app-timecontrol
 fi
 
 if [[ $BUILD_BRANCH != lede-* ]]; then
