@@ -76,11 +76,16 @@ uci commit ddns
 uci set dhcp.@dnsmasq[0].sequential_ip='1'
 uci set dhcp.@dnsmasq[0].filter_aaaa='1'
 uci set dhcp.@dnsmasq[0].cachesize='0'
-# Delete dhcp.host
-for i in $(seq 0 4);do uci del dhcp.@host[0];done
 # Add dhcp.host
-#for i in $(seq 0 4);do uci add dhcp host && uci set dhcp.@host[$i].dns='1' && uci set dhcp.@host[$i].ip='10.0.0.1'$i'' && uci set dhcp.@host[$i].leasetime='infinite';done
-for i in $(seq 0 4);do uci add dhcp host && uci set dhcp.@host[-1].ip='10.0.0.1'$i'' && uci set dhcp.@host[-1].leasetime='infinite';done
+while uci -q get dhcp.@host[-1] > /dev/null; do
+  uci del dhcp.@host[-1]
+done
+# for i in $(seq 0 4);do uci add dhcp host && uci set dhcp.@host[$i].dns='1' && uci set dhcp.@host[$i].ip='10.0.0.1'$i'' && uci set dhcp.@host[$i].leasetime='infinite';done
+for i in $(seq 0 4); do
+	uci add dhcp host
+	uci set dhcp.@host[-1].ip='10.0.0.1'$i''
+	uci set dhcp.@host[-1].leasetime='infinite'
+done
 # Set dhcp.host
 uci set dhcp.@host[0].name='Sam-Desktop'
 uci set dhcp.@host[0].mac='70:4D:7B:63:0A:37'
@@ -92,14 +97,13 @@ uci set dhcp.@host[3].name='Mom-Nova6'
 uci set dhcp.@host[3].mac='92:BC:DB:B7:C6:CE'
 uci set dhcp.@host[4].name='Dad-K40S'
 uci set dhcp.@host[4].mac='BE:36:F0:5E:0F:67'
-# Delete dhcp.domain
-#for i in $(seq 0 2);do uci del dhcp.@domain[0];done
 # Add dhcp.domain
-#for i in $(seq 0 2);do uci add dhcp domain && uci set dhcp.@domain[$i].ip='10.0.0.'$(($i+1))'';done
+# for i in $(seq 0 2);do uci del dhcp.@domain[0];done
+# for i in $(seq 0 2);do uci add dhcp domain && uci set dhcp.@domain[$i].ip='10.0.0.'$(($i+1))'';done
 # Set dhcp.domain
-#uci set dhcp.@domain[0].name='samesxi.com'
-#uci set dhcp.@domain[1].name='samwrt.com'
-#uci set dhcp.@domain[2].name='samnas.com'
+# uci set dhcp.@domain[0].name='samesxi.com'
+# uci set dhcp.@domain[1].name='samwrt.com'
+# uci set dhcp.@domain[2].name='samnas.com'
 # Set dhcp.lan
 uci set dhcp.lan.start='20'
 uci set dhcp.lan.limit='99'
@@ -117,11 +121,11 @@ if [ "$DISTRIB_ID" = "ImmortalWrt" ]; then
 fi
 uci commit dhcp
 
-# Delete firewall.zone list
-uci del_list firewall.@zone[1].network='wan6'
 # Add firewall.zone
-#for i in 2 2;do uci del firewall.@zone[$i];done
-uci del firewall.@zone[2]
+uci del_list firewall.@zone[1].network='wan6'
+while uci -q get firewall.@zone[2] > /dev/null; do
+	uci del firewall.@zone[2]
+done
 uci add firewall zone
 uci set firewall.@zone[-1].name='iptv'
 if [ "$DISTRIB_ID" = "ImmortalWrt" ]; then
@@ -133,18 +137,34 @@ uci set firewall.@zone[-1].input='ACCEPT'
 uci set firewall.@zone[-1].output='ACCEPT'
 uci set firewall.@zone[-1].forward='ACCEPT'
 # Add firewall.redirect
-for i in $(seq 0 11);do uci del firewall.@redirect[0];done
-if [ "$DISTRIB_ID" = "ImmortalWrt" ]; then
-	for i in $(seq 0 11);do uci add firewall redirect && uci set firewall.@redirect[-1].target='DNAT' && uci set firewall.@redirect[-1].family='ipv4' && uci add_list firewall.@redirect[-1].proto='tcp' && uci set firewall.@redirect[-1].src='wan' && uci set firewall.@redirect[-1].dest='lan';done
-else
-	for i in $(seq 0 11);do uci add firewall redirect && uci set firewall.@redirect[-1].target='DNAT' && uci set firewall.@redirect[-1].family='ipv4' && uci set firewall.@redirect[-1].proto='tcp' && uci set firewall.@redirect[-1].src='wan' && uci set firewall.@redirect[-1].dest='lan';done
-fi
-# Adjust firewall.redirect
-for i in $(seq 0 1);do uci set firewall.@redirect[$i].dest_ip='10.0.0.1';done
-for i in $(seq 2 4);do uci set firewall.@redirect[$i].dest_ip='10.0.0.2';done
-for i in $(seq 5 10);do uci set firewall.@redirect[$i].dest_ip='10.0.0.3';done
-for i in $(seq 0 1) $(seq 3 6) 11;do uci set firewall.@redirect[$i].enabled='0';done
+while uci -q get firewall.@redirect[-1] > /dev/null; do
+  uci del firewall.@redirect[-1]
+done
+for i in $(seq 0 11); do
+	uci add firewall redirect
+	uci set firewall.@redirect[-1].target='DNAT'
+	uci set firewall.@redirect[-1].family='ipv4'
+	if [ "$DISTRIB_ID" = "ImmortalWrt" ]; then
+		uci add_list firewall.@redirect[-1].proto='tcp'
+	else
+		uci set firewall.@redirect[-1].proto='tcp'
+	fi
+	uci set firewall.@redirect[-1].src='wan'
+	uci set firewall.@redirect[-1].dest='lan'
+done
 # Set firewall.redirect
+for i in $(seq 0 1); do
+	uci set firewall.@redirect[$i].dest_ip='10.0.0.1'
+done
+for i in $(seq 2 4); do
+	uci set firewall.@redirect[$i].dest_ip='10.0.0.2'
+done
+for i in $(seq 5 10); do
+	uci set firewall.@redirect[$i].dest_ip='10.0.0.3'
+done
+for i in $(seq 0 1) $(seq 3 6) 11; do
+	uci set firewall.@redirect[$i].enabled='0'
+done
 uci set firewall.@redirect[0].name='SamEsxi SSH'
 uci set firewall.@redirect[0].src_dport='22022'
 uci set firewall.@redirect[0].dest_port='22'
@@ -185,7 +205,9 @@ uci set firewall.@redirect[11].dest_ip='10.0.0.10'
 uci set firewall.@redirect[11].dest_port='3389'
 
 # Disable firewall.rule
-for i in $(seq 3 6);do uci set firewall.@rule[$i].enabled='0';done
+for i in $(seq 3 6); do
+	uci set firewall.@rule[$i].enabled='0'
+done
 uci commit firewall
 
 # Adjust network.lan
@@ -365,39 +387,36 @@ uci set turboacc.config.fullcone_nat='1'
 uci set turboacc.config.bbr_cca='0'
 uci commit turboacc
 
-#uci set uhttpd.main.rfc1918_filter='0'
-#uci commit uhttpd
-
 # uci set upnpd.config.enabled='1'
 # uci commit upnpd
 
 # Add wolplus.pc
-#uci set wolplus.pc1=macclient
+# uci set wolplus.pc1=macclient
 # Set wolplus.pc
-#uci set wolplus.pc1.name='Sam-Desktop'
-#uci set wolplus.pc1.maceth='br-lan'
-#uci set wolplus.pc1.macaddr='70:4D:7B:63:0A:37'
-#uci commit wolplus
+# uci set wolplus.pc1.name='Sam-Desktop'
+# uci set wolplus.pc1.maceth='br-lan'
+# uci set wolplus.pc1.macaddr='70:4D:7B:63:0A:37'
+# uci commit wolplus
 
 rm -f /usr/lib/lua/luci/view/admin_status/index/mwan.htm
 rm -f /usr/lib/lua/luci/view/admin_status/index/upnp.htm
 rm -f /usr/lib/lua/luci/view/admin_status/index/ddns.htm
 rm -f /usr/lib/lua/luci/view/admin_status/index/minidlna.htm
-#rm -rf /usr/lib/lua/luci/view/admin_status/index
+# rm -rf /usr/lib/lua/luci/view/admin_status/index
 
-#sed -i 's/\"control\"/\"services\"/g' /usr/lib/lua/luci/controller/weburl.lua
-#sed -i 's/\"control\"/\"services\"/g' /usr/lib/lua/luci/controller/timecontrol.lua
-#sed -i 's/\"control\"/\"services\"/g' /usr/lib/lua/luci/view/weburl/index.htm
-#sed -i 's/\"control\"/\"services\"/g' /usr/lib/lua/luci/view/timecontrol/index.htm
-#sed -i 's/services/control/' /usr/share/luci/menu.d/luci-app-wol.json
+# sed -i 's/\"control\"/\"services\"/g' /usr/lib/lua/luci/controller/weburl.lua
+# sed -i 's/\"control\"/\"services\"/g' /usr/lib/lua/luci/controller/timecontrol.lua
+# sed -i 's/\"control\"/\"services\"/g' /usr/lib/lua/luci/view/weburl/index.htm
+# sed -i 's/\"control\"/\"services\"/g' /usr/lib/lua/luci/view/timecontrol/index.htm
+# sed -i 's/services/control/' /usr/share/luci/menu.d/luci-app-wol.json
 
-#ln -sf /sbin/ip /usr/bin/ip
+# ln -sf /sbin/ip /usr/bin/ip
 
 sed -i '/helloworld/d' /etc/opkg/distfeeds.conf
 sed -i '/lienol/d' /etc/opkg/distfeeds.conf
 sed -i '/other/d' /etc/opkg/distfeeds.conf
 sed -i '/passwall/d' /etc/opkg/distfeeds.conf
-#sed -i '/sundaqiang/d' /etc/opkg/distfeeds.conf
+# sed -i '/sundaqiang/d' /etc/opkg/distfeeds.conf
 
 sed -i "s/# //g" /etc/opkg/distfeeds.conf
 sed -i '/openwrt_luci/ { s/snapshots/releases\/18.06.9/g; }'  /etc/opkg/distfeeds.conf
