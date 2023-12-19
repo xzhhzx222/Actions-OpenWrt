@@ -9,8 +9,8 @@ uci set system.@system[0].hostname='SamWrt'
 uci set system.@system[0].timezone=CST-8
 uci set system.@system[0].zonename=Asia/Shanghai
 uci set system.ntp.enable_server='1'
-uci set system.ntp.use_dhcp='0'
 if [ "$DISTRIB_ID" = "ImmortalWrt" ]; then
+	uci set system.ntp.use_dhcp='0'
 	uci del system.ntp.server
 	uci add_list system.ntp.server='ntp.aliyun.com'
 	uci add_list system.ntp.server='time1.cloud.tencent.com'
@@ -117,34 +117,33 @@ if [ "$DISTRIB_ID" = "ImmortalWrt" ]; then
 fi
 uci commit dhcp
 
-# Delete firewall.zone
-#for i in 2 2;do uci del firewall.@zone[$i];done
-uci del firewall.@zone[2]
 # Delete firewall.zone list
 uci del_list firewall.@zone[1].network='wan6'
 # Add firewall.zone
-#for i in 2 3;do uci add firewall zone && uci set firewall.@zone[$i].input='ACCEPT' && uci set firewall.@zone[$i].output='ACCEPT' && uci set firewall.@zone[$i].forward='ACCEPT';done
-# Set firewall.zone
-#uci set firewall.@zone[2].name='vlan85'
-#uci set firewall.@zone[2].network='vlan85'
-#uci set firewall.@zone[3].name='vlan51'
-#uci set firewall.@zone[3].network='vlan51'
+#for i in 2 2;do uci del firewall.@zone[$i];done
+uci del firewall.@zone[2]
 uci add firewall zone
 uci set firewall.@zone[-1].name='iptv'
-uci add_list firewall.@zone[-1].network='iptv'
+if [ "$DISTRIB_ID" = "ImmortalWrt" ]; then
+	uci add_list firewall.@zone[-1].network='iptv'
+else
+	uci set firewall.@zone[-1].network='iptv'
+fi
 uci set firewall.@zone[-1].input='ACCEPT'
 uci set firewall.@zone[-1].output='ACCEPT'
 uci set firewall.@zone[-1].forward='ACCEPT'
-# Delete firewall.redirect
-for i in $(seq 0 11);do uci del firewall.@redirect[0];done
 # Add firewall.redirect
-for i in $(seq 0 11);do uci add firewall redirect && uci set firewall.@redirect[-1].target='DNAT' && uci set firewall.@redirect[-1].family='ipv4' && uci add_list firewall.@redirect[-1].proto='tcp' && uci set firewall.@redirect[-1].src='wan' && uci set firewall.@redirect[-1].dest='lan';done
+for i in $(seq 0 11);do uci del firewall.@redirect[0];done
+if [ "$DISTRIB_ID" = "ImmortalWrt" ]; then
+	for i in $(seq 0 11);do uci add firewall redirect && uci set firewall.@redirect[-1].target='DNAT' && uci set firewall.@redirect[-1].family='ipv4' && uci add_list firewall.@redirect[-1].proto='tcp' && uci set firewall.@redirect[-1].src='wan' && uci set firewall.@redirect[-1].dest='lan';done
+else
+	for i in $(seq 0 11);do uci add firewall redirect && uci set firewall.@redirect[-1].target='DNAT' && uci set firewall.@redirect[-1].family='ipv4' && uci set firewall.@redirect[-1].proto='tcp' && uci set firewall.@redirect[-1].src='wan' && uci set firewall.@redirect[-1].dest='lan';done
+fi
 # Adjust firewall.redirect
 for i in $(seq 0 1);do uci set firewall.@redirect[$i].dest_ip='10.0.0.1';done
 for i in $(seq 2 4);do uci set firewall.@redirect[$i].dest_ip='10.0.0.2';done
 for i in $(seq 5 10);do uci set firewall.@redirect[$i].dest_ip='10.0.0.3';done
 for i in $(seq 0 1) $(seq 3 6) 11;do uci set firewall.@redirect[$i].enabled='0';done
-
 # Set firewall.redirect
 uci set firewall.@redirect[0].name='SamEsxi SSH'
 uci set firewall.@redirect[0].src_dport='22022'
@@ -194,53 +193,65 @@ uci set network.lan.proto='static'
 uci set network.lan.device='br-lan'
 uci set network.lan.ipaddr='10.0.0.2'
 uci set network.lan.netmask='255.255.255.0'
-uci del network.lan.dns
-uci add_list network.lan.dns='119.29.29.29'
-uci add_list network.lan.dns='114.114.114.114'
-uci set network.lan.delegate='0'
+if [ "$DISTRIB_ID" = "ImmortalWrt" ]; then
+	uci del network.lan.dns
+	uci add_list network.lan.dns='119.29.29.29'
+	uci add_list network.lan.dns='114.114.114.114'
+	uci del network.@device[0].ports
+	uci add_list network.@device[0].ports='eth0'
+	uci add_list network.@device[0].ports='eth1'
+	uci add_list network.@device[0].ports='eth2'
+	uci add_list network.@device[0].ports='eth3'
+	uci add_list network.@device[0].ports='eth4'
+	uci add_list network.@device[0].ports='tap_vpn'
+	uci set network.@device[0].ipv6='0'
+else
+	uci set network.lan.dns='119.29.29.29 114.114.114.114'
+	uci set network.lan.ifname='eth0 eth1 eth2 eth3 eth4 tap_vpn'
+fi
 uci del network.lan.ip6assign
-#uci set network.lan.ifname='eth0 eth1 eth2 eth3 eth4 tap_vpn'
+uci set network.lan.delegate='0'
+
 # Adjust network.wan
 uci set network.wan.proto='pppoe'
-uci set network.wan.device='eth5'
-uci set network.wan.ipv6='0'
 uci set network.wan.delegate='0'
-#uci set network.wan.ifname='eth5'
+if [ "$DISTRIB_ID" = "ImmortalWrt" ]; then
+	uci set network.wan.device='eth5'
+	uci set network.wan.ipv6='0'
+else
+	uci set network.wan.ifname='eth5'
+fi
 uci del network.wan6
-# Adjust network.lan
-uci del network.iptv
-uci set network.iptv=interface
-uci set network.iptv.proto='none'
-uci set network.iptv.device='br-iptv'
-uci set network.iptv.delegate='0'
-uci del network.@device[0].ports
-uci add_list network.@device[0].ports='eth0'
-uci add_list network.@device[0].ports='eth1'
-uci add_list network.@device[0].ports='eth2'
-uci add_list network.@device[0].ports='eth3'
-uci add_list network.@device[0].ports='eth4'
-uci add_list network.@device[0].ports='tap_vpn'
-uci set network.@device[0].ipv6='0'
-uci del network.@device[1]
-uci add network device
-uci set network.@device[-1].type='bridge'
-uci set network.@device[-1].name='br-iptv'
-uci add_list network.@device[-1].ports='eth4.85'
-uci add_list network.@device[-1].ports='eth5.85'
-uci add_list network.@device[-1].ipv6='0'
+
+# Adjust network.iptv
+if [ "$DISTRIB_ID" = "ImmortalWrt" ]; then
+	uci del network.iptv
+	uci set network.iptv=interface
+	uci set network.iptv.proto='none'
+	uci set network.iptv.device='br-iptv'
+	uci set network.iptv.delegate='0'
+	uci del network.@device[1]
+	uci add network device
+	uci set network.@device[-1].type='bridge'
+	uci set network.@device[-1].name='br-iptv'
+	uci add_list network.@device[-1].ports='eth4.85'
+	uci add_list network.@device[-1].ports='eth5.85'
+	uci add_list network.@device[-1].ipv6='0'
+else
+	uci set network.vlan85=interface
+	uci set network.vlan85.type='bridge'
+	uci set network.vlan85.proto='none'
+	uci set network.vlan85.ifname='eth4.85 eth5.85'
+	uci set network.vlan85.auto='1'
+	uci set network.vlan85.delegate='0'
+	# uci set network.vlan51=interface
+	# uci set network.vlan51.type='bridge'
+	# uci set network.vlan51.proto='none'
+	# uci set network.vlan51.ifname='eth4.51 eth5.51'
+	# uci set network.vlan51.auto='1'
+	# uci set network.vlan51.delegate='0'
+fi
 uci del network.globals.ula_prefix
-#uci set network.vlan85=interface
-#uci set network.vlan85.type='bridge'
-#uci set network.vlan85.proto='none'
-#uci set network.vlan85.ifname='eth4.85 eth5.85'
-#uci set network.vlan85.auto='1'
-#uci set network.vlan85.delegate='0'
-#uci set network.vlan51=interface
-#uci set network.vlan51.type='bridge'
-#uci set network.vlan51.proto='none'
-#uci set network.vlan51.ifname='eth4.51 eth5.51'
-#uci set network.vlan51.auto='1'
-#uci set network.vlan51.delegate='0'
 uci commit network
 
 uci set openclash.config.enable_meta_core='1'
@@ -317,33 +328,33 @@ if [ "$DISTRIB_ID" = "ImmortalWrt" ]; then
 	uci set wechatpush.config.do_not_disturb_endtime='8'
 	uci commit wechatpush
 else
-	uci del serverchan.serverchan.cpuload
-	uci set serverchan.serverchan.serverchan_enable='1'
-	uci set serverchan.serverchan.serverchan_up='0'
-	uci set serverchan.serverchan.serverchan_down='0'
-	uci set serverchan.serverchan.cpuload_enable='0'
-	uci set serverchan.serverchan.jsonpath='/usr/share/serverchan/api/qywx_mpnews.json'
-	uci set serverchan.serverchan.mediapath='/usr/share/serverchan/api/logo.jpg'
-	uci set serverchan.serverchan.device_name='SamWrt'
-	uci set serverchan.serverchan.serverchan_ipv4='1'
-	uci set serverchan.serverchan.ipv4_interface='pppoe-wan'
-	uci set serverchan.serverchan.web_logged='1'
-	uci set serverchan.serverchan.ssh_logged='1'
-	uci set serverchan.serverchan.web_login_failed='1'
-	uci set serverchan.serverchan.ssh_login_failed='1'
-	uci set serverchan.serverchan.web_login_black='0'
-	uci set serverchan.serverchan.login_max_num='1'
-	uci set serverchan.serverchan.crontab='2'
-	uci set serverchan.serverchan.interval_time='4'
-	uci set serverchan.serverchan.send_title='路由状态'
-	uci set serverchan.serverchan.router_status='1'
-	uci set serverchan.serverchan.router_temp='0'
-	uci set serverchan.serverchan.router_wan='1'
-	uci set serverchan.serverchan.client_list='1'
-	uci set serverchan.serverchan.serverchan_sheep='2'
-	uci set serverchan.serverchan.starttime='0'
-	uci set serverchan.serverchan.endtime='8'
-	uci commit serverchan
+	# uci del serverchan.serverchan.cpuload
+	# uci set serverchan.serverchan.serverchan_enable='1'
+	# uci set serverchan.serverchan.serverchan_up='0'
+	# uci set serverchan.serverchan.serverchan_down='0'
+	# uci set serverchan.serverchan.cpuload_enable='0'
+	# uci set serverchan.serverchan.jsonpath='/usr/share/serverchan/api/qywx_mpnews.json'
+	# uci set serverchan.serverchan.mediapath='/usr/share/serverchan/api/logo.jpg'
+	# uci set serverchan.serverchan.device_name='SamWrt'
+	# uci set serverchan.serverchan.serverchan_ipv4='1'
+	# uci set serverchan.serverchan.ipv4_interface='pppoe-wan'
+	# uci set serverchan.serverchan.web_logged='1'
+	# uci set serverchan.serverchan.ssh_logged='1'
+	# uci set serverchan.serverchan.web_login_failed='1'
+	# uci set serverchan.serverchan.ssh_login_failed='1'
+	# uci set serverchan.serverchan.web_login_black='0'
+	# uci set serverchan.serverchan.login_max_num='1'
+	# uci set serverchan.serverchan.crontab='2'
+	# uci set serverchan.serverchan.interval_time='4'
+	# uci set serverchan.serverchan.send_title='路由状态'
+	# uci set serverchan.serverchan.router_status='1'
+	# uci set serverchan.serverchan.router_temp='0'
+	# uci set serverchan.serverchan.router_wan='1'
+	# uci set serverchan.serverchan.client_list='1'
+	# uci set serverchan.serverchan.serverchan_sheep='2'
+	# uci set serverchan.serverchan.starttime='0'
+	# uci set serverchan.serverchan.endtime='8'
+	# uci commit serverchan
 fi
 
 uci set turboacc.config.sfe_flow='0'
