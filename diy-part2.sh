@@ -90,7 +90,9 @@ echo "DIY_LOGO=$DIY_LOGO"
 echo "------------- Check End -------------"
 
 [ -e $DIY_LOGO ] && mv -vf $DIY_LOGO $LOGO_FILE
-# [ -e $DIY_SET ] && mv -vf $DIY_SET $SET_FILE
+[ -e $DIY_SET ] && mv -vf $DIY_SET $SET_FILE
+
+rm -vrf package/xzhhzx222/OpenClash
 
 sed -i "s/DISTRIB_REVISION=/DISTRIB_REVISION=\'Ver $(date +%y.%m.%d)\'/" $SET_FILE
 
