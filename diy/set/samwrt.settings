@@ -300,8 +300,9 @@ uci set openclash.config.geodata_loader='standard'
 uci set openclash.config.enable_geoip_dat='1'
 uci set openclash.config.enable_meta_sniffer='1'
 uci set openclash.config.enable_custom_clash_rules='1'
-uci set openclash.@authentication[0].enabled='0'
-uci commit openclash
+while uci -q get openclash.@authentication[-1] > /dev/null; do
+  uci del openclash.@authentication[-1]
+done
 cat >> /etc/openclash/custom/openclash_custom_chnroute_pass.list <<EOF
 
 bing.com
@@ -321,6 +322,7 @@ cat >> /etc/openclash/custom/openclash_custom_rules.list <<EOF
 - DOMAIN-SUFFIX,nicept.net,DIRECT
 - DOMAIN-SUFFIX,bwh81.net,DIRECT
 EOF
+uci commit openclash
 
 if [ "$DISTRIB_ID" = "ImmortalWrt" ]; then
 	uci set wechatpush.config.enable='0'
@@ -350,9 +352,9 @@ if [ "$DISTRIB_ID" = "ImmortalWrt" ]; then
 	uci set wechatpush.config.do_not_disturb_endtime='8'
 	uci commit wechatpush
 else
-	uci set serverchan.serverchan.serverchan_enable='0'
+	# uci set serverchan.serverchan.serverchan_enable='0'
 	uci set serverchan.serverchan.jsonpath='/usr/share/serverchan/api/qywx_mpnews.json'
-	#uci set serverchan.serverchan.mediapath='/usr/share/serverchan/api/logo.jpg'
+	uci set serverchan.serverchan.mediapath='/usr/share/serverchan/api/logo.jpg'
 	uci set serverchan.serverchan.device_name='SamWrt'
 	uci set serverchan.serverchan.oui_data='2'
 	uci set serverchan.serverchan.reset_regularly='1'
@@ -369,6 +371,7 @@ else
 	uci set serverchan.serverchan.ssh_login_failed='1'
 	uci set serverchan.serverchan.login_max_num='3'
 	uci set serverchan.serverchan.web_login_black='0'
+	uci set serverchan.serverchan.port_knocking='0'
 	uci set serverchan.serverchan.crontab='2'
 	uci set serverchan.serverchan.interval_time='4'
 	uci set serverchan.serverchan.send_title='路由状态'
