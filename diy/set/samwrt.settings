@@ -1,10 +1,13 @@
 #!/bin/sh
 
+# Get Release Version
 DISTRIB_ID=$(grep DISTRIB_ID /etc/openwrt_release | cut -d "'" -f 2)
 
+# Luci Settings
 uci set luci.main.lang=zh_cn
 uci commit luci
 
+# System Settings
 uci set system.@system[0].hostname='SamWrt'
 uci set system.@system[0].timezone=CST-8
 uci set system.@system[0].zonename=Asia/Shanghai
@@ -20,9 +23,11 @@ if [ "$DISTRIB_ID" = "ImmortalWrt" ]; then
 fi
 uci commit system
 
+# Fstab Settings
 uci set fstab.@global[0].anon_mount=1
 uci commit fstab
 
+# DDNS Settings
 uci del ddns.myddns_ipv4
 uci del ddns.myddns_ipv6
 uci set ddns.cf_root=service
@@ -72,21 +77,18 @@ uci set ddns.cf_pan.force_interval='24'
 uci set ddns.cf_pan.force_unit='hours'
 uci commit ddns
 
-# Set dhcp.dnsmasq
+# DHCP Settings
 uci set dhcp.@dnsmasq[0].sequential_ip='1'
 uci set dhcp.@dnsmasq[0].filter_aaaa='1'
 uci set dhcp.@dnsmasq[0].cachesize='0'
-# Add dhcp.host
 while uci -q get dhcp.@host[-1] > /dev/null; do
   uci del dhcp.@host[-1]
 done
-# for i in $(seq 0 4);do uci add dhcp host && uci set dhcp.@host[$i].dns='1' && uci set dhcp.@host[$i].ip='10.0.0.1'$i'' && uci set dhcp.@host[$i].leasetime='infinite';done
 for i in $(seq 0 4); do
 	uci add dhcp host
 	uci set dhcp.@host[-1].ip='10.0.0.1'$i''
 	uci set dhcp.@host[-1].leasetime='infinite'
 done
-# Set dhcp.host
 uci set dhcp.@host[0].name='Sam-Desktop'
 uci set dhcp.@host[0].mac='70:4D:7B:63:0A:37'
 uci set dhcp.@host[1].name='Sam-LEGION'
@@ -97,14 +99,16 @@ uci set dhcp.@host[3].name='Mom-Nova6'
 uci set dhcp.@host[3].mac='92:BC:DB:B7:C6:CE'
 uci set dhcp.@host[4].name='Dad-K40S'
 uci set dhcp.@host[4].mac='BE:36:F0:5E:0F:67'
-# Add dhcp.domain
-# for i in $(seq 0 2);do uci del dhcp.@domain[0];done
-# for i in $(seq 0 2);do uci add dhcp domain && uci set dhcp.@domain[$i].ip='10.0.0.'$(($i+1))'';done
-# Set dhcp.domain
+# while uci -q get dhcp.@domain[-1] > /dev/null; do
+#   uci del dhcp.@domain[-1]
+# done
+# for i in $(seq 0 2); do
+# 	uci add dhcp domain
+# 	uci set dhcp.@domain[$i].ip='10.0.0.'$(($i+1))''
+# done
 # uci set dhcp.@domain[0].name='samesxi.com'
 # uci set dhcp.@domain[1].name='samwrt.com'
 # uci set dhcp.@domain[2].name='samnas.com'
-# Set dhcp.lan
 uci set dhcp.lan.start='20'
 uci set dhcp.lan.limit='99'
 uci set dhcp.lan.force='1'
@@ -121,7 +125,7 @@ if [ "$DISTRIB_ID" = "ImmortalWrt" ]; then
 fi
 uci commit dhcp
 
-# Add firewall.zone
+# Firewall Settings
 uci del_list firewall.@zone[1].network='wan6'
 while uci -q get firewall.@zone[2] > /dev/null; do
 	uci del firewall.@zone[2]
@@ -136,7 +140,6 @@ fi
 uci set firewall.@zone[-1].input='ACCEPT'
 uci set firewall.@zone[-1].output='ACCEPT'
 uci set firewall.@zone[-1].forward='ACCEPT'
-# Add firewall.redirect
 while uci -q get firewall.@redirect[-1] > /dev/null; do
   uci del firewall.@redirect[-1]
 done
@@ -152,15 +155,23 @@ for i in $(seq 0 11); do
 	uci set firewall.@redirect[-1].src='wan'
 	uci set firewall.@redirect[-1].dest='lan'
 done
-# Set firewall.redirect
-for i in $(seq 0 1); do
-	uci set firewall.@redirect[$i].dest_ip='10.0.0.1'
-done
-for i in $(seq 2 4); do
-	uci set firewall.@redirect[$i].dest_ip='10.0.0.2'
-done
-for i in $(seq 5 10); do
-	uci set firewall.@redirect[$i].dest_ip='10.0.0.3'
+# for i in $(seq 0 1); do
+# 	uci set firewall.@redirect[$i].dest_ip='10.0.0.1'
+# done
+# for i in $(seq 2 4); do
+# 	uci set firewall.@redirect[$i].dest_ip='10.0.0.2'
+# done
+# for i in $(seq 5 10); do
+# 	uci set firewall.@redirect[$i].dest_ip='10.0.0.3'
+# done
+for i in $(seq 0 10); do
+    if [ $i -le 1 ]; then
+        uci set firewall.@redirect[$i].dest_ip='10.0.0.1'
+    elif [ $i -le 4 ]; then
+        uci set firewall.@redirect[$i].dest_ip='10.0.0.2'
+    else
+        uci set firewall.@redirect[$i].dest_ip='10.0.0.3'
+    fi
 done
 for i in $(seq 0 1) $(seq 3 6) 11; do
 	uci set firewall.@redirect[$i].enabled='0'
@@ -203,20 +214,18 @@ uci set firewall.@redirect[11].name='Remote Desktop'
 uci set firewall.@redirect[11].src_dport='3389'
 uci set firewall.@redirect[11].dest_ip='10.0.0.10'
 uci set firewall.@redirect[11].dest_port='3389'
-
-# Disable firewall.rule
 for i in $(seq 3 6); do
 	uci set firewall.@rule[$i].enabled='0'
 done
 uci commit firewall
 
-# Adjust network.lan
+# Network Settings
+uci set network.lan.proto='static'
 uci set network.lan.ipaddr='10.0.0.2'
 uci set network.lan.netmask='255.255.255.0'
 uci del network.lan.ip6assign
 uci set network.lan.delegate='0'
 if [ "$DISTRIB_ID" = "ImmortalWrt" ]; then
-	uci set network.lan.proto='static'
 	uci set network.lan.device='br-lan'
 	uci del network.lan.dns
 	uci add_list network.lan.dns='119.29.29.29'
@@ -233,8 +242,6 @@ else
 	uci set network.lan.dns='119.29.29.29 114.114.114.114'
 	uci set network.lan.ifname='eth0 eth1 eth2 eth3 eth4 tap_vpn'
 fi
-
-# Adjust network.wan
 uci del network.wan6
 uci set network.wan.proto='pppoe'
 uci set network.wan.delegate='0'
@@ -244,8 +251,6 @@ if [ "$DISTRIB_ID" = "ImmortalWrt" ]; then
 else
 	uci set network.wan.ifname='eth5'
 fi
-
-# Adjust network.iptv
 uci del network.globals.ula_prefix
 if [ "$DISTRIB_ID" = "ImmortalWrt" ]; then
 	uci del network.iptv
@@ -379,7 +384,7 @@ else
 	uci set serverchan.serverchan.router_temp='1'
 	uci set serverchan.serverchan.router_wan='1'
 	uci set serverchan.serverchan.client_list='1'
-	uci set serverchan.serverchan.serverchan_sheep='1'
+	uci set serverchan.serverchan.serverchan_sheep='2'
 	uci set serverchan.serverchan.starttime='0'
 	uci set serverchan.serverchan.endtime='8'
 	uci commit serverchan
