@@ -89,7 +89,6 @@ if [ "$DISTRIB_ID" = "ImmortalWrt" ]; then
 	uci del dhcp.lan.ndp
 	uci del dhcp.lan.ra_flags
 	uci add_list dhcp.lan.ra_flags='none'
-	# Set dhcp.wan
 	uci del dhcp.wan.ra_flags
 	uci add_list dhcp.wan.ra_flags='none'
 fi

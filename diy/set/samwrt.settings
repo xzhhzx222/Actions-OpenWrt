@@ -119,7 +119,6 @@ if [ "$DISTRIB_ID" = "ImmortalWrt" ]; then
 	uci del dhcp.lan.ndp
 	uci del dhcp.lan.ra_flags
 	uci add_list dhcp.lan.ra_flags='none'
-	# Set dhcp.wan
 	uci del dhcp.wan.ra_flags
 	uci add_list dhcp.wan.ra_flags='none'
 fi
@@ -155,15 +154,6 @@ for i in $(seq 0 11); do
 	uci set firewall.@redirect[-1].src='wan'
 	uci set firewall.@redirect[-1].dest='lan'
 done
-# for i in $(seq 0 1); do
-# 	uci set firewall.@redirect[$i].dest_ip='10.0.0.1'
-# done
-# for i in $(seq 2 4); do
-# 	uci set firewall.@redirect[$i].dest_ip='10.0.0.2'
-# done
-# for i in $(seq 5 10); do
-# 	uci set firewall.@redirect[$i].dest_ip='10.0.0.3'
-# done
 for i in $(seq 0 10); do
     if [ $i -le 1 ]; then
         uci set firewall.@redirect[$i].dest_ip='10.0.0.1'
@@ -401,9 +391,8 @@ uci commit turboacc
 # uci set upnpd.config.enabled='1'
 # uci commit upnpd
 
-# Add wolplus.pc
+# Wolplus Settings
 # uci set wolplus.pc1=macclient
-# Set wolplus.pc
 # uci set wolplus.pc1.name='Sam-Desktop'
 # uci set wolplus.pc1.maceth='br-lan'
 # uci set wolplus.pc1.macaddr='70:4D:7B:63:0A:37'
