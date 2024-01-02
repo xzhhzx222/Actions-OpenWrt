@@ -13,6 +13,7 @@
 # Modify default IP
 #sed -i 's/192.168.1.1/192.168.50.5/g' package/base-files/files/bin/config_generate
 
+
 # 删除已存在的软件包
 rm -vrf package/feeds/luci/luci-app-openclash
 rm -vrf package/feeds/luci/luci-app-passwall
@@ -36,6 +37,7 @@ echo "CLASH_DIR=$CLASH_DIR"
 echo "------------- Check End -------------"
 
 git clone --depth=1 https://github.com/vernesong/OpenClash.git package/xzhhzx222/OpenClash
+rm -vrf $CLASH_DIR/china_ip*
 rm -vrf $CLASH_DIR/Geo*
 curl -Ls -o $CLASH_DIR/GeoIP.dat https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geoip.dat
 curl -Ls -o $CLASH_DIR/GeoSite.dat https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geosite.dat
@@ -44,6 +46,7 @@ curl -Ls -o $CLASH_DIR/core/core.tar.gz https://raw.githubusercontent.com/vernes
 tar zxf $CLASH_DIR/core/core.tar.gz -C $CLASH_DIR/core
 mv -v $CLASH_DIR/core/clash $CLASH_DIR/core/clash_meta
 rm -vf $CLASH_DIR/core/core.tar.gz
+rm -vf $CLASH_DIR/rule_provider/*
 
 # 添加Lienol/luci-app-timecontrol
 svn export https://github.com/Lienol/openwrt-package/trunk/luci-app-timecontrol package/xzhhzx222/luci-app-timecontrol

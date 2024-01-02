@@ -17,6 +17,7 @@
 #echo 'src-git helloworld https://github.com/fw876/helloworld' >>feeds.conf.default
 #echo 'src-git passwall https://github.com/xiaorouji/openwrt-passwall' >>feeds.conf.default
 
+
 # 添加fw876/helloworld
 if [[ $BUILD_BRANCH == lede-* ]]; then
   echo 'src-git helloworld https://github.com/fw876/helloworld' >>feeds.conf.default
