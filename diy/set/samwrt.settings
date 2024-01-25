@@ -218,8 +218,8 @@ uci set network.lan.delegate='0'
 if [ "$DISTRIB_ID" = "ImmortalWrt" ]; then
 	uci set network.lan.device='br-lan'
 	uci del network.lan.dns
-	uci add_list network.lan.dns='119.29.29.29'
-	uci add_list network.lan.dns='114.114.114.114'
+	uci add_list network.lan.dns='223.5.5.5'
+	uci add_list network.lan.dns='8.8.4.4'
 	uci del network.@device[0].ports
 	uci add_list network.@device[0].ports='eth0'
 	uci add_list network.@device[0].ports='eth1'
@@ -229,7 +229,7 @@ if [ "$DISTRIB_ID" = "ImmortalWrt" ]; then
 	uci add_list network.@device[0].ports='tap_vpn'
 	uci set network.@device[0].ipv6='0'
 else
-	uci set network.lan.dns='119.29.29.29 114.114.114.114'
+	uci set network.lan.dns='223.5.5.5 8.8.4.4'
 	uci set network.lan.ifname='eth0 eth1 eth2 eth3 eth4 tap_vpn'
 fi
 uci del network.wan6
@@ -278,7 +278,7 @@ uci set openclash.config.common_ports='21 22 23 53 80 123 143 194 443 465 587 85
 uci set openclash.config.intranet_allowed='0'
 uci set openclash.config.geoip_auto_update='1'
 uci set openclash.config.geoip_update_week_time='*'
-uci set openclash.config.geoip_update_day_time='6'
+uci set openclash.config.geoip_update_day_time='8'
 uci set openclash.config.geoip_custom_url='https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geoip.dat'
 # uci set openclash.config.geosite_auto_update='1'
 # uci set openclash.config.geosite_update_week_time='*'
