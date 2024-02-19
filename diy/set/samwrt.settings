@@ -75,6 +75,21 @@ uci set ddns.cf_pan.check_interval='5'
 uci set ddns.cf_pan.check_unit='minutes'
 uci set ddns.cf_pan.force_interval='24'
 uci set ddns.cf_pan.force_unit='hours'
+uci set ddns.cf_media=service
+uci set ddns.cf_media.enabled='0'
+uci set ddns.cf_media.lookup_host='media.xzhhzx222.com'
+uci set ddns.cf_media.use_ipv6='0'
+uci set ddns.cf_media.service_name='cloudflare.com-v4'
+uci set ddns.cf_media.domain='media@xzhhzx222.com'
+uci set ddns.cf_media.username='Bearer'
+uci set ddns.cf_media.ip_source='interface'
+uci set ddns.cf_media.ip_interface='pppoe-wan'
+uci set ddns.cf_media.interface='wan'
+uci set ddns.cf_media.use_syslog='2'
+uci set ddns.cf_media.check_interval='5'
+uci set ddns.cf_media.check_unit='minutes'
+uci set ddns.cf_media.force_interval='24'
+uci set ddns.cf_media.force_unit='hours'
 uci commit ddns
 
 # DHCP Settings
