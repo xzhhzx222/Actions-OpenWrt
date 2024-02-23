@@ -30,7 +30,7 @@ git clone https://github.com/Lienol/openwrt-package.git package/xzhhzx222/openwr
 mv -vf package/xzhhzx222/openwrt-package/luci-app-control-timewol package/xzhhzx222/luci-app-control-timewol
 mv -vf package/xzhhzx222/openwrt-package/luci-app-control-weburl package/xzhhzx222/luci-app-control-weburl
 mv -vf package/xzhhzx222/openwrt-package/luci-app-timecontrol package/xzhhzx222/luci-app-timecontrol
-rm -vrf package/xzhhzx222/openwrt-package
+rm -rf package/xzhhzx222/openwrt-package
 
 # 添加vernesong/OpenClash
 CLASH_DIR=package/xzhhzx222/OpenClash/luci-app-openclash/root/etc/openclash
@@ -40,8 +40,8 @@ echo "CLASH_DIR=$CLASH_DIR"
 echo "------------- Check End -------------"
 
 git clone --depth=1 https://github.com/vernesong/OpenClash.git package/xzhhzx222/OpenClash
-rm -vrf $CLASH_DIR/china_ip*
-rm -vrf $CLASH_DIR/Geo*
+rm -vf $CLASH_DIR/china_ip*
+rm -vf $CLASH_DIR/Geo*
 curl -Ls -o $CLASH_DIR/GeoIP.dat https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geoip.dat
 curl -Ls -o $CLASH_DIR/GeoSite.dat https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geosite.dat
 mkdir -p $CLASH_DIR/core
@@ -49,7 +49,7 @@ curl -Ls -o $CLASH_DIR/core/core.tar.gz https://raw.githubusercontent.com/vernes
 tar zxf $CLASH_DIR/core/core.tar.gz -C $CLASH_DIR/core
 mv -vf $CLASH_DIR/core/clash $CLASH_DIR/core/clash_meta
 rm -vf $CLASH_DIR/core/core.tar.gz
-rm -vf $CLASH_DIR/rule_provider/*
+rm -f $CLASH_DIR/rule_provider/*
 
 # 添加jerrykuku/luci-app-vssr
 # git clone https://github.com/jerrykuku/lua-maxminddb.git package/xzhhzx222/lua-maxminddb
