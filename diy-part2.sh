@@ -25,9 +25,12 @@ rm -vrf package/feeds/luci/luci-theme-argon*
 # 添加sirpdboy/luci-app-advanced
 git clone https://github.com/sirpdboy/luci-app-advanced.git package/xzhhzx222/luci-app-advanced
 
-# 添加Lienol/luci-app-control系列
-svn export https://github.com/Lienol/openwrt-package/trunk/luci-app-control-timewol package/xzhhzx222/luci-app-control-timewol
-svn export https://github.com/Lienol/openwrt-package/trunk/luci-app-control-weburl package/xzhhzx222/luci-app-control-weburl
+# 添加Lienol/openwrt-package
+git clone https://github.com/Lienol/openwrt-package.git package/xzhhzx222/openwrt-package
+mv -vf package/xzhhzx222/openwrt-package/luci-app-control-timewol package/xzhhzx222/luci-app-control-timewol
+mv -vf package/xzhhzx222/openwrt-package/luci-app-control-weburl package/xzhhzx222/luci-app-control-weburl
+mv -vf package/xzhhzx222/openwrt-package/luci-app-timecontrol package/xzhhzx222/luci-app-timecontrol
+rm -vrf package/xzhhzx222/openwrt-package
 
 # 添加vernesong/OpenClash
 CLASH_DIR=package/xzhhzx222/OpenClash/luci-app-openclash/root/etc/openclash
@@ -44,12 +47,9 @@ curl -Ls -o $CLASH_DIR/GeoSite.dat https://github.com/Loyalsoldier/v2ray-rules-d
 mkdir -p $CLASH_DIR/core
 curl -Ls -o $CLASH_DIR/core/core.tar.gz https://raw.githubusercontent.com/vernesong/OpenClash/core/master/meta/clash-linux-amd64.tar.gz
 tar zxf $CLASH_DIR/core/core.tar.gz -C $CLASH_DIR/core
-mv -v $CLASH_DIR/core/clash $CLASH_DIR/core/clash_meta
+mv -vf $CLASH_DIR/core/clash $CLASH_DIR/core/clash_meta
 rm -vf $CLASH_DIR/core/core.tar.gz
 rm -vf $CLASH_DIR/rule_provider/*
-
-# 添加Lienol/luci-app-timecontrol
-svn export https://github.com/Lienol/openwrt-package/trunk/luci-app-timecontrol package/xzhhzx222/luci-app-timecontrol
 
 # 添加jerrykuku/luci-app-vssr
 # git clone https://github.com/jerrykuku/lua-maxminddb.git package/xzhhzx222/lua-maxminddb
@@ -81,6 +81,10 @@ else
   git clone -b openwrt-18.06 https://github.com/tty228/luci-app-wechatpush.git package/xzhhzx222/luci-app-wechatpush
   git clone -b 18.06 https://github.com/jerrykuku/luci-theme-argon.git package/xzhhzx222/luci-theme-argon
 fi
+
+echo "------------ Check Start ------------"
+ls -l package/xzhhzx222
+echo "------------- Check End -------------"
 
 DIY_SET=$GITHUB_WORKSPACE/diy/set/${BUILD_VER,,}.settings
 DIY_LOGO=$GITHUB_WORKSPACE/diy/img/${BUILD_VER,,}.jpg
