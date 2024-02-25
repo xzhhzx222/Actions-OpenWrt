@@ -79,8 +79,8 @@ jobs:
         esac
         echo "CONFIG_FILE=diy/cfg/${BUILD_VER,,}.config" >> $GITHUB_ENV
 
-    - name: "Optimize Disk Space"
-      uses: "hugoalh/disk-space-optimizer-ghaction@main"
+    - name: Optimize Disk Space
+      uses: hugoalh/disk-space-optimizer-ghaction@main
       with:
         operate_sudo: "True"
         general_include: ".+"
@@ -100,7 +100,7 @@ jobs:
         npm_clean: "True"
         os_swap: "True"
 
-    - name: Freeing up disk space
+    - name: Free up disk space
       uses: easimon/maximize-build-space@master
       with: 
         root-reserve-mb: 2048
