@@ -304,14 +304,6 @@ uci set openclash.config.geoip_auto_update='1'
 uci set openclash.config.geoip_update_week_time='*'
 uci set openclash.config.geoip_update_day_time='8'
 uci set openclash.config.geoip_custom_url='https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geoip.dat'
-# uci set openclash.config.geosite_auto_update='1'
-# uci set openclash.config.geosite_update_week_time='*'
-# uci set openclash.config.geosite_update_day_time='7'
-# uci set openclash.config.geosite_custom_url='https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geosite.dat'
-# uci set openclash.config.chnr_auto_update='1'
-# uci set openclash.config.chnr_update_week_time='*'
-# uci set openclash.config.chnr_update_day_time='1'
-# uci set openclash.config.cndomain_custom_url='https://raw.githubusercontent.com/felixonmars/dnsmasq-china-list/master/accelerated-domains.china.conf'
 uci set openclash.config.core_version='linux-amd64-v3'
 uci set openclash.config.log_level='error'
 uci set openclash.config.enable_custom_dns='1'
@@ -351,10 +343,6 @@ uci set openclash.@dns_servers[4].ip='223.5.5.5'
 # while uci -q get openclash.@authentication[-1] > /dev/null; do
 #   uci del openclash.@authentication[-1]
 # done
-# cat >> /etc/openclash/custom/openclash_custom_chnroute_pass.list <<EOF
-#
-# bing.com
-# EOF
 cat >> /etc/openclash/custom/openclash_custom_rules.list <<EOF
 
 - DOMAIN-SUFFIX,btschool.club,DIRECT

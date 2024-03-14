@@ -219,11 +219,12 @@ jobs:
       if: steps.compile.outputs.status == 'success' && env.UPLOAD_FIRMWARE == 'true' && !cancelled()
       run: |
         cd openwrt/bin/targets/*/*
+        # rm -rf packages
         rm -vrf packages
-        rm -vf *.bin
-        rm -vf *.json
+        # rm -vf *.bin
+        # rm -vf *.json
         # rm -vf *.manifest
-        rm -vf *rootfs.img.gz
+        # rm -vf *rootfs.img.gz
         # rm -vf sha256sums
         if [[ $BUILD_BRANCH == immortalwrt-* ]]; then
           for filename in immortalwrt-*; do
