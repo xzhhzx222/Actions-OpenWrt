@@ -172,7 +172,7 @@ uci set firewall.@zone[-1].forward='ACCEPT'
 while uci -q get firewall.@redirect[-1] > /dev/null; do
   uci del firewall.@redirect[-1]
 done
-for i in $(seq 0 11); do
+for i in $(seq 0 9); do
 	uci add firewall redirect
 	uci set firewall.@redirect[-1].target='DNAT'
 	uci set firewall.@redirect[-1].family='ipv4'
