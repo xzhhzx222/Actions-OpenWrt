@@ -58,7 +58,14 @@ rm -f $CLASH_DIR/rule_provider/*
 # 修改默认主题
 sed -i 's/luci-theme-bootstrap/luci-theme-argon/g' package/feeds/luci/luci/Makefile
 
-if [[ $BUILD_BRANCH == immortalwrt-* ]]; then
+if [[ $BUILD_BRANCH == lede-18.06 ]]; then
+  # LOGO_FILE=package/xzhhzx222/luci-app-wechatpush/root/usr/share/serverchan/api/logo.jpg
+  LOGO_FILE=package/feeds/luci/luci-app-serverchan/root/usr/bin/serverchan/api/logo.jpg
+  SET_FILE=package/lean/default-settings/files/zzz-default-settings
+  # wget -O package/feeds/packages/ddns-scripts/files/update_cloudflare_com_v4.sh https://raw.githubusercontent.com/openwrt/packages/master/net/ddns-scripts/files/usr/lib/ddns/update_cloudflare_com_v4.sh
+  # git clone -b openwrt-18.06 https://github.com/tty228/luci-app-wechatpush.git package/xzhhzx222/luci-app-wechatpush
+  git clone -b 18.06 https://github.com/jerrykuku/luci-theme-argon.git package/xzhhzx222/luci-theme-argon
+else
   LOGO_FILE=package/xzhhzx222/luci-app-wechatpush/root/usr/share/wechatpush/api/logo.jpg
   SET_FILE=package/emortal/default-settings/files/99-default-settings
   sed -i 's/luci-theme-bootstrap/luci-theme-argon/g' package/feeds/luci/luci-light/Makefile
@@ -74,13 +81,6 @@ if [[ $BUILD_BRANCH == immortalwrt-* ]]; then
   git clone https://github.com/jerrykuku/luci-theme-argon.git package/xzhhzx222/luci-theme-argon
   rm -vrf "$SET_FILE-chinese"
   touch "$SET_FILE-chinese"
-else
-  # LOGO_FILE=package/xzhhzx222/luci-app-wechatpush/root/usr/share/serverchan/api/logo.jpg
-  LOGO_FILE=package/feeds/luci/luci-app-serverchan/root/usr/bin/serverchan/api/logo.jpg
-  SET_FILE=package/lean/default-settings/files/zzz-default-settings
-  # wget -O package/feeds/packages/ddns-scripts/files/update_cloudflare_com_v4.sh https://raw.githubusercontent.com/openwrt/packages/master/net/ddns-scripts/files/usr/lib/ddns/update_cloudflare_com_v4.sh
-  # git clone -b openwrt-18.06 https://github.com/tty228/luci-app-wechatpush.git package/xzhhzx222/luci-app-wechatpush
-  git clone -b 18.06 https://github.com/jerrykuku/luci-theme-argon.git package/xzhhzx222/luci-theme-argon
 fi
 
 echo "------------ Check Start ------------"

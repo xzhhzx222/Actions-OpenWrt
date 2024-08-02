@@ -23,6 +23,10 @@ if [[ $BUILD_BRANCH == lede-* ]]; then
   echo 'src-git helloworld https://github.com/fw876/helloworld' >>feeds.conf.default
 fi
 
+if [[ ${BUILD_BRANCH: -5} == 23.05 ]]; then
+  sed -i 's#\/luci#&;openwrt-23.05.git#g' feeds.conf.default
+fi
+
 # 添加xiaorouji/openwrt-passwall
 # echo 'src-git passwall_pkg https://github.com/xiaorouji/openwrt-passwall;packages' >>feeds.conf.default
 # echo 'src-git passwall_luci https://github.com/xiaorouji/openwrt-passwall;luci' >>feeds.conf.default
