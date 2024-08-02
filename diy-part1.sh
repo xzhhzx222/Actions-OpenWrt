@@ -24,7 +24,7 @@ if [[ $BUILD_BRANCH == lede-* ]]; then
 fi
 
 if [[ ${BUILD_BRANCH: -5} == 23.05 ]]; then
-  sed -i 's#\/luci#&;openwrt-23.05.git#g' feeds.conf.default
+  sed -i 's#\/luci#&.git;openwrt-23.05#g' feeds.conf.default
 fi
 
 # 添加xiaorouji/openwrt-passwall
