@@ -55,33 +55,39 @@ rm -f $CLASH_DIR/rule_provider/*
 # git clone https://github.com/jerrykuku/lua-maxminddb.git package/xzhhzx222/lua-maxminddb
 # git clone https://github.com/jerrykuku/luci-app-vssr.git package/xzhhzx222/luci-app-vssr
 
-# 修改默认主题
-sed -i 's/luci-theme-bootstrap/luci-theme-argon/g' package/feeds/luci/luci/Makefile
-
-if [[ $BUILD_BRANCH == lede-18.06 ]]; then
-  # LOGO_FILE=package/xzhhzx222/luci-app-wechatpush/root/usr/share/serverchan/api/logo.jpg
-  LOGO_FILE=package/feeds/luci/luci-app-serverchan/root/usr/bin/serverchan/api/logo.jpg
-  SET_FILE=package/lean/default-settings/files/zzz-default-settings
-  # wget -O package/feeds/packages/ddns-scripts/files/update_cloudflare_com_v4.sh https://raw.githubusercontent.com/openwrt/packages/master/net/ddns-scripts/files/usr/lib/ddns/update_cloudflare_com_v4.sh
-  # git clone -b openwrt-18.06 https://github.com/tty228/luci-app-wechatpush.git package/xzhhzx222/luci-app-wechatpush
-  git clone -b 18.06 https://github.com/jerrykuku/luci-theme-argon.git package/xzhhzx222/luci-theme-argon
-else
-  LOGO_FILE=package/xzhhzx222/luci-app-wechatpush/root/usr/share/wechatpush/api/logo.jpg
-  SET_FILE=package/emortal/default-settings/files/99-default-settings
-  sed -i 's/luci-theme-bootstrap/luci-theme-argon/g' package/feeds/luci/luci-light/Makefile
-  # sed -i 's/+IPV6:.* //' package/feeds/packages/miniupnpd/Makefile
-  #
-  # echo "------------ Check Start ------------"
-  # grep "DEPENDS:=" package/feeds/packages/miniupnpd/Makefile
-  # echo "------------- Check End -------------"
-  #
-  git clone https://github.com/tty228/luci-app-wechatpush.git package/xzhhzx222/luci-app-wechatpush
-  # sed -i 's/\${str_linefeed}/\\\\n/g' package/xzhhzx222/luci-app-wechatpush/root/usr/share/wechatpush/api/qywx_mpnews.json
-  sed -i 's/\${1} ${nowtime}/${nowtime}\\\\n${1}/g' package/xzhhzx222/luci-app-wechatpush/root/usr/share/wechatpush/api/qywx_mpnews.json
-  git clone https://github.com/jerrykuku/luci-theme-argon.git package/xzhhzx222/luci-theme-argon
-  rm -vrf "$SET_FILE-chinese"
-  touch "$SET_FILE-chinese"
-fi
+case $BUILD_BRANCH in
+  lede-18.06)
+    sed -i 's/luci-theme-bootstrap/luci-theme-argon/g' package/feeds/luci/luci/Makefile
+    # LOGO_FILE=package/xzhhzx222/luci-app-wechatpush/root/usr/share/serverchan/api/logo.jpg
+    LOGO_FILE=package/feeds/luci/luci-app-serverchan/root/usr/bin/serverchan/api/logo.jpg
+    SET_FILE=package/lean/default-settings/files/zzz-default-settings
+    # git clone -b openwrt-18.06 https://github.com/tty228/luci-app-wechatpush.git package/xzhhzx222/luci-app-wechatpush
+    git clone -b 18.06 https://github.com/jerrykuku/luci-theme-argon.git package/xzhhzx222/luci-theme-argon
+    ;;
+  lede-23.05)
+    sed -i 's/luci-theme-bootstrap/luci-theme-argon/g' package/feeds/luci/luci-light/Makefile
+    LOGO_FILE=package/xzhhzx222/luci-app-wechatpush/root/usr/share/wechatpush/api/logo.jpg
+    # SET_FILE=package/lean/default-settings/files/zzz-default-settings
+    git clone https://github.com/coolsnowwolf/luci.git package/xzhhzx222/luci
+    mv -vf package/xzhhzx222/luci/luci-app-softethervpn package/xzhhzx222/luci-app-softethervpn
+    rm -rf package/xzhhzx222/luci
+    git clone https://github.com/tty228/luci-app-wechatpush.git package/xzhhzx222/luci-app-wechatpush
+    # sed -i 's/\${str_linefeed}/\\\\n/g' package/xzhhzx222/luci-app-wechatpush/root/usr/share/wechatpush/api/qywx_mpnews.json
+    sed -i 's/\${1} ${nowtime}/${nowtime}\\\\n${1}/g' package/xzhhzx222/luci-app-wechatpush/root/usr/share/wechatpush/api/qywx_mpnews.json
+    git clone https://github.com/jerrykuku/luci-theme-argon.git package/xzhhzx222/luci-theme-argon
+    ;;
+  immortalwrt-*)
+    sed -i 's/luci-theme-bootstrap/luci-theme-argon/g' package/feeds/luci/luci-light/Makefile
+    LOGO_FILE=package/xzhhzx222/luci-app-wechatpush/root/usr/share/wechatpush/api/logo.jpg
+    SET_FILE=package/emortal/default-settings/files/99-default-settings
+    git clone https://github.com/tty228/luci-app-wechatpush.git package/xzhhzx222/luci-app-wechatpush
+    # sed -i 's/\${str_linefeed}/\\\\n/g' package/xzhhzx222/luci-app-wechatpush/root/usr/share/wechatpush/api/qywx_mpnews.json
+    sed -i 's/\${1} ${nowtime}/${nowtime}\\\\n${1}/g' package/xzhhzx222/luci-app-wechatpush/root/usr/share/wechatpush/api/qywx_mpnews.json
+    git clone https://github.com/jerrykuku/luci-theme-argon.git package/xzhhzx222/luci-theme-argon
+    rm -vrf "$SET_FILE-chinese"
+    touch "$SET_FILE-chinese"
+    ;;
+esac
 
 echo "------------ Check Start ------------"
 ls -l package/xzhhzx222
