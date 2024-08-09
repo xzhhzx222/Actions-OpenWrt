@@ -69,8 +69,10 @@ case $BUILD_BRANCH in
     LOGO_FILE=package/xzhhzx222/luci-app-wechatpush/root/usr/share/wechatpush/api/logo.jpg
     # SET_FILE=package/lean/default-settings/files/zzz-default-settings
     git clone https://github.com/coolsnowwolf/luci.git package/xzhhzx222/luci
-    mv -vf package/xzhhzx222/luci/applications/luci-app-softethervpn package/xzhhzx222/luci-app-softethervpn
+    mv -vf package/xzhhzx222/luci/applications/luci-app-softethervpn/ feeds/luci/applications/
+    ln -sf $PWD/feeds/luci/applications/luci-app-softethervpn/ $PWD/package/feeds/luci/luci-app-softethervpn
     rm -rf package/xzhhzx222/luci
+    
     git clone https://github.com/tty228/luci-app-wechatpush.git package/xzhhzx222/luci-app-wechatpush
     # sed -i 's/\${str_linefeed}/\\\\n/g' package/xzhhzx222/luci-app-wechatpush/root/usr/share/wechatpush/api/qywx_mpnews.json
     sed -i 's/\${1} ${nowtime}/${nowtime}\\\\n${1}/g' package/xzhhzx222/luci-app-wechatpush/root/usr/share/wechatpush/api/qywx_mpnews.json
