@@ -1,0 +1,156 @@
+#
+# OpenWrt Configuration
+#
+CONFIG_TARGET_x86=y
+CONFIG_TARGET_x86_64=y
+CONFIG_TARGET_x86_64_DEVICE_generic=y
+
+#
+# Root filesystem archives
+#
+# CONFIG_TARGET_ROOTFS_TARGZ is not set
+
+#
+# Root filesystem images
+#
+# CONFIG_TARGET_ROOTFS_EXT4FS is not set
+CONFIG_TARGET_SQUASHFS_BLOCK_SIZE=1024
+CONFIG_GRUB_IMAGES=y
+CONFIG_GRUB_EFI_IMAGES=y
+CONFIG_GRUB_TIMEOUT="0"
+CONFIG_GRUB_TITLE="SAMWRT"
+CONFIG_QCOW2_IMAGES=y
+# CONFIG_VMDK_IMAGES is not set
+CONFIG_TARGET_IMAGES_GZIP=y
+
+#
+# Image Options
+#
+CONFIG_TARGET_KERNEL_PARTSIZE=16
+CONFIG_TARGET_ROOTFS_PARTSIZE=400
+
+#
+# Additional Pkgs
+#
+# CONFIG_PACKAGE_autosamba is not set
+CONFIG_PACKAGE_block-mount=y
+CONFIG_PACKAGE_default-settings=y
+CONFIG_PACKAGE_default-settings-chn=y
+CONFIG_PACKAGE_ethtool=y
+CONFIG_PACKAGE_firewall=y
+# CONFIG_PACKAGE_firewall4 is not set
+CONFIG_PACKAGE_htop=y
+CONFIG_PACKAGE_iperf3=y
+# CONFIG_PACKAGE_ipv6helper is not set
+CONFIG_PACKAGE_kmod-fs-exfat=y
+CONFIG_PACKAGE_kmod-fs-ext4=y
+CONFIG_PACKAGE_kmod-fs-f2fs=y
+CONFIG_PACKAGE_kmod-hid=y
+CONFIG_PACKAGE_kmod-hid-generic=y
+CONFIG_PACKAGE_kmod-input-evdev=y
+CONFIG_PACKAGE_kmod-lib-crc16=y
+CONFIG_PACKAGE_kmod-lib-textsearch=y
+CONFIG_PACKAGE_kmod-scsi-core=y
+CONFIG_PACKAGE_kmod-usb-core=y
+CONFIG_PACKAGE_kmod-usb-hid=y
+CONFIG_PACKAGE_kmod-usb-storage=y
+CONFIG_PACKAGE_kmod-usb-storage-extras=y
+CONFIG_PACKAGE_kmod-usb-storage-uas=y
+CONFIG_PACKAGE_kmod-vmxnet3=y
+CONFIG_PACKAGE_lm-sensors=y
+CONFIG_PACKAGE_nano-plus=y
+CONFIG_PACKAGE_openssl-util=y
+CONFIG_PACKAGE_open-vm-tools=n
+CONFIG_PACKAGE_open-vm-tools-fuse=n
+CONFIG_PACKAGE_qemu-ga=y
+CONFIG_PACKAGE_sysfsutils=y
+CONFIG_PACKAGE_wget-ssl=y
+CONFIG_PACKAGE_vim-fuller=y
+
+#
+# DDNS Pkgs
+#
+# CONFIG_PACKAGE_ddns-scripts_aliyun is not set
+CONFIG_PACKAGE_ddns-scripts-cloudflare=y
+CONFIG_PACKAGE_ddns-scripts_cloudflare.com-v4=y
+# CONFIG_PACKAGE_ddns-scripts_dnspod is not set
+
+#
+# OpenClash Pkgs
+#
+CONFIG_PACKAGE_luci=y
+CONFIG_PACKAGE_luci-base=y
+CONFIG_PACKAGE_coreutils=y
+CONFIG_PACKAGE_coreutils-nohup=y
+# CONFIG_PACKAGE_dnsmasq is not set
+CONFIG_PACKAGE_dnsmasq-full=y
+CONFIG_PACKAGE_bash=y
+CONFIG_PACKAGE_curl=y
+CONFIG_PACKAGE_ca-certificates=y
+CONFIG_PACKAGE_ipset=y
+CONFIG_PACKAGE_ip-full=y
+CONFIG_PACKAGE_libcap=y
+CONFIG_PACKAGE_libcap-bin=y
+CONFIG_PACKAGE_ruby=y
+CONFIG_PACKAGE_ruby-yaml=y
+CONFIG_PACKAGE_unzip=y
+CONFIG_PACKAGE_iptables=y
+CONFIG_PACKAGE_kmod-ipt-nat=y
+CONFIG_PACKAGE_iptables-mod-tproxy=y
+CONFIG_PACKAGE_iptables-mod-extra=y
+CONFIG_PACKAGE_kmod-tun=y
+CONFIG_PACKAGE_luci-compat=y
+CONFIG_PACKAGE_kmod-inet-diag=y
+CONFIG_PACKAGE_kmod-nft-tproxy=y
+
+#
+# Wechatpush Pkgs
+#
+CONFIG_PACKAGE_iputils-arping=y
+CONFIG_PACKAGE_curl=y
+CONFIG_PACKAGE_jq=y
+
+#
+# Default Pkgs
+#
+# CONFIG_PACKAGE_luci-app-accesscontrol is not set
+# CONFIG_PACKAGE_luci-app-adbyby-plus is not set
+# CONFIG_PACKAGE_luci-app-arpbind is not set
+# CONFIG_PACKAGE_luci-app-autoreboot is not set
+CONFIG_PACKAGE_luci-app-ddns=y
+# CONFIG_PACKAGE_luci-app-diskman is not set
+# CONFIG_PACKAGE_luci-app-diskman_INCLUDE_btrfs_progs is not set
+# CONFIG_PACKAGE_luci-app-diskman_INCLUDE_lsblk is not set
+# CONFIG_PACKAGE_luci-app-filetransfer is not set
+CONFIG_PACKAGE_luci-app-firewall=y
+# CONFIG_PACKAGE_luci-app-ipsec-vpnd is not set
+# CONFIG_PACKAGE_luci-app-nlbwmon is not set
+CONFIG_PACKAGE_luci-app-opkg=y
+# CONFIG_PACKAGE_luci-app-qbittorrent_static is not set
+# CONFIG_PACKAGE_luci-app-qbittorrent-simple_dynamic is not set
+CONFIG_PACKAGE_luci-app-ramfree=y
+# CONFIG_PACKAGE_luci-app-rclone_INCLUDE_rclone-ng is not set
+# CONFIG_PACKAGE_luci-app-rclone_INCLUDE_rclone-webui is not set
+# CONFIG_PACKAGE_luci-app-samba4 is not set
+CONFIG_PACKAGE_luci-app-serverchan=y
+CONFIG_PACKAGE_luci-app-softethervpn=y
+# CONFIG_PACKAGE_luci-app-ttyd is not set
+# CONFIG_PACKAGE_luci-app-unblockmusic is not set
+# CONFIG_PACKAGE_luci-app-unblockmusic_INCLUDE_UnblockNeteaseMusic_Go is not set
+# CONFIG_PACKAGE_luci-app-upnp is not set
+# CONFIG_PACKAGE_luci-app-vlmcsd is not set
+# CONFIG_PACKAGE_luci-app-vsftpd is not set
+# CONFIG_PACKAGE_luci-app-wireguard is not set
+CONFIG_PACKAGE_luci-app-wol=y
+# CONFIG_PACKAGE_luci-app-xlnetacc is not set
+# CONFIG_PACKAGE_luci-app-zerotier is not set
+
+#
+# Other Pkgs
+#
+CONFIG_PACKAGE_luci-app-advanced=y
+CONFIG_PACKAGE_luci-app-control-weburl=y
+CONFIG_PACKAGE_luci-app-openclash=y
+CONFIG_PACKAGE_luci-app-ssr-plus=y
+CONFIG_PACKAGE_luci-app-timecontrol=y
+CONFIG_PACKAGE_luci-app-wechatpush=y

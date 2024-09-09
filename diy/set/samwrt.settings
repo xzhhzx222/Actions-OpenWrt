@@ -1,0 +1,556 @@
+#!/bin/sh
+
+# Decide Release Version
+# OpenWrt or ImmortalWrt
+DISTRIB_ID=$(grep DISTRIB_ID /etc/openwrt_release | cut -d "'" -f 2)
+# Master or openwrt-23.05
+LUCI_NAME=$(grep '^luciname' /usr/lib/lua/luci/version.lua | cut -d '"' -f2 | cut -d ' ' -f2)
+
+# Luci Settings
+uci set luci.main.lang=zh_cn
+uci commit luci
+
+# System Settings
+uci -q batch <<-EOF
+	set system.@system[0].hostname='SamWrt'
+	set system.@system[0].timezone='CST-8'
+	set system.@system[0].zonename='Asia/Shanghai'
+	
+	set system.ntp.enable_server='1'
+	set system.ntp.use_dhcp='0'
+	delete system.ntp.server
+	add_list system.ntp.server='ntp1.aliyun.com'
+	add_list system.ntp.server='ntp.tencent.com'
+	add_list system.ntp.server='ntp.ntsc.ac.cn'
+	add_list system.ntp.server='time.ustc.edu.cn'
+EOF
+uci commit system
+
+# Fstab Settings
+uci set fstab.@global[0].anon_mount=1
+uci commit fstab
+
+# DDNS Settings
+uci del ddns.myddns_ipv4
+uci del ddns.myddns_ipv6
+uci set ddns.cf_root=service
+uci set ddns.cf_root.enabled='0'
+uci set ddns.cf_root.lookup_host='xzhhzx222.com'
+uci set ddns.cf_root.use_ipv6='0'
+uci set ddns.cf_root.service_name='cloudflare.com-v4'
+uci set ddns.cf_root.domain='@xzhhzx222.com'
+uci set ddns.cf_root.username='Bearer'
+uci set ddns.cf_root.ip_source='interface'
+uci set ddns.cf_root.ip_interface='pppoe-wan'
+uci set ddns.cf_root.interface='wan'
+uci set ddns.cf_root.use_syslog='2'
+uci set ddns.cf_root.check_interval='5'
+uci set ddns.cf_root.check_unit='minutes'
+uci set ddns.cf_root.force_interval='24'
+uci set ddns.cf_root.force_unit='hours'
+uci set ddns.cf_www=service
+uci set ddns.cf_www.enabled='0'
+uci set ddns.cf_www.lookup_host='www.xzhhzx222.com'
+uci set ddns.cf_www.use_ipv6='0'
+uci set ddns.cf_www.service_name='cloudflare.com-v4'
+uci set ddns.cf_www.domain='www@xzhhzx222.com'
+uci set ddns.cf_www.username='Bearer'
+uci set ddns.cf_www.ip_source='interface'
+uci set ddns.cf_www.ip_interface='pppoe-wan'
+uci set ddns.cf_www.interface='wan'
+uci set ddns.cf_www.use_syslog='2'
+uci set ddns.cf_www.check_interval='5'
+uci set ddns.cf_www.check_unit='minutes'
+uci set ddns.cf_www.force_interval='24'
+uci set ddns.cf_www.force_unit='hours'
+uci set ddns.cf_cloud=service
+uci set ddns.cf_cloud.enabled='0'
+uci set ddns.cf_cloud.lookup_host='cloud.xzhhzx222.com'
+uci set ddns.cf_cloud.use_ipv6='0'
+uci set ddns.cf_cloud.service_name='cloudflare.com-v4'
+uci set ddns.cf_cloud.domain='cloud@xzhhzx222.com'
+uci set ddns.cf_cloud.username='Bearer'
+uci set ddns.cf_cloud.ip_source='interface'
+uci set ddns.cf_cloud.ip_interface='pppoe-wan'
+uci set ddns.cf_cloud.interface='wan'
+uci set ddns.cf_cloud.use_syslog='2'
+uci set ddns.cf_cloud.check_interval='5'
+uci set ddns.cf_cloud.check_unit='minutes'
+uci set ddns.cf_cloud.force_interval='24'
+uci set ddns.cf_cloud.force_unit='hours'
+uci set ddns.cf_doc=service
+uci set ddns.cf_doc.enabled='0'
+uci set ddns.cf_doc.lookup_host='doc.xzhhzx222.com'
+uci set ddns.cf_doc.use_ipv6='0'
+uci set ddns.cf_doc.service_name='cloudflare.com-v4'
+uci set ddns.cf_doc.domain='doc@xzhhzx222.com'
+uci set ddns.cf_doc.username='Bearer'
+uci set ddns.cf_doc.ip_source='interface'
+uci set ddns.cf_doc.ip_interface='pppoe-wan'
+uci set ddns.cf_doc.interface='wan'
+uci set ddns.cf_doc.use_syslog='2'
+uci set ddns.cf_doc.check_interval='5'
+uci set ddns.cf_doc.check_unit='minutes'
+uci set ddns.cf_doc.force_interval='24'
+uci set ddns.cf_doc.force_unit='hours'
+uci set ddns.cf_media=service
+uci set ddns.cf_media.enabled='0'
+uci set ddns.cf_media.lookup_host='media.xzhhzx222.com'
+uci set ddns.cf_media.use_ipv6='0'
+uci set ddns.cf_media.service_name='cloudflare.com-v4'
+uci set ddns.cf_media.domain='media@xzhhzx222.com'
+uci set ddns.cf_media.username='Bearer'
+uci set ddns.cf_media.ip_source='interface'
+uci set ddns.cf_media.ip_interface='pppoe-wan'
+uci set ddns.cf_media.interface='wan'
+uci set ddns.cf_media.use_syslog='2'
+uci set ddns.cf_media.check_interval='5'
+uci set ddns.cf_media.check_unit='minutes'
+uci set ddns.cf_media.force_interval='24'
+uci set ddns.cf_media.force_unit='hours'
+uci set ddns.cf_remotely=service
+uci set ddns.cf_remotely.enabled='0'
+uci set ddns.cf_remotely.lookup_host='remotely.xzhhzx222.com'
+uci set ddns.cf_remotely.use_ipv6='0'
+uci set ddns.cf_remotely.service_name='cloudflare.com-v4'
+uci set ddns.cf_remotely.domain='remotely@xzhhzx222.com'
+uci set ddns.cf_remotely.username='Bearer'
+uci set ddns.cf_remotely.ip_source='interface'
+uci set ddns.cf_remotely.ip_interface='pppoe-wan'
+uci set ddns.cf_remotely.interface='wan'
+uci set ddns.cf_remotely.use_syslog='2'
+uci set ddns.cf_remotely.check_interval='5'
+uci set ddns.cf_remotely.check_unit='minutes'
+uci set ddns.cf_remotely.force_interval='24'
+uci set ddns.cf_remotely.force_unit='hours'
+uci commit ddns
+
+# DHCP Settings
+uci set dhcp.@dnsmasq[0].rebind_protection='0'
+uci set dhcp.@dnsmasq[0].sequential_ip='1'
+uci set dhcp.@dnsmasq[0].filter_aaaa='1'
+uci set dhcp.@dnsmasq[0].cachesize='0'
+while uci -q get dhcp.@host[-1] > /dev/null; do
+	uci del dhcp.@host[-1]
+done
+for i in $(seq 0 4); do
+	uci add dhcp host
+	uci set dhcp.@host[-1].ip='10.0.0.1'$i''
+	uci set dhcp.@host[-1].leasetime='infinite'
+done
+uci set dhcp.@host[0].name='Sam-Desktop'
+uci set dhcp.@host[0].mac='70:4d:7b:63:0a:37'
+uci set dhcp.@host[1].name='Sam-Legion'
+uci set dhcp.@host[1].mac='b0:3c:dc:8c:71:de'
+uci set dhcp.@host[2].name='Sophie-Xiaoxin'
+uci set dhcp.@host[2].mac='08:5b:d6:b0:76:83'
+uci set dhcp.@host[3].name='Mom-Xiaomi13'
+uci set dhcp.@host[3].mac='ee:cc:da:bf:0a:04'
+uci set dhcp.@host[4].name='Dad-K40S'
+uci set dhcp.@host[4].mac='be:36:f0:5e:0f:67'
+# while uci -q get dhcp.@domain[-1] > /dev/null; do
+#   uci del dhcp.@domain[-1]
+# done
+# for i in $(seq 0 2); do
+# 	uci add dhcp domain
+# 	uci set dhcp.@domain[$i].ip='10.0.0.'$(($i+1))''
+# done
+# uci set dhcp.@domain[0].name='samesxi.com'
+# uci set dhcp.@domain[1].name='samwrt.com'
+# uci set dhcp.@domain[2].name='samnas.com'
+uci set dhcp.lan.start='20'
+uci set dhcp.lan.limit='99'
+uci set dhcp.lan.force='1'
+if [[ $LUCI_NAME == openwrt-* ]]; then
+	uci del dhcp.lan.ra
+	uci del dhcp.lan.ra_slaac
+	uci del dhcp.lan.dhcpv6
+	uci del dhcp.lan.ndp
+	uci del dhcp.lan.ra_flags
+	uci add_list dhcp.lan.ra_flags='none'
+	uci del dhcp.wan.ra_flags
+	uci add_list dhcp.wan.ra_flags='none'
+fi
+uci commit dhcp
+
+# Firewall Settings
+uci set firewall.@defaults[-1].fullcone='1'
+uci del firewall.@defaults[-1].flow_offloading
+uci del firewall.@defaults[-1].flow_offloading_hw
+uci del_list firewall.@zone[1].network='wan6'
+while uci -q get firewall.@zone[2] > /dev/null; do
+	uci del firewall.@zone[2]
+done
+uci add firewall zone
+uci set firewall.@zone[-1].name='iptv'
+if [[ $LUCI_NAME == openwrt-* ]]; then
+	uci add_list firewall.@zone[-1].network='iptv'
+else
+	uci set firewall.@zone[-1].network='iptv'
+fi
+uci set firewall.@zone[-1].input='ACCEPT'
+uci set firewall.@zone[-1].output='ACCEPT'
+uci set firewall.@zone[-1].forward='ACCEPT'
+while uci -q get firewall.@redirect[-1] > /dev/null; do
+	uci del firewall.@redirect[-1]
+done
+for i in $(seq 0 9); do
+	uci add firewall redirect
+	uci set firewall.@redirect[-1].target='DNAT'
+	uci set firewall.@redirect[-1].family='ipv4'
+	if [[ $LUCI_NAME == openwrt-* ]]; then
+		uci add_list firewall.@redirect[-1].proto='tcp'
+	else
+		uci set firewall.@redirect[-1].proto='tcp'
+	fi
+	uci set firewall.@redirect[-1].src='wan'
+	uci set firewall.@redirect[-1].dest='lan'
+done
+for i in $(seq 0 8); do
+    if [ $i -le 1 ]; then
+	uci set firewall.@redirect[$i].dest_ip='10.0.0.1'
+    elif [ $i -le 4 ]; then
+        uci set firewall.@redirect[$i].dest_ip='10.0.0.2'
+    else
+        uci set firewall.@redirect[$i].dest_ip='10.0.0.3'
+    fi
+done
+for i in $(seq 0 3) 9; do
+	uci set firewall.@redirect[$i].enabled='0'
+done
+uci set firewall.@redirect[0].name='SamPve WebUI'
+uci set firewall.@redirect[0].src_dport='28006'
+uci set firewall.@redirect[0].dest_port='8006'
+uci set firewall.@redirect[1].name='SamPve SSH'
+uci set firewall.@redirect[1].src_dport='28022'
+uci set firewall.@redirect[1].dest_port='22'
+uci set firewall.@redirect[2].name='SamWrt SSH'
+uci set firewall.@redirect[2].src_dport='27022'
+uci set firewall.@redirect[2].dest_port='22'
+uci set firewall.@redirect[3].name='SamWrt WebUI'
+uci set firewall.@redirect[3].src_dport='27081'
+uci set firewall.@redirect[3].dest_port='80'
+uci set firewall.@redirect[4].name='SamWrt Socks'
+uci set firewall.@redirect[4].src_dport='27893'
+uci set firewall.@redirect[4].dest_port='7893'
+uci set firewall.@redirect[5].name='SamNas qb 16888'
+uci set firewall.@redirect[5].proto='tcp udp'
+uci set firewall.@redirect[5].src_dport='16888'
+uci set firewall.@redirect[5].dest_port='16888'
+uci set firewall.@redirect[6].name='SamNas SSH'
+uci set firewall.@redirect[6].src_dport='27023'
+uci set firewall.@redirect[6].dest_port='22'
+uci set firewall.@redirect[7].name='SamNas traefik http'
+uci set firewall.@redirect[7].src_dport='27080'
+uci set firewall.@redirect[7].dest_port='27080'
+uci set firewall.@redirect[8].name='SamNas traefik https'
+uci set firewall.@redirect[8].src_dport='27443'
+uci set firewall.@redirect[8].dest_port='27443'
+uci set firewall.@redirect[9].name='Sam-Desktop Remote'
+uci set firewall.@redirect[9].src_dport='3389'
+uci set firewall.@redirect[9].dest_ip='10.0.0.10'
+uci set firewall.@redirect[9].dest_port='3389'
+for i in $(seq 3 6); do
+	uci set firewall.@rule[$i].enabled='0'
+done
+uci commit firewall
+
+# Network Settings
+# lan
+uci set network.lan.proto='static'
+uci set network.lan.ipaddr='10.0.0.2'
+uci set network.lan.netmask='255.255.255.0'
+uci del network.lan.ip6assign
+uci set network.lan.delegate='0'
+# wan
+uci set network.wan.proto='pppoe'
+uci set network.wan.ipv6='0'
+uci set network.wan.delegate='0'
+uci del network.wan6
+uci del network.globals.ula_prefix
+if [[ $LUCI_NAME == openwrt-* ]]; then
+	# loop
+	uci set network.loopback.device='lo'
+	# lan
+	uci del network.lan.type
+	uci del network.lan.ifname
+	uci set network.lan.device='br-lan'
+	uci del network.lan.dns
+	uci add_list network.lan.dns='223.5.5.5'
+	uci add_list network.lan.dns='8.8.4.4'
+	while uci -q get network.@device[-1] > /dev/null; do
+		uci del network.@device[-1]
+	done
+	uci add network device
+	uci set network.@device[-1].type='bridge'
+	uci set network.@device[-1].name='br-lan'
+	# uci del network.@device[0].ports
+	uci add_list network.@device[-1].ports='eth0'
+	uci add_list network.@device[-1].ports='eth1'
+	uci add_list network.@device[-1].ports='eth2'
+	uci add_list network.@device[-1].ports='eth3'
+	uci add_list network.@device[-1].ports='eth4'
+	uci add_list network.@device[-1].ports='tap_vpn'
+	uci set network.@device[-1].ipv6='0'
+	# wan
+	uci set network.wan.device='eth5'
+	uci set network.wan.sourcefilter='0'
+	# iptv
+	uci del network.iptv
+	uci set network.iptv=interface
+	uci set network.iptv.proto='none'
+	uci set network.iptv.device='br-iptv'
+	uci set network.iptv.delegate='0'
+	uci add network device
+	uci set network.@device[-1].type='bridge'
+	uci set network.@device[-1].name='br-iptv'
+	uci add_list network.@device[-1].ports='eth4.85'
+	uci add_list network.@device[-1].ports='eth5.85'
+	uci set network.@device[-1].ipv6='0'
+else
+	# lan
+	uci set network.lan.dns='223.5.5.5 8.8.4.4'
+	uci set network.lan.ifname='eth0 eth1 eth2 eth3 eth4 tap_vpn'
+	# wan
+	uci set network.wan.ifname='eth5'
+	# iptv
+	uci set network.iptv=interface
+	uci set network.iptv.type='bridge'
+	uci set network.iptv.proto='none'
+	uci set network.iptv.ifname='eth4.85 eth5.85'
+	uci set network.iptv.auto='1'
+	uci set network.iptv.delegate='0'
+fi
+uci commit network
+
+# Openclash Settings
+uci set openclash.config.enable_meta_core='1'
+uci set openclash.config.common_ports='21 22 23 53 80 123 143 194 443 465 587 853 993 995 998 2052 2053 2082 2083 2086 2095 2096 5222 5228 5229 5230 8080 8443 8880 8888 8889'
+# uci set openclash.config.china_ip_route='1'
+uci set openclash.config.intranet_allowed='0'
+uci set openclash.config.geoip_auto_update='1'
+uci set openclash.config.geoip_update_week_time='*'
+uci set openclash.config.geoip_update_day_time='8'
+uci set openclash.config.geoip_custom_url='https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geoip.dat'
+uci set openclash.config.core_version='linux-amd64-v3'
+uci set openclash.config.log_level='error'
+uci set openclash.config.enable_custom_dns='1'
+uci set openclash.config.enable_tcp_concurrent='1'
+uci set openclash.config.enable_unified_delay='1'
+uci set openclash.config.keep_alive_interval='15'
+uci set openclash.config.find_process_mode='off'
+uci set openclash.config.global_client_fingerprint='chrome'
+uci set openclash.config.geodata_loader='standard'
+uci set openclash.config.enable_geoip_dat='1'
+uci set openclash.config.enable_meta_sniffer='1'
+uci set openclash.config.enable_meta_sniffer_pure_ip='1'
+uci set openclash.config.enable_meta_sniffer_custom ='1'
+uci set openclash.config.enable_custom_clash_rules='1'
+while uci -q get openclash.@dns_servers[-1] > /dev/null; do
+  uci del openclash.@dns_servers[-1]
+done
+for i in $(seq 0 4); do
+	uci add openclash dns_servers
+	uci set openclash.@dns_servers[-1].enabled='1'
+    if [ $i -le 1 ]; then
+        uci set openclash.@dns_servers[-1].group='nameserver'
+        uci set openclash.@dns_servers[-1].type='https'
+    elif [ $i -le 3 ]; then
+        uci set openclash.@dns_servers[-1].group='fallback'
+        uci set openclash.@dns_servers[-1].type='tls'
+    else
+        uci set openclash.@dns_servers[-1].group='default'
+        uci set openclash.@dns_servers[-1].type='udp'
+    fi
+done
+uci set openclash.@dns_servers[0].ip='doh.pub/dns-query'
+uci set openclash.@dns_servers[1].ip='dns.alidns.com/dns-query'
+uci set openclash.@dns_servers[2].ip='8.8.4.4'
+uci set openclash.@dns_servers[3].ip='1.1.1.1'
+uci set openclash.@dns_servers[4].ip='223.5.5.5'
+# while uci -q get openclash.@authentication[-1] > /dev/null; do
+#   uci del openclash.@authentication[-1]
+# done
+echo >> /etc/openclash/custom/openclash_custom_rules.list
+cat >> /etc/openclash/custom/openclash_custom_rules.list <<EOF
+- DOMAIN-SUFFIX,btschool.club,DIRECT
+- DOMAIN-SUFFIX,haidan.video,DIRECT
+- DOMAIN-SUFFIX,hdarea.club,DIRECT
+- DOMAIN-SUFFIX,hddolby.com,DIRECT
+- DOMAIN-SUFFIX,hdfans.org,DIRECT
+- DOMAIN-SUFFIX,htpt.cc,DIRECT
+- DOMAIN-SUFFIX,hdtime.org,DIRECT
+- DOMAIN-SUFFIX,m-team.cc,DIRECT
+- DOMAIN-SUFFIX,m-team.io,DIRECT
+- DOMAIN-SUFFIX,nicept.net,DIRECT
+- DOMAIN-SUFFIX,okpt.net,DIRECT
+- DOMAIN-SUFFIX,pttime.org,DIRECT
+- DOMAIN-SUFFIX,ultrahd.net,DIRECT
+- DOMAIN-SUFFIX,bwh81.net,DIRECT
+EOF
+uci commit openclash
+
+# Wechatpush or Serverchan Settings
+if [[ $LUCI_NAME == openwrt-* ]]; then
+	uci set wechatpush.config.enable='0'
+	uci set wechatpush.config.device_name='SamWrt'
+	uci set wechatpush.config.jsonpath='/usr/share/wechatpush/api/qywx_mpnews.json'
+	uci set wechatpush.config.oui_data='2'
+	uci set wechatpush.config.reset_regularly='1'
+	uci set wechatpush.config.debuglevel='1'
+	uci set wechatpush.config.get_ipv4_mode='1'
+	uci set wechatpush.config.ipv4_interface='pppoe-wan'
+	uci del wechatpush.config.cpu_notification
+	uci del wechatpush.config.cpu_notification='load'
+	uci del wechatpush.config.cpu_notification='temp'
+	uci set wechatpush.config.cpu_load_threshold='2'
+	uci set wechatpush.config.temperature_threshold='80'
+	uci del wechatpush.config.login_notification
+	uci add_list wechatpush.config.login_notification='web_logged'
+	uci add_list wechatpush.config.login_notification='ssh_logged'
+	uci add_list wechatpush.config.login_notification='web_login_failed'
+	uci add_list wechatpush.config.login_notification='ssh_login_failed'
+	uci set wechatpush.config.login_max_num='3'
+	uci set wechatpush.config.crontab_mode='2'
+	uci set wechatpush.config.crontab_interval_time='4'
+	uci set wechatpush.config.send_title='路由状态'
+	uci del wechatpush.config.send_notification
+	uci add_list wechatpush.config.send_notification='router_status'
+	uci add_list wechatpush.config.send_notification='router_temp'
+	uci add_list wechatpush.config.send_notification='wan_info'
+	uci add_list wechatpush.config.send_notification='client_list'
+	uci set wechatpush.config.do_not_disturb_mode='2'
+	uci set wechatpush.config.do_not_disturb_starttime='0'
+	uci set wechatpush.config.do_not_disturb_endtime='8'
+	uci set wechatpush.config.cpu_threshold_duration='300'
+	uci set wechatpush.config.cpu_notification_delay='3600'
+	uci commit wechatpush
+else
+	# uci set serverchan.serverchan.serverchan_enable='0'
+	uci set serverchan.serverchan.jsonpath='/usr/share/serverchan/api/qywx_mpnews.json'
+	uci set serverchan.serverchan.mediapath='/usr/share/serverchan/api/logo.jpg'
+	uci set serverchan.serverchan.device_name='SamWrt'
+	uci set serverchan.serverchan.oui_data='2'
+	uci set serverchan.serverchan.reset_regularly='1'
+	uci set serverchan.serverchan.debuglevel='1'
+	uci set serverchan.serverchan.serverchan_ipv4='2'
+	# uci set serverchan.serverchan.ipv4_interface='pppoe-wan'
+	uci set serverchan.serverchan.serverchan_up='0'
+	uci set serverchan.serverchan.serverchan_down='0'
+	uci del serverchan.serverchan.cpuload
+	uci set serverchan.serverchan.cpuload_enable='0'
+	uci set serverchan.serverchan.web_logged='1'
+	uci set serverchan.serverchan.ssh_logged='1'
+	uci set serverchan.serverchan.web_login_failed='1'
+	uci set serverchan.serverchan.ssh_login_failed='1'
+	uci set serverchan.serverchan.login_max_num='3'
+	uci set serverchan.serverchan.web_login_black='0'
+	uci set serverchan.serverchan.port_knocking='0'
+	uci set serverchan.serverchan.crontab='2'
+	uci set serverchan.serverchan.interval_time='4'
+	uci set serverchan.serverchan.send_title='路由状态'
+	uci set serverchan.serverchan.router_status='1'
+	uci set serverchan.serverchan.router_temp='1'
+	uci set serverchan.serverchan.router_wan='1'
+	uci set serverchan.serverchan.client_list='1'
+	uci set serverchan.serverchan.serverchan_sheep='2'
+	uci set serverchan.serverchan.starttime='0'
+	uci set serverchan.serverchan.endtime='8'
+	uci commit serverchan
+fi
+
+# Turboacc Settings
+uci set turboacc.config.sfe_flow='0'
+uci set turboacc.config.fullcone_nat='1'
+uci set turboacc.config.bbr_cca='0'
+uci commit turboacc
+
+# uci set upnpd.config.enabled='1'
+# uci commit upnpd
+
+# Wolplus Settings
+# uci set wolplus.pc1=macclient
+# uci set wolplus.pc1.name='Sam-Desktop'
+# uci set wolplus.pc1.maceth='br-lan'
+# uci set wolplus.pc1.macaddr='70:4D:7B:63:0A:37'
+# uci commit wolplus
+
+sed -i '/helloworld/d' /etc/opkg/distfeeds.conf
+sed -i '/lienol/d' /etc/opkg/distfeeds.conf
+sed -i '/other/d' /etc/opkg/distfeeds.conf
+sed -i '/passwall/d' /etc/opkg/distfeeds.conf
+# sed -i '/sundaqiang/d' /etc/opkg/distfeeds.conf
+
+# cat >> /etc/dnsmasq.conf <<EOF
+# dhcp-option-force=125,00:00:00:00:1a:02:06:48:47:57:2d:43:54:03:04:5a:58:48:4e:0a:02:20:00:0b:02:00:55:0d:02:00:2e
+# dhcp-option=15
+# dhcp-option=28
+# dhcp-option=60,00:00:01:06:68:75:61:71:69:6E:02:0A:48:47:55:34:32:31:4E:20:76:33:03:0A:48:47:55:34:32:31:4E:20:76:33:04:10:32:30:30:2E:55:59:59:2E:30:2E:41:2E:30:2E:53:48:05:04:00:01:00:50
+# EOF
+cat >> /etc/dnsmasq.conf <<EOF
+dhcp-option-force=vi-encap:0,2,"HGW-CT"
+dhcp-option-force=lan,125,00:00:00:00:10:02:06:48:47:57:2d:43:54:0a:02:20:00:0b:02:00:55
+dhcp-option=lan,60,00:00:01:00:02:03:43:50:45:03:0e:45:38:20:47:50:4f:4e:20:52:4f:55:54:45:52:04:03:31:2E:30
+dhcp-option=lan,15
+dhcp-option=lan,28
+EOF
+
+sed -i '/DISTRIB_REVISION/d' /etc/openwrt_release
+echo "DISTRIB_REVISION=" >> /etc/openwrt_release
+sed -i '/DISTRIB_DESCRIPTION/d' /etc/openwrt_release
+echo "DISTRIB_DESCRIPTION='SamWrt '" >> /etc/openwrt_release
+
+# if [[ $LUCI_NAME == openwrt-* ]] && [ $DISTRIB_ID = ImmortalWrt ]; then
+if [ $DISTRIB_ID = ImmortalWrt ]; then
+	sed -i "/log-facility/d" "/etc/dnsmasq.conf"
+	echo "log-facility=/dev/null" >> "/etc/dnsmasq.conf"
+	
+	ln -sf "/sbin/ip" "/usr/bin/ip"
+else
+	rm -f /usr/lib/lua/luci/view/admin_status/index/mwan.htm
+	rm -f /usr/lib/lua/luci/view/admin_status/index/upnp.htm
+	rm -f /usr/lib/lua/luci/view/admin_status/index/ddns.htm
+	rm -f /usr/lib/lua/luci/view/admin_status/index/minidlna.htm
+	
+	# sed -i 's/\"services\"/\"nas\"/g' /usr/lib/lua/luci/controller/aria2.lua
+	# sed -i 's/services/nas/g' /usr/lib/lua/luci/view/aria2/overview_status.htm
+	# sed -i 's/\"services\"/\"nas\"/g' /usr/lib/lua/luci/controller/hd_idle.lua
+	# sed -i 's/\"services\"/\"nas\"/g' /usr/lib/lua/luci/controller/samba.lua
+	# sed -i 's/\"services\"/\"nas\"/g' /usr/lib/lua/luci/controller/samba4.lua
+	# sed -i 's/\"services\"/\"nas\"/g' /usr/lib/lua/luci/controller/minidlna.lua
+	# sed -i 's/\"services\"/\"nas\"/g' /usr/lib/lua/luci/controller/transmission.lua
+	# sed -i 's/\"services\"/\"nas\"/g' /usr/lib/lua/luci/controller/mjpg-streamer.lua
+	# sed -i 's/\"services\"/\"nas\"/g' /usr/lib/lua/luci/controller/p910nd.lua
+	# sed -i 's/\"services\"/\"nas\"/g' /usr/lib/lua/luci/controller/usb_printer.lua
+	# sed -i 's/\"services\"/\"nas\"/g' /usr/lib/lua/luci/controller/xunlei.lua
+	# sed -i 's/services/nas/g'  /usr/lib/lua/luci/view/minidlna_status.htm
+	
+	# sed -i 's#downloads.openwrt.org#mirrors.tencent.com/lede#g' /etc/opkg/distfeeds.conf
+	# sed -i 's/root::0:0:99999:7:::/root:$1$V4UetPzk$CYXluq4wUazHjmCDBCqXF.:0:0:99999:7:::/g' /etc/shadow
+	# sed -i 's/root:::0:99999:7:::/root:$1$V4UetPzk$CYXluq4wUazHjmCDBCqXF.:0:0:99999:7:::/g' /etc/shadow
+	
+	sed -i "s/# //g" /etc/opkg/distfeeds.conf
+	# sed -i '/openwrt_luci/ { s/snapshots/releases\/18.06.9/g; }'  /etc/opkg/distfeeds.conf
+	
+	sed -i '/check_signature/d' /etc/opkg.conf
+
+	sed -i '/REDIRECT --to-ports 53/d' /etc/firewall.user
+
+	sed -i '/option disabled/d' /etc/config/wireless
+	sed -i '/set wireless.radio${devidx}.disabled/d' /lib/wifi/mac80211.sh
+
+	# sed -i '/DISTRIB_REVISION/d' /etc/openwrt_release
+	# echo "DISTRIB_REVISION='R24.8.1'" >> /etc/openwrt_release
+	# sed -i '/DISTRIB_DESCRIPTION/d' /etc/openwrt_release
+	# echo "DISTRIB_DESCRIPTION='OpenWrt '" >> /etc/openwrt_release
+
+	sed -i '/log-facility/d' /etc/dnsmasq.conf
+	echo "log-facility=/dev/null" >> /etc/dnsmasq.conf
+
+	#ln -sf /sbin/ip /usr/bin/ip
+
+	rm -rf /tmp/luci-modulecache/
+	rm -f /tmp/luci-indexcache
+fi
+
+exit 0

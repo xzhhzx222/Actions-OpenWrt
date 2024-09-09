@@ -1,0 +1,389 @@
+#!/bin/sh
+
+# Get Release Version
+DISTRIB_ID=$(grep DISTRIB_ID /etc/openwrt_release | cut -d "'" -f 2)
+
+# Luci Settings
+uci set luci.main.lang=zh_cn
+uci commit luci
+
+# System Settings
+uci set system.@system[0].hostname='JimmyWrt'
+uci set system.@system[0].timezone=CST-8
+uci set system.@system[0].zonename=Asia/Shanghai
+uci set system.ntp.enable_server='1'
+if [ "$DISTRIB_ID" = "ImmortalWrt" ]; then
+	uci set system.ntp.use_dhcp='0'
+	uci del system.ntp.server
+	uci add_list system.ntp.server='ntp.aliyun.com'
+	uci add_list system.ntp.server='time1.cloud.tencent.com'
+	uci add_list system.ntp.server='time.ustc.edu.cn'
+	uci add_list system.ntp.server='cn.pool.ntp.org'
+	uci del system.@imm_init[0]
+fi
+uci commit system
+
+# Fstab Settings
+uci set fstab.@global[0].anon_mount=1
+uci commit fstab
+
+# DDNS Settings
+uci del ddns.myddns_ipv4
+uci del ddns.myddns_ipv6
+uci set ddns.cf_jimmy=service
+uci set ddns.cf_jimmy.enabled='0'
+uci set ddns.cf_jimmy.lookup_host='jimmy.xzhhzx222.com'
+uci set ddns.cf_jimmy.use_ipv6='0'
+uci set ddns.cf_jimmy.service_name='cloudflare.com-v4'
+uci set ddns.cf_jimmy.domain='jimmy@xzhhzx222.com'
+uci set ddns.cf_jimmy.username='Bearer'
+uci set ddns.cf_jimmy.ip_source='interface'
+uci set ddns.cf_jimmy.ip_interface='pppoe-wan'
+uci set ddns.cf_jimmy.interface='wan'
+uci set ddns.cf_jimmy.use_syslog='2'
+uci set ddns.cf_jimmy.check_interval='5'
+uci set ddns.cf_jimmy.check_unit='minutes'
+uci set ddns.cf_jimmy.force_interval='24'
+uci set ddns.cf_jimmy.force_unit='hours'
+uci commit ddns
+
+# DHCP Settings
+uci set dhcp.@dnsmasq[0].sequential_ip='1'
+uci set dhcp.@dnsmasq[0].filter_aaaa='1'
+uci set dhcp.@dnsmasq[0].cachesize='0'
+while uci -q get dhcp.@host[-1] > /dev/null; do
+  uci del dhcp.@host[-1]
+done
+for i in $(seq 0 4); do
+	uci add dhcp host
+	# uci set dhcp.@host[$i].dns='1'
+	uci set dhcp.@host[$i].ip='192.168.0.1'$i''
+	uci set dhcp.@host[$i].leasetime='infinite'
+	if [ $i -gt 0 ]; then
+		do uci set dhcp.@host[$i].name='Lobby-PC'$i''
+	fi
+done
+uci set dhcp.@host[0].name='Jimmy-Server'
+uci set dhcp.@host[0].mac='E0:94:67:4A:1A:69'
+uci set dhcp.@host[1].mac='A8:A1:59:20:60:D5'
+uci set dhcp.@host[2].mac='A8:A1:59:20:60:A1'
+uci set dhcp.@host[3].mac='A8:A1:59:20:60:D7'
+uci set dhcp.@host[4].mac='A8:A1:59:20:60:9F'
+# while uci -q get dhcp.@domain[-1] > /dev/null; do
+#   uci del dhcp.@domain[-1]
+# done
+# for i in $(seq 0 2); do
+# 	uci add dhcp domain
+# 	uci set dhcp.@domain[$i].ip='192.168.0.'$(($i+1))''
+# done
+# uci set dhcp.@domain[0].name='jimmyesxi.com'
+# uci set dhcp.@domain[1].name='jimmywrt.com'
+# uci set dhcp.@domain[2].name='jimmynas.com'
+uci set dhcp.lan.start='20'
+uci set dhcp.lan.limit='99'
+uci set dhcp.lan.force='1'
+if [ "$DISTRIB_ID" = "ImmortalWrt" ]; then
+	uci del dhcp.lan.ra
+	uci del dhcp.lan.ra_slaac
+	uci del dhcp.lan.dhcpv6
+	uci del dhcp.lan.ndp
+	uci del dhcp.lan.ra_flags
+	uci add_list dhcp.lan.ra_flags='none'
+	uci del dhcp.wan.ra_flags
+	uci add_list dhcp.wan.ra_flags='none'
+fi
+uci commit dhcp
+
+# Firewall Settings
+uci del_list firewall.@zone[1].network='wan6'
+while uci -q get firewall.@redirect[-1] > /dev/null; do
+  uci del firewall.@redirect[-1]
+done
+for i in $(seq 0 10); do
+	uci add firewall redirect
+	uci set firewall.@redirect[-1].target='DNAT'
+	uci set firewall.@redirect[-1].family='ipv4'
+	if [ "$DISTRIB_ID" = "ImmortalWrt" ]; then
+		uci add_list firewall.@redirect[-1].proto='tcp'
+	else
+		uci set firewall.@redirect[-1].proto='tcp'
+	fi
+	uci set firewall.@redirect[-1].src='wan'
+	uci set firewall.@redirect[-1].dest='lan'
+done
+for i in $(seq 0 8); do
+    if [ $i -le 1 ]; then
+        uci set firewall.@redirect[$i].dest_ip='192.168.0.1'
+    elif [ $i -le 4 ]; then
+        uci set firewall.@redirect[$i].dest_ip='192.168.0.2'
+    else
+        uci set firewall.@redirect[$i].dest_ip='192.168.0.3'
+    fi
+done
+for i in $(seq 0 1) $(seq 3 5); do
+	uci set firewall.@redirect[$i].enabled='0'
+done
+uci set firewall.@redirect[0].name='JimmyEsxi SSH'
+uci set firewall.@redirect[0].src_dport='22022'
+uci set firewall.@redirect[0].dest_port='22'
+uci set firewall.@redirect[1].name='JimmyEsxi WebUI'
+uci set firewall.@redirect[1].src_dport='22443'
+uci set firewall.@redirect[1].dest_port='443'
+uci set firewall.@redirect[2].name='JimmyWrt OpenClash Socks'
+uci set firewall.@redirect[2].src_dport='7893'
+uci set firewall.@redirect[2].dest_port='7893'
+uci set firewall.@redirect[3].name='JimmyWrt SSH'
+uci set firewall.@redirect[3].src_dport='27022'
+uci set firewall.@redirect[3].dest_port='22'
+uci set firewall.@redirect[4].name='JimmyWrt WebUI'
+uci set firewall.@redirect[4].src_dport='27081'
+uci set firewall.@redirect[4].dest_port='80'
+uci set firewall.@redirect[5].name='JimmyNas portainer 9000'
+uci set firewall.@redirect[5].src_dport='9000'
+uci set firewall.@redirect[5].dest_port='9000'
+uci set firewall.@redirect[6].name='JimmyNas SSH'
+uci set firewall.@redirect[6].src_dport='27023'
+uci set firewall.@redirect[6].dest_port='22'
+uci set firewall.@redirect[7].name='JimmyNas traefik http'
+uci set firewall.@redirect[7].src_dport='27080'
+uci set firewall.@redirect[7].dest_port='27080'
+uci set firewall.@redirect[8].name='JimmyNas traefik https'
+uci set firewall.@redirect[8].src_dport='27443'
+uci set firewall.@redirect[8].dest_port='27443'
+for i in $(seq 3 6); do
+	uci set firewall.@rule[$i].enabled='0'
+done
+uci commit firewall
+
+# Network Settings
+uci set network.lan.proto='static'
+uci set network.lan.ipaddr='192.168.0.2'
+uci set network.lan.netmask='255.255.255.0'
+uci del network.lan.ip6assign
+uci set network.lan.delegate='0'
+if [ "$DISTRIB_ID" = "ImmortalWrt" ]; then
+	uci set network.lan.device='br-lan'
+	uci del network.lan.dns
+	uci add_list network.lan.dns='119.29.29.29'
+	uci add_list network.lan.dns='114.114.114.114'
+	uci del network.@device[0].ports
+	uci add_list network.@device[0].ports='eth0'
+	uci add_list network.@device[0].ports='eth1'
+	uci add_list network.@device[0].ports='eth2'
+	uci add_list network.@device[0].ports='eth4'
+	uci add_list network.@device[0].ports='eth5'
+	uci add_list network.@device[0].ports='tap_vpn'
+	uci set network.@device[0].ipv6='0'
+else
+	uci set network.lan.dns='119.29.29.29 114.114.114.114'
+	uci set network.lan.ifname='eth0 eth1 eth2 eth4 eth5 tap_vpn'
+fi
+uci del network.wan6
+uci set network.wan.proto='pppoe'
+uci set network.wan.delegate='0'
+uci set network.wan.ipv6='0'
+if [ "$DISTRIB_ID" = "ImmortalWrt" ]; then
+	uci set network.wan.device='eth3'
+else
+	uci set network.wan.ifname='eth3'
+fi
+uci del network.globals.ula_prefix
+uci commit network
+
+# Openclash Settings
+uci set openclash.config.enable_meta_core='1'
+uci set openclash.config.common_ports='21 22 23 53 80 123 143 194 443 465 587 853 993 995 998 2052 2053 2082 2083 2086 2095 2096 5222 5228 5229 5230 8080 8443 8880 8888 8889'
+uci set openclash.config.china_ip_route='1'
+uci set openclash.config.intranet_allowed='0'
+uci set openclash.config.geoip_auto_update='1'
+uci set openclash.config.geoip_update_week_time='*'
+uci set openclash.config.geoip_update_day_time='6'
+uci set openclash.config.geoip_custom_url='https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geoip.dat'
+uci set openclash.config.geosite_auto_update='1'
+uci set openclash.config.geosite_update_week_time='*'
+uci set openclash.config.geosite_update_day_time='7'
+uci set openclash.config.geosite_custom_url='https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geosite.dat'
+uci set openclash.config.chnr_auto_update='1'
+uci set openclash.config.chnr_update_week_time='*'
+uci set openclash.config.chnr_update_day_time='1'
+uci set openclash.config.cndomain_custom_url='https://raw.githubusercontent.com/felixonmars/dnsmasq-china-list/master/accelerated-domains.china.conf'
+# uci set openclash.config.enable_custom_dns='1'
+uci set openclash.config.enable_tcp_concurrent='1'
+uci set openclash.config.enable_unified_delay='1'
+uci set openclash.config.global_client_fingerprint='chrome'
+uci set openclash.config.geodata_loader='standard'
+uci set openclash.config.enable_geoip_dat='1'
+uci set openclash.config.enable_meta_sniffer='1'
+uci set openclash.config.enable_custom_clash_rules='1'
+while uci -q get openclash.@authentication[-1] > /dev/null; do
+  uci del openclash.@authentication[-1]
+done
+cat >> /etc/openclash/custom/openclash_custom_chnroute_pass.list <<EOF
+
+bing.com
+EOF
+cat >> /etc/openclash/custom/openclash_custom_rules.list <<EOF
+
+- DOMAIN-SUFFIX,m-team.cc,DIRECT
+- DOMAIN-SUFFIX,hddolby.com,DIRECT
+- DOMAIN-SUFFIX,okpt.net,DIRECT
+- DOMAIN-SUFFIX,ultrahd.net,DIRECT
+- DOMAIN-SUFFIX,hdarea.club,DIRECT
+- DOMAIN-SUFFIX,haidan.video,DIRECT
+- DOMAIN-SUFFIX,btschool.club,DIRECT
+- DOMAIN-SUFFIX,hdtime.org,DIRECT
+- DOMAIN-SUFFIX,pttime.org,DIRECT
+- DOMAIN-SUFFIX,htpt.cc,DIRECT
+- DOMAIN-SUFFIX,nicept.net,DIRECT
+- DOMAIN-SUFFIX,bwh81.net,DIRECT
+EOF
+uci commit openclash
+
+# Wechatpush or Serverchan Settings
+if [ "$DISTRIB_ID" = "ImmortalWrt" ]; then
+	uci set wechatpush.config.enable='0'
+	uci set wechatpush.config.device_name='JimmyWrt'
+	uci set wechatpush.config.jsonpath='/usr/share/wechatpush/api/qywx_mpnews.json'
+	uci set wechatpush.config.oui_data='2'
+	uci set wechatpush.config.reset_regularly='1'
+	uci set wechatpush.config.debuglevel='1'
+	uci set wechatpush.config.get_ipv4_mode='1'
+	uci set wechatpush.config.ipv4_interface='pppoe-wan'
+	uci del wechatpush.config.login_notification
+	uci add_list wechatpush.config.login_notification='web_logged'
+	uci add_list wechatpush.config.login_notification='ssh_logged'
+	uci add_list wechatpush.config.login_notification='web_login_failed'
+	uci add_list wechatpush.config.login_notification='ssh_login_failed'
+	uci set wechatpush.config.login_max_num='3'
+	uci set wechatpush.config.crontab='2'
+	uci set wechatpush.config.interval_time='4'
+	uci set wechatpush.config.send_title='路由状态'
+	uci add_list wechatpush.config.send_notification
+	uci add_list wechatpush.config.send_notification='router_status'
+	uci add_list wechatpush.config.send_notification='router_temp'
+	uci add_list wechatpush.config.send_notification='wan_info'
+	uci add_list wechatpush.config.send_notification='ssh_login_failed'
+	uci set wechatpush.config.do_not_disturb_mode='2'
+	uci set wechatpush.config.do_not_disturb_starttime='0'
+	uci set wechatpush.config.do_not_disturb_endtime='8'
+	uci commit wechatpush
+else
+	# uci set serverchan.serverchan.serverchan_enable='0'
+	uci set serverchan.serverchan.jsonpath='/usr/share/serverchan/api/qywx_mpnews.json'
+	uci set serverchan.serverchan.mediapath='/usr/share/serverchan/api/logo.jpg'
+	uci set serverchan.serverchan.device_name='JimmyWrt'
+	uci set serverchan.serverchan.oui_data='2'
+	uci set serverchan.serverchan.reset_regularly='1'
+	uci set serverchan.serverchan.debuglevel='1'
+	uci set serverchan.serverchan.serverchan_ipv4='1'
+	uci set serverchan.serverchan.ipv4_interface='pppoe-wan'
+	uci set serverchan.serverchan.serverchan_up='0'
+	uci set serverchan.serverchan.serverchan_down='0'
+	uci del serverchan.serverchan.cpuload
+	uci set serverchan.serverchan.cpuload_enable='0'
+	uci set serverchan.serverchan.web_logged='1'
+	uci set serverchan.serverchan.ssh_logged='1'
+	uci set serverchan.serverchan.web_login_failed='1'
+	uci set serverchan.serverchan.ssh_login_failed='1'
+	uci set serverchan.serverchan.login_max_num='3'
+	uci set serverchan.serverchan.web_login_black='0'
+	uci set serverchan.serverchan.port_knocking='0'
+	uci set serverchan.serverchan.crontab='2'
+	uci set serverchan.serverchan.interval_time='4'
+	uci set serverchan.serverchan.send_title='路由状态'
+	uci set serverchan.serverchan.router_status='1'
+	uci set serverchan.serverchan.router_temp='1'
+	uci set serverchan.serverchan.router_wan='1'
+	uci set serverchan.serverchan.client_list='1'
+	uci set serverchan.serverchan.serverchan_sheep='2'
+	uci set serverchan.serverchan.starttime='0'
+	uci set serverchan.serverchan.endtime='8'
+	uci commit serverchan
+fi
+
+# Timewol Settings
+while uci -q get timewol.@macclient[-1] > /dev/null; do
+  uci del timewol.@macclient[-1]
+done
+for i in $(seq 0 3); do
+	uci add timewol macclient
+	uci set timewol.@macclient[$i].maceth='br-lan'
+	uci set timewol.@macclient[$i].minute='30'
+	uci set timewol.@macclient[$i].hour='12'
+done
+uci set timewol.@macclient[0].macaddr='A8:A1:59:20:60:D5'
+uci set timewol.@macclient[1].macaddr='A8:A1:59:20:60:A1'
+uci set timewol.@macclient[2].macaddr='A8:A1:59:20:60:D7'
+uci set timewol.@macclient[3].macaddr='A8:A1:59:20:60:9F'
+uci set timewol.@basic[0].enable='1'
+uci commit timewol
+
+# Turboacc Settings
+uci set turboacc.config.sfe_flow='0'
+uci set turboacc.config.fullcone_nat='1'
+uci set turboacc.config.bbr_cca='0'
+uci commit turboacc
+
+#uci set uhttpd.main.rfc1918_filter='0'
+#uci commit uhttpd
+
+#uci set upnpd.config.enabled='1'
+#uci commit upnpd
+
+# Wolplus Settings
+for i in $(seq 1 4); do
+	uci set wolplus.pc$i=macclient
+	uci set wolplus.pc$i.name='Lobby-PC'$i''
+	uci set wolplus.pc$i.maceth='br-lan'
+done
+uci set wolplus.pc1.macaddr='A8:A1:59:20:60:D5'
+uci set wolplus.pc2.macaddr='A8:A1:59:20:60:A1'
+uci set wolplus.pc3.macaddr='A8:A1:59:20:60:D7'
+uci set wolplus.pc4.macaddr='A8:A1:59:20:60:9F'
+uci commit wolplus
+
+rm -f /usr/lib/lua/luci/view/admin_status/index/mwan.htm
+rm -f /usr/lib/lua/luci/view/admin_status/index/upnp.htm
+rm -f /usr/lib/lua/luci/view/admin_status/index/ddns.htm
+rm -f /usr/lib/lua/luci/view/admin_status/index/minidlna.htm
+# rm -rf /usr/lib/lua/luci/view/admin_status/index
+
+# sed -i 's/\"control\"/\"services\"/g' /usr/lib/lua/luci/controller/weburl.lua
+# sed -i 's/\"control\"/\"services\"/g' /usr/lib/lua/luci/controller/timecontrol.lua
+# sed -i 's/\"control\"/\"services\"/g' /usr/lib/lua/luci/view/weburl/index.htm
+# sed -i 's/\"control\"/\"services\"/g' /usr/lib/lua/luci/view/timecontrol/index.htm
+# sed -i 's/services/control/' /usr/share/luci/menu.d/luci-app-wol.json
+sed -i 's/\"control\"/\"services\"/g' /usr/lib/lua/luci/controller/timewol.lua
+sed -i 's/\"control\"/\"services\"/g' /usr/lib/lua/luci/view/timewol/index.htm
+
+# ln -sf /sbin/ip /usr/bin/ip
+
+sed -i '/helloworld/d' /etc/opkg/distfeeds.conf
+sed -i '/lienol/d' /etc/opkg/distfeeds.conf
+sed -i '/other/d' /etc/opkg/distfeeds.conf
+sed -i '/passwall/d' /etc/opkg/distfeeds.conf
+# sed -i '/sundaqiang/d' /etc/opkg/distfeeds.conf
+
+sed -i "s/# //g" /etc/opkg/distfeeds.conf
+sed -i '/openwrt_luci/ { s/snapshots/releases\/18.06.9/g; }'  /etc/opkg/distfeeds.conf
+
+sed -i '/check_signature/d' /etc/opkg.conf
+
+sed -i '/REDIRECT --to-ports 53/d' /etc/firewall.user
+
+#sed -i '/option disabled/d' /etc/config/wireless
+#sed -i '/set wireless.radio${devidx}.disabled/d' /lib/wifi/mac80211.sh
+
+sed -i '/DISTRIB_REVISION/d' /etc/openwrt_release
+echo "DISTRIB_REVISION=" >> /etc/openwrt_release
+sed -i '/DISTRIB_DESCRIPTION/d' /etc/openwrt_release
+echo "DISTRIB_DESCRIPTION='JimmyWrt '" >> /etc/openwrt_release
+
+sed -i '/log-facility/d' /etc/dnsmasq.conf
+echo "log-facility=/dev/null" >> /etc/dnsmasq.conf
+
+rm -rf /tmp/luci-modulecache/
+rm -f /tmp/luci-indexcache
+#rm -rf /tmp/luci-*cache
+
+exit 0
