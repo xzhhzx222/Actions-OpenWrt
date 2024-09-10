@@ -8,6 +8,12 @@ LUCI_NAME=$(grep '^luciname' /usr/lib/lua/luci/version.lua | cut -d '"' -f2 | cu
 
 # Luci Settings
 uci set luci.main.lang=zh_cn
+if [ $DISTRIB_ID = ImmortalWrt ]; then
+	uci set luci.diag.dns='openwrt.org'
+	uci set luci.diag.ping='openwrt.org'
+	uci set luci.diag.route='openwrt.org'
+	uci commit luci
+fi
 uci commit luci
 
 # System Settings
@@ -63,66 +69,6 @@ uci set ddns.cf_www.check_interval='5'
 uci set ddns.cf_www.check_unit='minutes'
 uci set ddns.cf_www.force_interval='24'
 uci set ddns.cf_www.force_unit='hours'
-uci set ddns.cf_cloud=service
-uci set ddns.cf_cloud.enabled='0'
-uci set ddns.cf_cloud.lookup_host='cloud.xzhhzx222.com'
-uci set ddns.cf_cloud.use_ipv6='0'
-uci set ddns.cf_cloud.service_name='cloudflare.com-v4'
-uci set ddns.cf_cloud.domain='cloud@xzhhzx222.com'
-uci set ddns.cf_cloud.username='Bearer'
-uci set ddns.cf_cloud.ip_source='interface'
-uci set ddns.cf_cloud.ip_interface='pppoe-wan'
-uci set ddns.cf_cloud.interface='wan'
-uci set ddns.cf_cloud.use_syslog='2'
-uci set ddns.cf_cloud.check_interval='5'
-uci set ddns.cf_cloud.check_unit='minutes'
-uci set ddns.cf_cloud.force_interval='24'
-uci set ddns.cf_cloud.force_unit='hours'
-uci set ddns.cf_doc=service
-uci set ddns.cf_doc.enabled='0'
-uci set ddns.cf_doc.lookup_host='doc.xzhhzx222.com'
-uci set ddns.cf_doc.use_ipv6='0'
-uci set ddns.cf_doc.service_name='cloudflare.com-v4'
-uci set ddns.cf_doc.domain='doc@xzhhzx222.com'
-uci set ddns.cf_doc.username='Bearer'
-uci set ddns.cf_doc.ip_source='interface'
-uci set ddns.cf_doc.ip_interface='pppoe-wan'
-uci set ddns.cf_doc.interface='wan'
-uci set ddns.cf_doc.use_syslog='2'
-uci set ddns.cf_doc.check_interval='5'
-uci set ddns.cf_doc.check_unit='minutes'
-uci set ddns.cf_doc.force_interval='24'
-uci set ddns.cf_doc.force_unit='hours'
-uci set ddns.cf_media=service
-uci set ddns.cf_media.enabled='0'
-uci set ddns.cf_media.lookup_host='media.xzhhzx222.com'
-uci set ddns.cf_media.use_ipv6='0'
-uci set ddns.cf_media.service_name='cloudflare.com-v4'
-uci set ddns.cf_media.domain='media@xzhhzx222.com'
-uci set ddns.cf_media.username='Bearer'
-uci set ddns.cf_media.ip_source='interface'
-uci set ddns.cf_media.ip_interface='pppoe-wan'
-uci set ddns.cf_media.interface='wan'
-uci set ddns.cf_media.use_syslog='2'
-uci set ddns.cf_media.check_interval='5'
-uci set ddns.cf_media.check_unit='minutes'
-uci set ddns.cf_media.force_interval='24'
-uci set ddns.cf_media.force_unit='hours'
-uci set ddns.cf_remotely=service
-uci set ddns.cf_remotely.enabled='0'
-uci set ddns.cf_remotely.lookup_host='remotely.xzhhzx222.com'
-uci set ddns.cf_remotely.use_ipv6='0'
-uci set ddns.cf_remotely.service_name='cloudflare.com-v4'
-uci set ddns.cf_remotely.domain='remotely@xzhhzx222.com'
-uci set ddns.cf_remotely.username='Bearer'
-uci set ddns.cf_remotely.ip_source='interface'
-uci set ddns.cf_remotely.ip_interface='pppoe-wan'
-uci set ddns.cf_remotely.interface='wan'
-uci set ddns.cf_remotely.use_syslog='2'
-uci set ddns.cf_remotely.check_interval='5'
-uci set ddns.cf_remotely.check_unit='minutes'
-uci set ddns.cf_remotely.force_interval='24'
-uci set ddns.cf_remotely.force_unit='hours'
 uci commit ddns
 
 # DHCP Settings
@@ -255,6 +201,10 @@ for i in $(seq 3 6); do
 done
 uci commit firewall
 
+# Msd_lite Settings
+uci set msd_lite.@instance[0].network='iptv'
+uci commit msd_lite
+
 # Network Settings
 # lan
 uci set network.lan.proto='static'
@@ -325,8 +275,9 @@ uci commit network
 
 # Openclash Settings
 uci set openclash.config.enable_meta_core='1'
+uci set openclash.config.skip_proxy_address='1'
 uci set openclash.config.common_ports='21 22 23 53 80 123 143 194 443 465 587 853 993 995 998 2052 2053 2082 2083 2086 2095 2096 5222 5228 5229 5230 8080 8443 8880 8888 8889'
-# uci set openclash.config.china_ip_route='1'
+uci set openclash.config.lan_interface_name='br-lan'
 uci set openclash.config.intranet_allowed='0'
 uci set openclash.config.geoip_auto_update='1'
 uci set openclash.config.geoip_update_week_time='*'
@@ -396,7 +347,6 @@ if [[ $LUCI_NAME == openwrt-* ]]; then
 	uci set wechatpush.config.device_name='SamWrt'
 	uci set wechatpush.config.jsonpath='/usr/share/wechatpush/api/qywx_mpnews.json'
 	uci set wechatpush.config.oui_data='2'
-	uci set wechatpush.config.reset_regularly='1'
 	uci set wechatpush.config.debuglevel='1'
 	uci set wechatpush.config.get_ipv4_mode='1'
 	uci set wechatpush.config.ipv4_interface='pppoe-wan'
