@@ -34,11 +34,11 @@ git clone https://github.com/sirpdboy/luci-app-advanced.git package/xzhhzx222/lu
 # 添加Lienol/openwrt-package
 git clone https://github.com/Lienol/openwrt-package.git package/Lienol/openwrt-package
 mv -vf package/Lienol/openwrt-package/luci-app-control-timewol/ package/xzhhzx222/
-mv -vf package/xzhhzx222/luci-app-control-timewol/po/zh-cn/ package/xzhhzx222/luci-app-control-timewol/po/zh_Hans/
+ln -sf package/xzhhzx222/luci-app-control-timewol/po/zh-cn/ package/xzhhzx222/luci-app-control-timewol/po/zh_Hans
 mv -vf package/Lienol/openwrt-package/luci-app-control-weburl/ package/xzhhzx222/
-mv -vf package/xzhhzx222/luci-app-control-weburl/po/zh-cn/ package/xzhhzx222/luci-app-control-weburl/po/zh_Hans/
+ln -sf package/xzhhzx222/luci-app-control-weburl/po/zh-cn/ package/xzhhzx222/luci-app-control-weburl/po/zh_Hans
 mv -vf package/Lienol/openwrt-package/luci-app-timecontrol/ package/xzhhzx222/
-mv -vf package/xzhhzx222/luci-app-timecontrol/po/zh-cn/ package/xzhhzx222/luci-app-timecontrol/po/zh_Hans/
+ln -sf package/xzhhzx222/luci-app-timecontrol/po/zh-cn/ package/xzhhzx222/luci-app-timecontrol/po/zh_Hans
 rm -rf package/Lienol/
 
 # 添加vernesong/OpenClash
@@ -51,7 +51,6 @@ echo "------------- Check End -------------"
 git clone --depth=1 https://github.com/vernesong/OpenClash.git package/vernesong/OpenClash
 mv -vf package/vernesong/OpenClash/luci-app-openclash/ package/xzhhzx222/
 rm -rf package/vernesong/
-# rm -vf $CLASH_DIR/china_ip*
 rm -vf $CLASH_DIR/Geo*
 curl -Ls -o $CLASH_DIR/GeoIP.dat https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geoip.dat
 curl -Ls -o $CLASH_DIR/GeoSite.dat https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geosite.dat
@@ -117,8 +116,6 @@ case $BUILD_BRANCH in
     LOGO_FILE=package/xzhhzx222/luci-app-wechatpush/root/usr/share/wechatpush/api/logo.jpg
     SET_FILE=package/emortal/default-settings/files/99-default-settings
     # 修改default-settings
-    # rm -vrf "$SET_FILE-chinese"
-    # touch "$SET_FILE-chinese"
     sed -i '/define Package\/default-settings-chn/,/endef/d' package/emortal/default-settings/Makefile
     sed -i '/default-settings-chn/d' package/emortal/default-settings/Makefile
     sed -i 's/+luci/& +@LUCI_LANG_zh_Hans +luci-i18n-base-zh-cn/g' package/emortal/default-settings/Makefile
