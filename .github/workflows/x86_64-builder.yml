@@ -17,7 +17,7 @@ on:
       branch:
         description: 'Openwrt Build Branch'
         required: true
-        default: 'lede-18.06'
+        default: 'immortalwrt-23.05'
         type: choice
         options:
           - 'lede-18.06'
