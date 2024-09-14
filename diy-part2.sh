@@ -34,11 +34,11 @@ git clone https://github.com/sirpdboy/luci-app-advanced.git package/xzhhzx222/lu
 # 添加Lienol/openwrt-package
 git clone https://github.com/Lienol/openwrt-package.git package/Lienol/openwrt-package
 mv -vf package/Lienol/openwrt-package/luci-app-control-timewol/ package/xzhhzx222/
-ln -sf package/xzhhzx222/luci-app-control-timewol/po/zh-cn/ package/xzhhzx222/luci-app-control-timewol/po/zh_Hans
+ln -vsf $PWD/package/xzhhzx222/luci-app-control-timewol/po/zh-cn/ $PWD/package/xzhhzx222/luci-app-control-timewol/po/zh_Hans
 mv -vf package/Lienol/openwrt-package/luci-app-control-weburl/ package/xzhhzx222/
-ln -sf package/xzhhzx222/luci-app-control-weburl/po/zh-cn/ package/xzhhzx222/luci-app-control-weburl/po/zh_Hans
+ln -vsf $PWD/package/xzhhzx222/luci-app-control-weburl/po/zh-cn/ $PWD/package/xzhhzx222/luci-app-control-weburl/po/zh_Hans
 mv -vf package/Lienol/openwrt-package/luci-app-timecontrol/ package/xzhhzx222/
-ln -sf package/xzhhzx222/luci-app-timecontrol/po/zh-cn/ package/xzhhzx222/luci-app-timecontrol/po/zh_Hans
+ln -vsf $PWD/package/xzhhzx222/luci-app-timecontrol/po/zh-cn/ $PWD/package/xzhhzx222/luci-app-timecontrol/po/zh_Hans
 rm -rf package/Lienol/
 
 # 添加vernesong/OpenClash
@@ -61,6 +61,10 @@ tar -zxf $CLASH_DIR/core/core.tar.gz -C $CLASH_DIR/core
 mv -vf $CLASH_DIR/core/clash $CLASH_DIR/core/clash_meta
 rm -vf $CLASH_DIR/core/core.tar.gz
 rm -f $CLASH_DIR/rule_provider/*
+
+# 链接sundaqiang/openwrt-packages
+ln -vsf $PWD/feeds/sundaqiang/luci-app-easyupdate/po/zh-cn/ $PWD/feeds/sundaqiang/luci-app-easyupdate/po/zh_Hans
+ln -vsf $PWD/feeds/sundaqiang/luci-app-wolplus/po/zh-cn/ $PWD/feeds/sundaqiang/luci-app-wolplus/po/zh_Hans
 
 # 添加jerrykuku/luci-app-vssr
 # git clone https://github.com/jerrykuku/lua-maxminddb.git package/xzhhzx222/lua-maxminddb
@@ -97,12 +101,12 @@ case $BUILD_BRANCH in
     # 添加luci-app-msd_lite
     git clone -b openwrt-23.05 https://github.com/immortalwrt/luci.git package/immortalwrt/luci
     mv -vf package/immortalwrt/luci/applications/luci-app-msd_lite/ feeds/luci/applications/
-    ln -sf $PWD/feeds/luci/applications/luci-app-msd_lite/ $PWD/package/feeds/luci/
+    ln -vsf $PWD/feeds/luci/applications/luci-app-msd_lite/ $PWD/package/feeds/luci/
     rm -rf package/immortalwrt/luci/
     # 添加luci-app-softethervpn
     git clone https://github.com/coolsnowwolf/luci.git package/coolsnowwolf/luci
     mv -vf package/coolsnowwolf/luci/applications/luci-app-softethervpn/ feeds/luci/applications/
-    ln -sf $PWD/feeds/luci/applications/luci-app-softethervpn/ $PWD/package/feeds/luci/
+    ln -vsf $PWD/feeds/luci/applications/luci-app-softethervpn/ $PWD/package/feeds/luci/
     rm -rf package/coolsnowwolf/luci/
     # 添加luci-app-wechatpush
     git clone https://github.com/tty228/luci-app-wechatpush.git package/xzhhzx222/luci-app-wechatpush
