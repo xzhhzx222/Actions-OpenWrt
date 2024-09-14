@@ -1,6 +1,5 @@
 #!/bin/sh
 
-
 # Decide Release Version
 # OpenWrt or ImmortalWrt
 DISTRIB_ID=$(grep DISTRIB_ID /etc/openwrt_release | cut -d "'" -f 2)
