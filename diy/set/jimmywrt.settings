@@ -62,14 +62,14 @@ uci set dhcp.@dnsmasq[0].sequential_ip='1'
 uci set dhcp.@dnsmasq[0].filter_aaaa='1'
 uci set dhcp.@dnsmasq[0].cachesize='0'
 while uci -q get dhcp.@host[-1] > /dev/null; do
-  uci del dhcp.@host[-1]
+	uci del dhcp.@host[-1]
 done
 for i in $(seq 0 4); do
 	uci add dhcp host
 	uci set dhcp.@host[$i].ip='192.168.0.1'$i''
 	uci set dhcp.@host[$i].leasetime='infinite'
 	if [ $i -gt 0 ]; then
-		do uci set dhcp.@host[$i].name='Lobby-PC'$i''
+		uci set dhcp.@host[$i].name='Lobby-PC'$i''
 	fi
 done
 uci set dhcp.@host[0].name='Jimmy-Laptop'
@@ -452,6 +452,11 @@ sed -i '/DISTRIB_REVISION/d' /etc/openwrt_release
 echo "DISTRIB_REVISION=" >> /etc/openwrt_release
 sed -i '/DISTRIB_DESCRIPTION/d' /etc/openwrt_release
 echo "DISTRIB_DESCRIPTION='JimmyWrt '" >> /etc/openwrt_release
+
+# sed -i 's/\"control\"/\"services\"/g' /usr/lib/lua/luci/controller/timewol.lua
+# sed -i 's/\"control\"/\"services\"/g' /usr/lib/lua/luci/view/timewol/index.htm
+sed -i 's/\"services\"/\"control\"/g' /usr/lib/lua/luci/controller/wolplus.lua
+sed -i 's/services/control/g' /usr/lib/lua/luci/view/wolplus/index.htm
 
 if [ $DISTRIB_ID = ImmortalWrt ]; then
 	sed -i "/log-facility/d" "/etc/dnsmasq.conf"
