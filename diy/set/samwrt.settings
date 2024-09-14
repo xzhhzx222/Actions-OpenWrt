@@ -179,17 +179,17 @@ uci set firewall.@redirect[3].dest_port='80'
 uci set firewall.@redirect[4].name='SamWrt Socks'
 uci set firewall.@redirect[4].src_dport='27893'
 uci set firewall.@redirect[4].dest_port='7893'
-uci set firewall.@redirect[5].name='SamNas qb 16888'
+uci set firewall.@redirect[5].name='SamNas Qb'
 uci set firewall.@redirect[5].proto='tcp udp'
 uci set firewall.@redirect[5].src_dport='16888'
 uci set firewall.@redirect[5].dest_port='16888'
 uci set firewall.@redirect[6].name='SamNas SSH'
 uci set firewall.@redirect[6].src_dport='27023'
 uci set firewall.@redirect[6].dest_port='22'
-uci set firewall.@redirect[7].name='SamNas traefik http'
+uci set firewall.@redirect[7].name='SamNas Http'
 uci set firewall.@redirect[7].src_dport='27080'
 uci set firewall.@redirect[7].dest_port='27080'
-uci set firewall.@redirect[8].name='SamNas traefik https'
+uci set firewall.@redirect[8].name='SamNas Https'
 uci set firewall.@redirect[8].src_dport='27443'
 uci set firewall.@redirect[8].dest_port='27443'
 uci set firewall.@redirect[9].name='Sam-Desktop Remote'
@@ -295,7 +295,7 @@ uci set openclash.config.geodata_loader='standard'
 uci set openclash.config.enable_geoip_dat='1'
 uci set openclash.config.enable_meta_sniffer='1'
 uci set openclash.config.enable_meta_sniffer_pure_ip='1'
-uci set openclash.config.enable_meta_sniffer_custom ='1'
+# uci set openclash.config.enable_meta_sniffer_custom ='1'
 uci set openclash.config.enable_custom_clash_rules='1'
 while uci -q get openclash.@dns_servers[-1] > /dev/null; do
   uci del openclash.@dns_servers[-1]
@@ -428,12 +428,6 @@ uci commit turboacc
 # uci set wolplus.pc1.macaddr='70:4D:7B:63:0A:37'
 # uci commit wolplus
 
-sed -i '/helloworld/d' /etc/opkg/distfeeds.conf
-sed -i '/lienol/d' /etc/opkg/distfeeds.conf
-sed -i '/other/d' /etc/opkg/distfeeds.conf
-sed -i '/passwall/d' /etc/opkg/distfeeds.conf
-# sed -i '/sundaqiang/d' /etc/opkg/distfeeds.conf
-
 # cat >> /etc/dnsmasq.conf <<EOF
 # dhcp-option-force=125,00:00:00:00:1a:02:06:48:47:57:2d:43:54:03:04:5a:58:48:4e:0a:02:20:00:0b:02:00:55:0d:02:00:2e
 # dhcp-option=15
@@ -447,6 +441,12 @@ dhcp-option=lan,60,00:00:01:00:02:03:43:50:45:03:0e:45:38:20:47:50:4f:4e:20:52:4
 dhcp-option=lan,15
 dhcp-option=lan,28
 EOF
+
+sed -i '/helloworld/d' /etc/opkg/distfeeds.conf
+sed -i '/lienol/d' /etc/opkg/distfeeds.conf
+sed -i '/other/d' /etc/opkg/distfeeds.conf
+sed -i '/passwall/d' /etc/opkg/distfeeds.conf
+sed -i '/sundaqiang/d' /etc/opkg/distfeeds.conf
 
 sed -i '/DISTRIB_REVISION/d' /etc/openwrt_release
 echo "DISTRIB_REVISION=" >> /etc/openwrt_release
