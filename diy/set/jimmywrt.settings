@@ -259,6 +259,10 @@ uci set openclash.config.skip_proxy_address='1'
 uci set openclash.config.common_ports='21 22 23 53 80 123 143 194 443 465 587 853 993 995 998 2052 2053 2082 2083 2086 2095 2096 5222 5228 5229 5230 8080 8443 8880 8888 8889'
 uci set openclash.config.lan_interface_name='br-lan'
 uci set openclash.config.intranet_allowed='0'
+uci del openclash.config.lan_ac_black_macs
+uci add_list openclash.config.lan_ac_black_macs='50:af:73:47:9a:49'
+uci add_list openclash.config.lan_ac_black_macs='00:01:29:84:6b:3f'
+uci add_list openclash.config.lan_ac_black_macs='00:01:29:84:6b:40'
 uci set openclash.config.geoip_auto_update='1'
 uci set openclash.config.geoip_update_week_time='*'
 uci set openclash.config.geoip_update_day_time='8'
@@ -404,7 +408,7 @@ for i in $(seq 0 3); do
 	uci add timewol macclient
 	uci set timewol.@macclient[$i].maceth='br-lan'
 	uci set timewol.@macclient[$i].minute='30'
-	uci set timewol.@macclient[$i].hour='12'
+	uci set timewol.@macclient[$i].hour='11'
 done
 uci set timewol.@macclient[0].macaddr='A8:A1:59:20:60:D5'
 uci set timewol.@macclient[1].macaddr='A8:A1:59:20:60:A1'
