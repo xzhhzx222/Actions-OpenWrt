@@ -452,6 +452,10 @@ sed -i '/DISTRIB_REVISION/d' /etc/openwrt_release
 echo "DISTRIB_REVISION=" >> /etc/openwrt_release
 sed -i '/DISTRIB_DESCRIPTION/d' /etc/openwrt_release
 echo "DISTRIB_DESCRIPTION='SamWrt '" >> /etc/openwrt_release
+sed -i '/DISTRIB_GITHUB/d' /etc/openwrt_release
+echo "DISTRIB_GITHUB='https://github.com/xzhhzx222/Actions-OpenWrt'" >> /etc/openwrt_release
+sed -i '/DISTRIB_VERSIONS/d' /etc/openwrt_release
+echo "DISTRIB_VERSIONS=" >> /etc/openwrt_release
 
 # if [[ $LUCI_NAME == openwrt-* ]] && [ $DISTRIB_ID = ImmortalWrt ]; then
 if [ $DISTRIB_ID = ImmortalWrt ]; then

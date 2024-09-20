@@ -151,6 +151,7 @@ echo "------------- Check End -------------"
 [ -e $DIY_SET ] && mv -vf $DIY_SET $SET_FILE
 
 sed -i "s/DISTRIB_REVISION=/DISTRIB_REVISION=\'Ver $(date +%y.%m.%d)\'/" $SET_FILE
+sed -i "s/DISTRIB_VERSIONS=/DISTRIB_VERSIONS=\'$(date +"%Y%m%d_%H%M%S_")$(git rev-parse --short HEAD)\'/" $SET_FILE
 
 echo "------------ Check Start ------------"
 grep -m 1 "DISTRIB_REVISION=" $SET_FILE
