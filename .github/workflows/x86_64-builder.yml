@@ -71,7 +71,6 @@ jobs:
             ;;
         esac
         echo "CONFIG_FILE=diy/cfg/${BUILD_VER,,}.config" >> $GITHUB_ENV
-        echo "RELEASE_TAG=$(date +"OpenWrt_%Y%m%d_%H%M%S_")$(git rev-parse --short HEAD)" >> $GITHUB_ENV
   
     - name: Free Disk Space (Ubuntu)
       uses: jlumbroso/free-disk-space@main
@@ -116,7 +115,6 @@ jobs:
         sudo chown $USER:$GROUPS $GITHUB_WORKSPACE
 
     - name: Clone source code
-      # working-directory: ./
       run: |
         echo "------------ Check Start ------------"
         echo "REPO_URL=$REPO_URL"
@@ -136,6 +134,11 @@ jobs:
 
     - name: Install feeds
       run: cd openwrt && ./scripts/feeds install -a
+    
+    - name: Openwrt AutoUpdate
+      run: |
+        # echo "RELEASE_TAG=$(date +"OpenWrt_%Y%m%d_%H%M%S_")$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+        echo "RELEASE_TAG=$(date +"OpenWrt_%Y%m%d_%H%M")" >> $GITHUB_ENV
 
     - name: Load custom configuration
       run: |
