@@ -137,7 +137,7 @@ jobs:
     
     - name: Openwrt AutoUpdate
       run: |
-        echo "RELEASE_NAME=$BUILD_VER$(date +"Ver%y.%m.%d_%H%M")" >> $GITHUB_ENV
+        echo "RELEASE_NAME=${{ env.BUILD_VER }} $(date +"Ver%y.%m.%d_%H%M")" >> $GITHUB_ENV
         # echo "RELEASE_TAG=$(date +"OpenWrt_%Y%m%d_%H%M%S_")$(git rev-parse --short HEAD)" >> $GITHUB_ENV
         echo "RELEASE_TAG=$(date +"%Y%m%d_%H%M%S_")$(git rev-parse --short HEAD)" >> $GITHUB_ENV
 
