@@ -152,7 +152,7 @@ echo "------------- Check End -------------"
 
 sed -i "s/DISTRIB_REVISION=/DISTRIB_REVISION=\'Ver ${RELEASE_TAG:0:8}\'/" $SET_FILE
 sed -i "s/DISTRIB_DESCRIPTION=/DISTRIB_DESCRIPTION=\'${BUILD_VER} \'/" $SET_FILE
-sed -i "s/DISTRIB_GITHUB=/DISTRIB_GITHUB=\'${RELEASE_REPO}\'/" $SET_FILE
+sed -i "s#DISTRIB_GITHUB=#DISTRIB_GITHUB=\'${RELEASE_REPO}\'#" $SET_FILE
 sed -i "s/DISTRIB_VERSIONS=/DISTRIB_VERSIONS=\'${RELEASE_TAG}\'/" $SET_FILE
 
 echo "------------ Check Start ------------"
