@@ -58,10 +58,10 @@ jobs:
           immortalwrt-*)
             echo "DEPENDS_UBUNTU=diy/dep/immortalwrt.depends" >> $GITHUB_ENV
             echo "REPO_URL=https://github.com/immortalwrt/immortalwrt" >> $GITHUB_ENV
-            if [ ${BUILD_BRANCH: -6} != master ]; then
-              echo "REPO_BRANCH=openwrt-${BUILD_BRANCH: -5}" >> $GITHUB_ENV
+            if [ ${BUILD_BRANCH:-6} != master ]; then
+              echo "REPO_BRANCH=openwrt-${BUILD_BRANCH:-5}" >> $GITHUB_ENV
             else
-              echo "REPO_BRANCH=${BUILD_BRANCH: -6}" >> $GITHUB_ENV
+              echo "REPO_BRANCH=${BUILD_BRANCH:-6}" >> $GITHUB_ENV
             fi
             ;;
           lede-*)
@@ -137,9 +137,9 @@ jobs:
     
     - name: Openwrt AutoUpdate
       run: |
-        echo "RELEASE_NAME=${{ env.BUILD_VER }} $(date +"Ver%y.%m.%d_%H%M")" >> $GITHUB_ENV
-        # echo "RELEASE_TAG=$(date +"OpenWrt_%Y%m%d_%H%M%S_")$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+        # echo "RELEASE_NAME=${{ env.BUILD_VER }} $(date +"Ver%y.%m.%d_%H%M")" >> $GITHUB_ENV
         echo "RELEASE_TAG=$(date +"%Y%m%d_%H%M%S_")$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+        echo "RELEASE_REPO=https://github.com/${{github.repository}}" >> $GITHUB_ENV
 
     - name: Load custom configuration
       run: |
@@ -224,7 +224,7 @@ jobs:
       with:
         # name: ${{ steps.tag.outputs.release_name }}
         # tag_name: ${{ steps.tag.outputs.release_tag }}
-        name: ${{ env.RELEASE_NAME }}
+        name: ${{ env.BUILD_VER }} ${{ env.RELEASE_TAG }}
         tag_name: ${{ env.RELEASE_TAG }}
         body_path: release.txt
         files: ${{ env.FIRMWARE }}/*
