@@ -21,10 +21,14 @@
 
 
 # 删除已存在的软件包
+rm -rf feeds/luci/applications/luci-app-openclash/
+rm -rf feeds/luci/applications/luci-app-passwall/
+rm -rf feeds/luci/applications/luci-app-serverchan/
+rm -rf feeds/luci/applications/luci-app-wechatpush/
+rm -rf feeds/luci/themes/luci-theme-argon*/
 rm -rf package/feeds/luci/luci-app-openclash/
 rm -rf package/feeds/luci/luci-app-passwall/
 rm -rf package/feeds/luci/luci-app-serverchan/
-rm -rf package/feeds/luci/luci-app-vssr/
 rm -rf package/feeds/luci/luci-app-wechatpush/
 rm -rf package/feeds/luci/luci-theme-argon*/
 
@@ -65,10 +69,6 @@ rm -f $CLASH_DIR/rule_provider/*
 # 链接sundaqiang/openwrt-packages
 ln -vsf $PWD/feeds/sundaqiang/luci-app-easyupdate/po/zh-cn/ $PWD/feeds/sundaqiang/luci-app-easyupdate/po/zh_Hans
 ln -vsf $PWD/feeds/sundaqiang/luci-app-wolplus/po/zh-cn/ $PWD/feeds/sundaqiang/luci-app-wolplus/po/zh_Hans
-
-# 添加jerrykuku/luci-app-vssr
-# git clone https://github.com/jerrykuku/lua-maxminddb.git package/xzhhzx222/lua-maxminddb
-# git clone https://github.com/jerrykuku/luci-app-vssr.git package/xzhhzx222/luci-app-vssr
 
 case $BUILD_BRANCH in
   lede-18.06)

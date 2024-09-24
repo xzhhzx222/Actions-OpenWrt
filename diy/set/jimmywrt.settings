@@ -254,7 +254,8 @@ fi
 uci commit network
 
 # Openclash Settings
-uci set openclash.config.enable_meta_core='1'
+# uci set openclash.config.enable_meta_core='1'
+uci set openclash.config.delay_start='90'
 uci set openclash.config.skip_proxy_address='1'
 uci set openclash.config.common_ports='21 22 23 53 80 123 143 194 443 465 587 853 993 995 998 2052 2053 2082 2083 2086 2095 2096 5222 5228 5229 5230 8080 8443 8880 8888 8889'
 uci set openclash.config.lan_interface_name='br-lan'
@@ -418,10 +419,10 @@ uci set timewol.@basic[0].enable='1'
 uci commit timewol
 
 # Turboacc Settings
-uci set turboacc.config.sfe_flow='0'
-uci set turboacc.config.fullcone_nat='1'
-uci set turboacc.config.bbr_cca='0'
-uci commit turboacc
+# uci set turboacc.config.sfe_flow='0'
+# uci set turboacc.config.fullcone_nat='1'
+# uci set turboacc.config.bbr_cca='0'
+# uci commit turboacc
 
 #uci set upnpd.config.enabled='1'
 #uci commit upnpd
@@ -455,7 +456,11 @@ sed -i '/sundaqiang/d' /etc/opkg/distfeeds.conf
 sed -i '/DISTRIB_REVISION/d' /etc/openwrt_release
 echo "DISTRIB_REVISION=" >> /etc/openwrt_release
 sed -i '/DISTRIB_DESCRIPTION/d' /etc/openwrt_release
-echo "DISTRIB_DESCRIPTION='JimmyWrt '" >> /etc/openwrt_release
+echo "DISTRIB_DESCRIPTION=" >> /etc/openwrt_release
+sed -i '/DISTRIB_GITHUB/d' /etc/openwrt_release
+echo "DISTRIB_GITHUB=" >> /etc/openwrt_release
+sed -i '/DISTRIB_VERSIONS/d' /etc/openwrt_release
+echo "DISTRIB_VERSIONS=" >> /etc/openwrt_release
 
 # sed -i 's/\"control\"/\"services\"/g' /usr/lib/lua/luci/controller/timewol.lua
 # sed -i 's/\"control\"/\"services\"/g' /usr/lib/lua/luci/view/timewol/index.htm
