@@ -137,7 +137,6 @@ jobs:
     
     - name: Openwrt AutoUpdate
       run: |
-        # echo "RELEASE_NAME=${{ env.BUILD_VER }} $(date +"Ver%y.%m.%d_%H%M")" >> $GITHUB_ENV
         echo "RELEASE_TAG=$(date +"%Y%m%d_%H%M%S_")$(git rev-parse --short HEAD)" >> $GITHUB_ENV
         echo "RELEASE_REPO=https://github.com/${{ github.repository }}" >> $GITHUB_ENV
 
@@ -212,7 +211,7 @@ jobs:
       run: |
         touch release.txt
         echo "[Build Branch]: ${{ env.BUILD_BRANCH }}" >> release.txt
-        echo "[Build Version]: ${{ env.BUILD_VER }}" >> release.txt
+        # echo "[Build Version]: ${{ env.BUILD_VER }}" >> release.txt
         echo "status=success" >> $GITHUB_OUTPUT
 
     - name: Upload firmware to release
@@ -221,10 +220,11 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        name: ${{ env.BUILD_VER }} ${{ env.RELEASE_TAG }}
+        name: ${{ env.BUILD_VER }}
         tag_name: ${{ env.RELEASE_TAG }}
         body_path: release.txt
         files: ${{ env.FIRMWARE }}/*
+        make_latest: true
 
     - name: Delete workflow runs
       uses: Mattraks/delete-workflow-runs@main
@@ -234,11 +234,11 @@ jobs:
         retain_days: 0
         keep_minimum_runs: 4
 
-    - name: Remove old Releases
-      uses: dev-drprasad/delete-older-releases@master
-      if: steps.tag.outputs.status == 'success' && env.UPLOAD_RELEASE == 'true' && !cancelled()
-      with:
-        keep_latest: 6
-        delete_tags: true
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    # - name: Remove old Releases
+    #   uses: dev-drprasad/delete-older-releases@master
+    #   if: steps.tag.outputs.status == 'success' && env.UPLOAD_RELEASE == 'true' && !cancelled()
+    #   with:
+    #     keep_latest: 6
+    #     delete_tags: true
+    #   env:
+    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
