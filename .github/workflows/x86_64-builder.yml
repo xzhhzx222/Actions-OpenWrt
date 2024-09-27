@@ -137,7 +137,7 @@ jobs:
     
     - name: Openwrt AutoUpdate
       run: |
-        echo "RELEASE_NAME=$(date +"Ver%y.%m.%d_%H%M")" >> $GITHUB_ENV
+        echo "RELEASE_VER=$(date +"Ver%y.%m.%d_%H%M")" >> $GITHUB_ENV
         echo "RELEASE_TAG=$(date +"%Y%m%d_%H%M%S_")$(git rev-parse --short HEAD)" >> $GITHUB_ENV
         echo "RELEASE_REPO=https://github.com/${{ github.repository }}" >> $GITHUB_ENV
 
@@ -221,7 +221,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        name: ${{ env.BUILD_VER }} ${{ env.RELEASE_NAME }}
+        name: ${{ env.BUILD_VER }} ${{ env.RELEASE_VER }}
         tag_name: ${{ env.RELEASE_TAG }}
         body_path: release.txt
         files: ${{ env.FIRMWARE }}/*
