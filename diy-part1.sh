@@ -18,11 +18,14 @@
 #echo 'src-git passwall https://github.com/xiaorouji/openwrt-passwall' >>feeds.conf.default
 
 
-# 更改luci/openwrt-23.05
-if [[ $BUILD_BRANCH == lede-23.05 ]]; then
-  # sed -i 's#\/luci#&.git;openwrt-23.05#g' feeds.conf.default
+# 更改luci/openwrt
+if [[ $BUILD_BRANCH == lede-18.06 ]]; then
   sed -i '/luci/d' feeds.conf.default
-  echo 'src-git luci https://github.com/openwrt/luci.git;openwrt-23.05' >>feeds.conf.default
+  echo 'src-git luci https://github.com/openwrt/luci' >>feeds.conf.default
+elif [[ $BUILD_BRANCH == lede-23.05 ]]; then
+  # sed -i 's#\/luci#&.git;openwrt-23.05#g' feeds.conf.default
+  # sed -i '/luci/d' feeds.conf.default
+  # echo 'src-git luci https://github.com/openwrt/luci.git;openwrt-23.05' >>feeds.conf.default
 fi
 
 # 添加fw876/helloworld

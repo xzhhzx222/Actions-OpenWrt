@@ -85,26 +85,21 @@ case $BUILD_BRANCH in
   lede-23.05)
     LOGO_FILE=package/xzhhzx222/luci-app-wechatpush/root/usr/share/wechatpush/api/logo.jpg
     SET_FILE=package/lean/default-settings/files/zzz-default-settings
-    # 替换autocore
-    git clone https://github.com/immortalwrt/immortalwrt -b openwrt-23.05 --single-branch --filter=blob:none package/immortalwrt
-    rm -rf package/lean/autocore/
-    mv -vf package/immortalwrt/package/emortal/autocore/ package/lean/
-    rm -rf package/immortalwrt/
     # 替换ddns-scripts
-    git clone -b openwrt-23.05 https://github.com/openwrt/packages.git package/openwrt/packages
-    rm -rf feeds/packages/net/ddns-scripts/
-    mv -vf package/openwrt/packages/net/ddns-scripts/ feeds/packages/net/
-    rm -rf package/openwrt/packages/
+    # git clone -b openwrt-23.05 https://github.com/openwrt/packages.git package/openwrt/packages
+    # rm -rf feeds/packages/net/ddns-scripts/
+    # mv -vf package/openwrt/packages/net/ddns-scripts/ feeds/packages/net/
+    # rm -rf package/openwrt/packages/
     # 替换msd_lite
-    git clone -b openwrt-23.05 https://github.com/immortalwrt/packages.git package/immortalwrt/packages
-    rm -rf feeds/packages/net/msd_lite/
-    mv -vf package/immortalwrt/packages/net/msd_lite/ feeds/packages/net/
-    rm -rf package/immortalwrt/packages/
+    # git clone -b openwrt-23.05 https://github.com/immortalwrt/packages.git package/immortalwrt/packages
+    # rm -rf feeds/packages/net/msd_lite/
+    # mv -vf package/immortalwrt/packages/net/msd_lite/ feeds/packages/net/
+    # rm -rf package/immortalwrt/packages/
     # 添加luci-app-msd_lite
-    git clone -b openwrt-23.05 https://github.com/immortalwrt/luci.git package/immortalwrt/luci
-    mv -vf package/immortalwrt/luci/applications/luci-app-msd_lite/ feeds/luci/applications/
-    ln -vsf $PWD/feeds/luci/applications/luci-app-msd_lite/ $PWD/package/feeds/luci/
-    rm -rf package/immortalwrt/luci/
+    # git clone -b openwrt-23.05 https://github.com/immortalwrt/luci.git package/immortalwrt/luci
+    # mv -vf package/immortalwrt/luci/applications/luci-app-msd_lite/ feeds/luci/applications/
+    # ln -vsf $PWD/feeds/luci/applications/luci-app-msd_lite/ $PWD/package/feeds/luci/
+    # rm -rf package/immortalwrt/luci/
     # 添加luci-app-softethervpn
     git clone https://github.com/coolsnowwolf/luci.git package/coolsnowwolf/luci
     mv -vf package/coolsnowwolf/luci/applications/luci-app-softethervpn/ feeds/luci/applications/
