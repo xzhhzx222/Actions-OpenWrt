@@ -28,13 +28,13 @@ uci -q batch <<-EOF
 	add_list system.ntp.server='ntp1.aliyun.com'
 	add_list system.ntp.server='ntp.tencent.com'
 	add_list system.ntp.server='ntp.ntsc.ac.cn'
-	add_list system.ntp.server='time.ustc.edu.cn'
+	add_list system.ntp.server='time.apple.com'
 EOF
 uci commit system
 
 # Fstab Settings
-uci set fstab.@global[0].anon_mount=1
-uci commit fstab
+# uci set fstab.@global[0].anon_mount=1
+# uci commit fstab
 
 # DDNS Settings
 uci del ddns.myddns_ipv4
@@ -74,7 +74,7 @@ uci commit ddns
 # DHCP Settings
 uci set dhcp.@dnsmasq[0].rebind_protection='0'
 uci set dhcp.@dnsmasq[0].sequential_ip='1'
-uci set dhcp.@dnsmasq[0].filter_aaaa='1'
+# uci set dhcp.@dnsmasq[0].filter_aaaa='1'
 uci set dhcp.@dnsmasq[0].cachesize='0'
 while uci -q get dhcp.@host[-1] > /dev/null; do
 	uci del dhcp.@host[-1]
@@ -196,9 +196,9 @@ uci set firewall.@redirect[9].name='Sam-Desktop Remote'
 uci set firewall.@redirect[9].src_dport='3389'
 uci set firewall.@redirect[9].dest_ip='10.0.0.10'
 uci set firewall.@redirect[9].dest_port='3389'
-for i in $(seq 3 6); do
-	uci set firewall.@rule[$i].enabled='0'
-done
+# for i in $(seq 3 6); do
+# 	uci set firewall.@rule[$i].enabled='0'
+# done
 uci commit firewall
 
 # Msd_lite Settings
@@ -210,14 +210,14 @@ uci commit msd_lite
 uci set network.lan.proto='static'
 uci set network.lan.ipaddr='10.0.0.2'
 uci set network.lan.netmask='255.255.255.0'
-uci del network.lan.ip6assign
-uci set network.lan.delegate='0'
+# uci del network.lan.ip6assign
+# uci set network.lan.delegate='0'
 # wan
 uci set network.wan.proto='pppoe'
-uci set network.wan.ipv6='0'
-uci set network.wan.delegate='0'
+# uci set network.wan.ipv6='0'
+# uci set network.wan.delegate='0'
 uci del network.wan6
-uci del network.globals.ula_prefix
+# uci del network.globals.ula_prefix
 if [[ $LUCI_NAME == openwrt-* ]]; then
 	# loop
 	uci set network.loopback.device='lo'
@@ -225,9 +225,9 @@ if [[ $LUCI_NAME == openwrt-* ]]; then
 	uci del network.lan.type
 	uci del network.lan.ifname
 	uci set network.lan.device='br-lan'
-	uci del network.lan.dns
-	uci add_list network.lan.dns='223.5.5.5'
-	uci add_list network.lan.dns='8.8.4.4'
+	# uci del network.lan.dns
+	# uci add_list network.lan.dns='223.5.5.5'
+	# uci add_list network.lan.dns='8.8.4.4'
 	while uci -q get network.@device[-1] > /dev/null; do
 		uci del network.@device[-1]
 	done
@@ -241,22 +241,22 @@ if [[ $LUCI_NAME == openwrt-* ]]; then
 	uci add_list network.@device[-1].ports='eth3'
 	uci add_list network.@device[-1].ports='eth4'
 	uci add_list network.@device[-1].ports='tap_vpn'
-	uci set network.@device[-1].ipv6='0'
+	# uci set network.@device[-1].ipv6='0'
 	# wan
 	uci set network.wan.device='eth5'
-	uci set network.wan.sourcefilter='0'
+	# uci set network.wan.sourcefilter='0'
 	# iptv
 	uci del network.iptv
 	uci set network.iptv=interface
 	uci set network.iptv.proto='none'
 	uci set network.iptv.device='br-iptv'
-	uci set network.iptv.delegate='0'
+	# uci set network.iptv.delegate='0'
 	uci add network device
 	uci set network.@device[-1].type='bridge'
 	uci set network.@device[-1].name='br-iptv'
 	uci add_list network.@device[-1].ports='eth4.85'
 	uci add_list network.@device[-1].ports='eth5.85'
-	uci set network.@device[-1].ipv6='0'
+	# uci set network.@device[-1].ipv6='0'
 else
 	# lan
 	uci set network.lan.dns='223.5.5.5 8.8.4.4'
@@ -269,7 +269,7 @@ else
 	uci set network.iptv.proto='none'
 	uci set network.iptv.ifname='eth4.85 eth5.85'
 	uci set network.iptv.auto='1'
-	uci set network.iptv.delegate='0'
+	# uci set network.iptv.delegate='0'
 fi
 uci commit network
 
@@ -277,22 +277,39 @@ uci commit network
 uci set openclash.config.en_mode='redir-host'
 uci set openclash.config.skip_proxy_address='1'
 uci set openclash.config.common_ports='21 22 23 53 80 123 143 194 443 465 587 853 993 995 998 2052 2053 2082 2083 2086 2095 2096 5222 5228 5229 5230 8080 8443 8880 8888 8889'
+uci set openclash.config.china_ip_route='1'
 uci set openclash.config.lan_interface_name='br-lan'
 uci set openclash.config.intranet_allowed='0'
+uci set openclash.config.geo_auto_update='1'
+uci set openclash.config.geo_update_week_time='*'
+uci set openclash.config.geo_update_day_time='2'
+uci set openclash.config.geo_custom_url='https://testingcf.jsdelivr.net/gh/alecthw/mmdb_china_ip_list@release/lite/Country.mmdb'
 uci set openclash.config.geoip_auto_update='1'
 uci set openclash.config.geoip_update_week_time='*'
-uci set openclash.config.geoip_update_day_time='8'
-uci set openclash.config.geoip_custom_url='https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geoip.dat'
-uci set openclash.config.core_version='linux-amd64-v3'
+uci set openclash.config.geoip_update_day_time='3'
+uci set openclash.config.geoip_custom_url='https://fastly.jsdelivr.net/gh/Loyalsoldier/v2ray-rules-dat@release/geoip.dat'
+uci set openclash.config.geosite_auto_update='1'
+uci set openclash.config.geosite_update_week_time='*'
+uci set openclash.config.geosite_update_day_time='4'
+uci set openclash.config.geosite_custom_url='https://testingcf.jsdelivr.net/gh/Loyalsoldier/v2ray-rules-dat@release/geosite.dat'
+uci set openclash.config.chnr_auto_update='1'
+uci set openclash.config.chnr_update_week_time='*'
+uci set openclash.config.chnr_update_day_time='5'
+uci set openclash.config.chnr_custom_url='https://ispip.clang.cn/all_cn.txt'
+uci set openclash.config.chnr6_custom_url='https://ispip.clang.cn/all_cn_ipv6.txt'
+uci set openclash.config.core_version='linux-amd64'
+# uci set openclash.config.core_version='linux-amd64-v3'
 uci set openclash.config.log_level='error'
 uci set openclash.config.enable_custom_dns='1'
+uci set openclash.config.append_wan_dns='1'
+uci set openclash.config.custom_fallback_filter='1'
 uci set openclash.config.enable_tcp_concurrent='1'
 uci set openclash.config.enable_unified_delay='1'
-uci set openclash.config.keep_alive_interval='15'
+# uci set openclash.config.keep_alive_interval='15'
 uci set openclash.config.find_process_mode='off'
 uci set openclash.config.global_client_fingerprint='chrome'
-uci set openclash.config.geodata_loader='standard'
-uci set openclash.config.enable_geoip_dat='1'
+# uci set openclash.config.geodata_loader='standard'
+# uci set openclash.config.enable_geoip_dat='1'
 uci set openclash.config.enable_meta_sniffer='1'
 uci set openclash.config.enable_meta_sniffer_pure_ip='1'
 # uci set openclash.config.enable_meta_sniffer_custom ='1'
@@ -300,28 +317,32 @@ uci set openclash.config.enable_custom_clash_rules='1'
 while uci -q get openclash.@dns_servers[-1] > /dev/null; do
   uci del openclash.@dns_servers[-1]
 done
-for i in $(seq 0 4); do
-	uci add openclash dns_servers
-	uci set openclash.@dns_servers[-1].enabled='1'
-    if [ $i -le 1 ]; then
-        uci set openclash.@dns_servers[-1].group='nameserver'
-        uci set openclash.@dns_servers[-1].type='https'
-    elif [ $i -le 3 ]; then
-        uci set openclash.@dns_servers[-1].group='fallback'
-        uci set openclash.@dns_servers[-1].type='tls'
-    else
-        uci set openclash.@dns_servers[-1].group='default'
-        uci set openclash.@dns_servers[-1].type='udp'
-    fi
-done
-uci set openclash.@dns_servers[0].ip='doh.pub/dns-query'
-uci set openclash.@dns_servers[1].ip='dns.alidns.com/dns-query'
-uci set openclash.@dns_servers[2].ip='8.8.4.4'
-uci set openclash.@dns_servers[3].ip='1.1.1.1'
-uci set openclash.@dns_servers[4].ip='223.5.5.5'
+# for i in $(seq 0 4); do
+# 	uci add openclash dns_servers
+# 	uci set openclash.@dns_servers[-1].enabled='1'
+#     if [ $i -le 1 ]; then
+#         uci set openclash.@dns_servers[-1].group='nameserver'
+#         uci set openclash.@dns_servers[-1].type='https'
+#     elif [ $i -le 3 ]; then
+#         uci set openclash.@dns_servers[-1].group='fallback'
+#         uci set openclash.@dns_servers[-1].type='tls'
+#     else
+#         uci set openclash.@dns_servers[-1].group='default'
+#         uci set openclash.@dns_servers[-1].type='udp'
+#     fi
+# done
+# uci set openclash.@dns_servers[0].ip='doh.pub/dns-query'
+# uci set openclash.@dns_servers[1].ip='dns.alidns.com/dns-query'
+# uci set openclash.@dns_servers[2].ip='8.8.4.4'
+# uci set openclash.@dns_servers[3].ip='1.1.1.1'
+# uci set openclash.@dns_servers[4].ip='223.5.5.5'
 # while uci -q get openclash.@authentication[-1] > /dev/null; do
 #   uci del openclash.@authentication[-1]
 # done
+echo >> /etc/openclash/custom/openclash_custom_chnroute_pass.list
+cat >> /etc/openclash/custom/openclash_custom_chnroute_pass.list <<EOF
+bing.com
+EOF
 echo >> /etc/openclash/custom/openclash_custom_rules.list
 cat >> /etc/openclash/custom/openclash_custom_rules.list <<EOF
 - DOMAIN-SUFFIX,btschool.club,DIRECT
@@ -329,6 +350,8 @@ cat >> /etc/openclash/custom/openclash_custom_rules.list <<EOF
 - DOMAIN-SUFFIX,hdarea.club,DIRECT
 - DOMAIN-SUFFIX,hddolby.com,DIRECT
 - DOMAIN-SUFFIX,hdfans.org,DIRECT
+- DOMAIN-SUFFIX,hdkyl.in,DIRECT
+- DOMAIN-SUFFIX,hdkylin.com,DIRECT
 - DOMAIN-SUFFIX,htpt.cc,DIRECT
 - DOMAIN-SUFFIX,hdtime.org,DIRECT
 - DOMAIN-SUFFIX,m-team.cc,DIRECT
@@ -468,7 +491,7 @@ else
 	rm -f /usr/lib/lua/luci/view/admin_status/index/upnp.htm
 	rm -f /usr/lib/lua/luci/view/admin_status/index/ddns.htm
 	rm -f /usr/lib/lua/luci/view/admin_status/index/minidlna.htm
-	
+
 	# sed -i 's/\"services\"/\"nas\"/g' /usr/lib/lua/luci/controller/aria2.lua
 	# sed -i 's/services/nas/g' /usr/lib/lua/luci/view/aria2/overview_status.htm
 	# sed -i 's/\"services\"/\"nas\"/g' /usr/lib/lua/luci/controller/hd_idle.lua
@@ -481,14 +504,16 @@ else
 	# sed -i 's/\"services\"/\"nas\"/g' /usr/lib/lua/luci/controller/usb_printer.lua
 	# sed -i 's/\"services\"/\"nas\"/g' /usr/lib/lua/luci/controller/xunlei.lua
 	# sed -i 's/services/nas/g'  /usr/lib/lua/luci/view/minidlna_status.htm
-	
+
+	# sed -i 's/\"services\"/\"nas\"/g' /usr/share/luci/menu.d/luci-app-samba4.json
+
 	# sed -i 's#downloads.openwrt.org#mirrors.tencent.com/lede#g' /etc/opkg/distfeeds.conf
 	# sed -i 's/root::0:0:99999:7:::/root:$1$V4UetPzk$CYXluq4wUazHjmCDBCqXF.:0:0:99999:7:::/g' /etc/shadow
 	# sed -i 's/root:::0:99999:7:::/root:$1$V4UetPzk$CYXluq4wUazHjmCDBCqXF.:0:0:99999:7:::/g' /etc/shadow
-	
+
 	sed -i "s/# //g" /etc/opkg/distfeeds.conf
 	# sed -i '/openwrt_luci/ { s/snapshots/releases\/18.06.9/g; }'  /etc/opkg/distfeeds.conf
-	
+
 	sed -i '/check_signature/d' /etc/opkg.conf
 
 	sed -i '/REDIRECT --to-ports 53/d' /etc/firewall.user
@@ -497,14 +522,12 @@ else
 	sed -i '/set wireless.radio${devidx}.disabled/d' /lib/wifi/mac80211.sh
 
 	# sed -i '/DISTRIB_REVISION/d' /etc/openwrt_release
-	# echo "DISTRIB_REVISION='R24.8.1'" >> /etc/openwrt_release
+	# echo "DISTRIB_REVISION='R24.11.11'" >> /etc/openwrt_release
 	# sed -i '/DISTRIB_DESCRIPTION/d' /etc/openwrt_release
-	# echo "DISTRIB_DESCRIPTION='OpenWrt '" >> /etc/openwrt_release
+	# echo "DISTRIB_DESCRIPTION='LEDE '" >> /etc/openwrt_release
 
 	sed -i '/log-facility/d' /etc/dnsmasq.conf
 	echo "log-facility=/dev/null" >> /etc/dnsmasq.conf
-
-	#ln -sf /sbin/ip /usr/bin/ip
 
 	rm -rf /tmp/luci-modulecache/
 	rm -f /tmp/luci-indexcache
