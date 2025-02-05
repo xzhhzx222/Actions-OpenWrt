@@ -107,22 +107,22 @@ uci set dhcp.@host[4].mac='be:36:f0:5e:0f:67'
 uci set dhcp.lan.start='20'
 uci set dhcp.lan.limit='99'
 uci set dhcp.lan.force='1'
-if [[ $LUCI_NAME == openwrt-* ]]; then
-	uci del dhcp.lan.ra
-	uci del dhcp.lan.ra_slaac
-	uci del dhcp.lan.dhcpv6
-	uci del dhcp.lan.ndp
-	uci del dhcp.lan.ra_flags
-	uci add_list dhcp.lan.ra_flags='none'
-	uci del dhcp.wan.ra_flags
-	uci add_list dhcp.wan.ra_flags='none'
-fi
+# if [[ $LUCI_NAME == openwrt-* ]]; then
+# 	uci del dhcp.lan.ra
+# 	uci del dhcp.lan.ra_slaac
+# 	uci del dhcp.lan.dhcpv6
+# 	uci del dhcp.lan.ndp
+# 	uci del dhcp.lan.ra_flags
+# 	uci add_list dhcp.lan.ra_flags='none'
+# 	uci del dhcp.wan.ra_flags
+# 	uci add_list dhcp.wan.ra_flags='none'
+# fi
 uci commit dhcp
 
 # Firewall Settings
-uci set firewall.@defaults[-1].fullcone='1'
-uci del firewall.@defaults[-1].flow_offloading
-uci del firewall.@defaults[-1].flow_offloading_hw
+# uci set firewall.@defaults[-1].fullcone='1'
+# uci del firewall.@defaults[-1].flow_offloading
+# uci del firewall.@defaults[-1].flow_offloading_hw
 uci del_list firewall.@zone[1].network='wan6'
 while uci -q get firewall.@zone[2] > /dev/null; do
 	uci del firewall.@zone[2]
@@ -202,8 +202,8 @@ uci set firewall.@redirect[9].dest_port='3389'
 uci commit firewall
 
 # Msd_lite Settings
-uci set msd_lite.@instance[0].network='iptv'
-uci commit msd_lite
+# uci set msd_lite.@instance[0].network='iptv'
+# uci commit msd_lite
 
 # Network Settings
 # lan
@@ -374,75 +374,41 @@ EOF
 uci commit openclash
 
 # Wechatpush or Serverchan Settings
-if [[ $LUCI_NAME == openwrt-* ]]; then
-	uci set wechatpush.config.enable='0'
-	uci set wechatpush.config.device_name='SamWrt'
-	uci set wechatpush.config.jsonpath='/usr/share/wechatpush/api/qywx_mpnews.json'
-	uci set wechatpush.config.mediapath='/usr/share/wechatpush/api/logo.jpg'
-	uci set wechatpush.config.oui_data='2'
-	uci set wechatpush.config.debuglevel='1'
-	uci set wechatpush.config.get_ipv4_mode='2'
-	# uci set wechatpush.config.get_ipv4_mode='1'
-	# uci set wechatpush.config.ipv4_interface='pppoe-wan'
-	uci del wechatpush.config.cpu_notification
-	uci add_list wechatpush.config.cpu_notification='load'
-	uci add_list wechatpush.config.cpu_notification='temp'
-	uci set wechatpush.config.cpu_load_threshold='2'
-	uci set wechatpush.config.temperature_threshold='80'
-	uci del wechatpush.config.login_notification
-	# uci add_list wechatpush.config.login_notification='web_logged'
-	# uci add_list wechatpush.config.login_notification='ssh_logged'
-	uci add_list wechatpush.config.login_notification='web_login_failed'
-	uci add_list wechatpush.config.login_notification='ssh_login_failed'
-	uci set wechatpush.config.login_max_num='3'
-	uci set wechatpush.config.crontab_mode='2'
-	uci set wechatpush.config.crontab_interval_time='4'
-	uci set wechatpush.config.send_title='路由状态'
-	uci del wechatpush.config.send_notification
-	uci add_list wechatpush.config.send_notification='router_status'
-	uci add_list wechatpush.config.send_notification='router_temp'
-	uci add_list wechatpush.config.send_notification='wan_info'
-	uci add_list wechatpush.config.send_notification='client_list'
-	uci set wechatpush.config.do_not_disturb_mode='2'
-	uci set wechatpush.config.do_not_disturb_starttime='0'
-	uci set wechatpush.config.do_not_disturb_endtime='8'
-	uci set wechatpush.config.cpu_threshold_duration='300'
-	uci set wechatpush.config.cpu_notification_delay='3600'
-	uci set wechatpush.config.passive_mode='1'
-	uci commit wechatpush
-else
-	# uci set serverchan.serverchan.serverchan_enable='0'
-	uci set serverchan.serverchan.jsonpath='/usr/share/serverchan/api/qywx_mpnews.json'
-	uci set serverchan.serverchan.mediapath='/usr/share/serverchan/api/logo.jpg'
-	uci set serverchan.serverchan.device_name='SamWrt'
-	uci set serverchan.serverchan.oui_data='2'
-	uci set serverchan.serverchan.reset_regularly='1'
-	uci set serverchan.serverchan.debuglevel='1'
-	uci set serverchan.serverchan.serverchan_ipv4='2'
-	# uci set serverchan.serverchan.ipv4_interface='pppoe-wan'
-	uci set serverchan.serverchan.serverchan_up='0'
-	uci set serverchan.serverchan.serverchan_down='0'
-	uci del serverchan.serverchan.cpuload
-	uci set serverchan.serverchan.cpuload_enable='0'
-	uci set serverchan.serverchan.web_logged='1'
-	uci set serverchan.serverchan.ssh_logged='1'
-	uci set serverchan.serverchan.web_login_failed='1'
-	uci set serverchan.serverchan.ssh_login_failed='1'
-	uci set serverchan.serverchan.login_max_num='3'
-	uci set serverchan.serverchan.web_login_black='0'
-	uci set serverchan.serverchan.port_knocking='0'
-	uci set serverchan.serverchan.crontab='2'
-	uci set serverchan.serverchan.interval_time='4'
-	uci set serverchan.serverchan.send_title='路由状态'
-	uci set serverchan.serverchan.router_status='1'
-	uci set serverchan.serverchan.router_temp='1'
-	uci set serverchan.serverchan.router_wan='1'
-	uci set serverchan.serverchan.client_list='1'
-	uci set serverchan.serverchan.serverchan_sheep='2'
-	uci set serverchan.serverchan.starttime='0'
-	uci set serverchan.serverchan.endtime='8'
-	uci commit serverchan
-fi
+uci set wechatpush.config.enable='0'
+uci set wechatpush.config.device_name='SamWrt'
+uci set wechatpush.config.jsonpath='/usr/share/wechatpush/api/qywx_mpnews.json'
+uci set wechatpush.config.mediapath='/usr/share/wechatpush/api/logo.jpg'
+uci set wechatpush.config.oui_data='2'
+uci set wechatpush.config.debuglevel='1'
+uci set wechatpush.config.get_ipv4_mode='2'
+# uci set wechatpush.config.get_ipv4_mode='1'
+# uci set wechatpush.config.ipv4_interface='pppoe-wan'
+uci del wechatpush.config.cpu_notification
+uci add_list wechatpush.config.cpu_notification='load'
+uci add_list wechatpush.config.cpu_notification='temp'
+uci set wechatpush.config.cpu_load_threshold='2'
+uci set wechatpush.config.temperature_threshold='80'
+uci del wechatpush.config.login_notification
+# uci add_list wechatpush.config.login_notification='web_logged'
+# uci add_list wechatpush.config.login_notification='ssh_logged'
+uci add_list wechatpush.config.login_notification='web_login_failed'
+uci add_list wechatpush.config.login_notification='ssh_login_failed'
+uci set wechatpush.config.login_max_num='3'
+uci set wechatpush.config.crontab_mode='2'
+uci set wechatpush.config.crontab_interval_time='4'
+uci set wechatpush.config.send_title='路由状态'
+uci del wechatpush.config.send_notification
+uci add_list wechatpush.config.send_notification='router_status'
+uci add_list wechatpush.config.send_notification='router_temp'
+uci add_list wechatpush.config.send_notification='wan_info'
+uci add_list wechatpush.config.send_notification='client_list'
+uci set wechatpush.config.do_not_disturb_mode='2'
+uci set wechatpush.config.do_not_disturb_starttime='0'
+uci set wechatpush.config.do_not_disturb_endtime='8'
+uci set wechatpush.config.cpu_threshold_duration='300'
+uci set wechatpush.config.cpu_notification_delay='3600'
+uci set wechatpush.config.passive_mode='1'
+uci commit wechatpush
 
 # Turboacc Settings
 # uci set turboacc.config.sfe_flow='0'
@@ -500,6 +466,9 @@ else
 	rm -f /usr/lib/lua/luci/view/admin_status/index/upnp.htm
 	rm -f /usr/lib/lua/luci/view/admin_status/index/ddns.htm
 	rm -f /usr/lib/lua/luci/view/admin_status/index/minidlna.htm
+	
+	rm -f /www/luci-static/resources/view/status/include/70_ddns.js
+	rm -f /www/luci-static/resources/view/status/include/80_upnp.js
 
 	# sed -i 's/\"services\"/\"nas\"/g' /usr/lib/lua/luci/controller/aria2.lua
 	# sed -i 's/services/nas/g' /usr/lib/lua/luci/view/aria2/overview_status.htm
@@ -513,7 +482,7 @@ else
 	# sed -i 's/\"services\"/\"nas\"/g' /usr/lib/lua/luci/controller/usb_printer.lua
 	# sed -i 's/\"services\"/\"nas\"/g' /usr/lib/lua/luci/controller/xunlei.lua
 	# sed -i 's/services/nas/g'  /usr/lib/lua/luci/view/minidlna_status.htm
-
+	#
 	# sed -i 's/\"services\"/\"nas\"/g' /usr/share/luci/menu.d/luci-app-samba4.json
 
 	# sed -i 's#downloads.openwrt.org#mirrors.tencent.com/lede#g' /etc/opkg/distfeeds.conf
@@ -523,7 +492,7 @@ else
 	sed -i "s/# //g" /etc/opkg/distfeeds.conf
 	# sed -i '/openwrt_luci/ { s/snapshots/releases\/18.06.9/g; }'  /etc/opkg/distfeeds.conf
 
-	sed -i '/check_signature/d' /etc/opkg.conf
+	# sed -i '/check_signature/d' /etc/opkg.conf
 
 	sed -i '/REDIRECT --to-ports 53/d' /etc/firewall.user
 
@@ -531,7 +500,7 @@ else
 	sed -i '/set wireless.radio${devidx}.disabled/d' /lib/wifi/mac80211.sh
 
 	# sed -i '/DISTRIB_REVISION/d' /etc/openwrt_release
-	# echo "DISTRIB_REVISION='R24.11.11'" >> /etc/openwrt_release
+	# echo "DISTRIB_REVISION='R25.1.1'" >> /etc/openwrt_release
 	# sed -i '/DISTRIB_DESCRIPTION/d' /etc/openwrt_release
 	# echo "DISTRIB_DESCRIPTION='LEDE '" >> /etc/openwrt_release
 

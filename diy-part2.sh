@@ -22,12 +22,12 @@
 
 # 删除已存在的软件包
 rm -rf feeds/luci/applications/luci-app-openclash/
-rm -rf feeds/luci/applications/luci-app-passwall/
+rm -rf feeds/luci/applications/luci-app-passwall*/
 rm -rf feeds/luci/applications/luci-app-serverchan/
 rm -rf feeds/luci/applications/luci-app-wechatpush/
 rm -rf feeds/luci/themes/luci-theme-argon*/
 rm -rf package/feeds/luci/luci-app-openclash/
-rm -rf package/feeds/luci/luci-app-passwall/
+rm -rf package/feeds/luci/luci-app-passwall*/
 rm -rf package/feeds/luci/luci-app-serverchan/
 rm -rf package/feeds/luci/luci-app-wechatpush/
 rm -rf package/feeds/luci/luci-theme-argon*/
@@ -36,14 +36,11 @@ rm -rf package/feeds/luci/luci-theme-argon*/
 git clone https://github.com/sirpdboy/luci-app-advanced.git package/xzhhzx222/luci-app-advanced
 
 # 添加Lienol/openwrt-package
-git clone https://github.com/Lienol/openwrt-package.git package/Lienol/openwrt-package
-mv -vf package/Lienol/openwrt-package/luci-app-control-timewol/ package/xzhhzx222/
-ln -vsf $PWD/package/xzhhzx222/luci-app-control-timewol/po/zh-cn/ $PWD/package/xzhhzx222/luci-app-control-timewol/po/zh_Hans
-mv -vf package/Lienol/openwrt-package/luci-app-control-weburl/ package/xzhhzx222/
-ln -vsf $PWD/package/xzhhzx222/luci-app-control-weburl/po/zh-cn/ $PWD/package/xzhhzx222/luci-app-control-weburl/po/zh_Hans
-mv -vf package/Lienol/openwrt-package/luci-app-timecontrol/ package/xzhhzx222/
-ln -vsf $PWD/package/xzhhzx222/luci-app-timecontrol/po/zh-cn/ $PWD/package/xzhhzx222/luci-app-timecontrol/po/zh_Hans
-rm -rf package/Lienol/
+# git clone https://github.com/Lienol/openwrt-package.git package/Lienol/openwrt-package
+# mv -vf package/Lienol/openwrt-package/luci-app-control-timewol/ package/xzhhzx222/
+# mv -vf package/Lienol/openwrt-package/luci-app-control-weburl/ package/xzhhzx222/
+# mv -vf package/Lienol/openwrt-package/luci-app-timecontrol/ package/xzhhzx222/
+# rm -rf package/Lienol/
 
 # 添加vernesong/OpenClash
 CLASH_DIR=package/xzhhzx222/luci-app-openclash/root/etc/openclash
@@ -86,10 +83,10 @@ case $BUILD_BRANCH in
     LOGO_FILE=package/xzhhzx222/luci-app-wechatpush/root/usr/share/wechatpush/api/logo.jpg
     SET_FILE=package/lean/default-settings/files/zzz-default-settings
     # 替换msd_lite
-    git clone -b openwrt-23.05 https://github.com/immortalwrt/packages.git package/immortalwrt/packages
-    rm -rf feeds/packages/net/msd_lite/
-    mv -vf package/immortalwrt/packages/net/msd_lite/ feeds/packages/net/
-    rm -rf package/immortalwrt/packages/
+    # git clone -b openwrt-23.05 https://github.com/immortalwrt/packages.git package/immortalwrt/packages
+    # rm -rf feeds/packages/net/msd_lite/
+    # mv -vf package/immortalwrt/packages/net/msd_lite/ feeds/packages/net/
+    # rm -rf package/immortalwrt/packages/
     # 添加luci-app-msd_lite
     # git clone -b openwrt-23.05 https://github.com/immortalwrt/luci.git package/immortalwrt/luci
     # mv -vf package/immortalwrt/luci/applications/luci-app-msd_lite/ feeds/luci/applications/
