@@ -3,8 +3,6 @@
 # Decide Release Version
 # OpenWrt or ImmortalWrt
 DISTRIB_ID=$(grep DISTRIB_ID /etc/openwrt_release | cut -d "'" -f 2)
-# Master or openwrt-23.05
-LUCI_NAME=$(grep '^luciname' /usr/lib/lua/luci/version.lua | cut -d '"' -f2 | cut -d ' ' -f2)
 
 # Luci Settings
 uci set luci.main.lang=zh_cn
@@ -31,10 +29,6 @@ uci -q batch <<-EOF
 	add_list system.ntp.server='time.apple.com'
 EOF
 uci commit system
-
-# Fstab Settings
-# uci set fstab.@global[0].anon_mount=1
-# uci commit fstab
 
 # DDNS Settings
 uci del ddns.myddns_ipv4
@@ -107,16 +101,15 @@ uci set dhcp.@host[4].mac='be:36:f0:5e:0f:67'
 uci set dhcp.lan.start='20'
 uci set dhcp.lan.limit='99'
 uci set dhcp.lan.force='1'
-# if [[ $LUCI_NAME == openwrt-* ]]; then
-# 	uci del dhcp.lan.ra
-# 	uci del dhcp.lan.ra_slaac
-# 	uci del dhcp.lan.dhcpv6
-# 	uci del dhcp.lan.ndp
-# 	uci del dhcp.lan.ra_flags
-# 	uci add_list dhcp.lan.ra_flags='none'
-# 	uci del dhcp.wan.ra_flags
-# 	uci add_list dhcp.wan.ra_flags='none'
-# fi
+# ipv6
+uci set dhcp.lan.ra='server'
+uci del dhcp.lan.dhcpv6
+uci set dhcp.lan.dns_service='0'
+uci del dhcp.lan.ndp
+uci set dhcp.lan.ra_default='1'
+uci set dhcp.lan.ra_slaac='1'
+uci del dhcp.lan.ra_flags
+uci add_list dhcp.lan.ra_flags='none'
 uci commit dhcp
 
 # Firewall Settings
@@ -129,11 +122,7 @@ while uci -q get firewall.@zone[2] > /dev/null; do
 done
 uci add firewall zone
 uci set firewall.@zone[-1].name='iptv'
-if [[ $LUCI_NAME == openwrt-* ]]; then
-	uci add_list firewall.@zone[-1].network='iptv'
-else
-	uci set firewall.@zone[-1].network='iptv'
-fi
+uci add_list firewall.@zone[-1].network='iptv'
 uci set firewall.@zone[-1].input='ACCEPT'
 uci set firewall.@zone[-1].output='ACCEPT'
 uci set firewall.@zone[-1].forward='ACCEPT'
@@ -144,11 +133,7 @@ for i in $(seq 0 9); do
 	uci add firewall redirect
 	uci set firewall.@redirect[-1].target='DNAT'
 	uci set firewall.@redirect[-1].family='ipv4'
-	if [[ $LUCI_NAME == openwrt-* ]]; then
-		uci add_list firewall.@redirect[-1].proto='tcp'
-	else
-		uci set firewall.@redirect[-1].proto='tcp'
-	fi
+	uci add_list firewall.@redirect[-1].proto='tcp'
 	uci set firewall.@redirect[-1].src='wan'
 	uci set firewall.@redirect[-1].dest='lan'
 done
@@ -210,67 +195,53 @@ uci commit firewall
 uci set network.lan.proto='static'
 uci set network.lan.ipaddr='10.0.0.2'
 uci set network.lan.netmask='255.255.255.0'
-# uci del network.lan.ip6assign
 # uci set network.lan.delegate='0'
+uci set network.lan.ip6assign='64'
+uci set network.lan.ip6ifaceid='eui64'
 # wan
 uci set network.wan.proto='pppoe'
 # uci set network.wan.ipv6='0'
 # uci set network.wan.delegate='0'
 uci del network.wan6
 # uci del network.globals.ula_prefix
-if [[ $LUCI_NAME == openwrt-* ]]; then
-	# loop
-	uci set network.loopback.device='lo'
-	# lan
-	uci del network.lan.type
-	uci del network.lan.ifname
-	uci set network.lan.device='br-lan'
-	# uci del network.lan.dns
-	# uci add_list network.lan.dns='223.5.5.5'
-	# uci add_list network.lan.dns='8.8.4.4'
-	while uci -q get network.@device[-1] > /dev/null; do
-		uci del network.@device[-1]
-	done
-	uci add network device
-	uci set network.@device[-1].type='bridge'
-	uci set network.@device[-1].name='br-lan'
-	# uci del network.@device[0].ports
-	uci add_list network.@device[-1].ports='eth0'
-	uci add_list network.@device[-1].ports='eth1'
-	uci add_list network.@device[-1].ports='eth2'
-	uci add_list network.@device[-1].ports='eth3'
-	uci add_list network.@device[-1].ports='eth4'
-	uci add_list network.@device[-1].ports='tap_vpn'
-	# uci set network.@device[-1].ipv6='0'
-	# wan
-	uci set network.wan.device='eth5'
-	# uci set network.wan.sourcefilter='0'
-	# iptv
-	uci del network.iptv
-	uci set network.iptv=interface
-	uci set network.iptv.proto='none'
-	uci set network.iptv.device='br-iptv'
-	# uci set network.iptv.delegate='0'
-	uci add network device
-	uci set network.@device[-1].type='bridge'
-	uci set network.@device[-1].name='br-iptv'
-	uci add_list network.@device[-1].ports='eth4.85'
-	uci add_list network.@device[-1].ports='eth5.85'
-	# uci set network.@device[-1].ipv6='0'
-else
-	# lan
-	uci set network.lan.dns='223.5.5.5 8.8.4.4'
-	uci set network.lan.ifname='eth0 eth1 eth2 eth3 eth4 tap_vpn'
-	# wan
-	uci set network.wan.ifname='eth5'
-	# iptv
-	uci set network.iptv=interface
-	uci set network.iptv.type='bridge'
-	uci set network.iptv.proto='none'
-	uci set network.iptv.ifname='eth4.85 eth5.85'
-	uci set network.iptv.auto='1'
-	# uci set network.iptv.delegate='0'
-fi
+# loop
+uci set network.loopback.device='lo'
+# lan
+uci del network.lan.type
+uci del network.lan.ifname
+uci set network.lan.device='br-lan'
+# uci del network.lan.dns
+# uci add_list network.lan.dns='223.5.5.5'
+# uci add_list network.lan.dns='8.8.4.4'
+while uci -q get network.@device[-1] > /dev/null; do
+	uci del network.@device[-1]
+done
+uci add network device
+uci set network.@device[-1].type='bridge'
+uci set network.@device[-1].name='br-lan'
+# uci del network.@device[0].ports
+uci add_list network.@device[-1].ports='eth0'
+uci add_list network.@device[-1].ports='eth1'
+uci add_list network.@device[-1].ports='eth2'
+uci add_list network.@device[-1].ports='eth3'
+uci add_list network.@device[-1].ports='eth4'
+uci add_list network.@device[-1].ports='tap_vpn'
+# uci set network.@device[-1].ipv6='0'
+# wan
+uci set network.wan.device='eth5'
+# uci set network.wan.sourcefilter='0'
+# iptv
+uci del network.iptv
+uci set network.iptv=interface
+uci set network.iptv.proto='none'
+uci set network.iptv.device='br-iptv'
+# uci set network.iptv.delegate='0'
+uci add network device
+uci set network.@device[-1].type='bridge'
+uci set network.@device[-1].name='br-iptv'
+uci add_list network.@device[-1].ports='eth4.85'
+uci add_list network.@device[-1].ports='eth5.85'
+# uci set network.@device[-1].ipv6='0'
 uci commit network
 
 # Openclash Settings
@@ -455,7 +426,6 @@ echo "DISTRIB_GITHUB=" >> /etc/openwrt_release
 sed -i '/DISTRIB_VERSIONS/d' /etc/openwrt_release
 echo "DISTRIB_VERSIONS=" >> /etc/openwrt_release
 
-# if [[ $LUCI_NAME == openwrt-* ]] && [ $DISTRIB_ID = ImmortalWrt ]; then
 if [ $DISTRIB_ID = ImmortalWrt ]; then
 	sed -i "/log-facility/d" "/etc/dnsmasq.conf"
 	echo "log-facility=/dev/null" >> "/etc/dnsmasq.conf"
@@ -491,13 +461,15 @@ else
 
 	sed -i "s/# //g" /etc/opkg/distfeeds.conf
 	# sed -i '/openwrt_luci/ { s/snapshots/releases\/18.06.9/g; }'  /etc/opkg/distfeeds.conf
+	# sed -i 's/24.10.0-rc5/23.05-SNAPSHOT/g' /etc/opkg/distfeeds.conf
+	sed -i 's/24[^/]\+/23.05-SNAPSHOT/g' /etc/opkg/distfeeds.conf
 
 	# sed -i '/check_signature/d' /etc/opkg.conf
 
 	sed -i '/REDIRECT --to-ports 53/d' /etc/firewall.user
 
-	sed -i '/option disabled/d' /etc/config/wireless
-	sed -i '/set wireless.radio${devidx}.disabled/d' /lib/wifi/mac80211.sh
+	# sed -i '/option disabled/d' /etc/config/wireless
+	# sed -i '/set wireless.radio${devidx}.disabled/d' /lib/wifi/mac80211.sh
 
 	# sed -i '/DISTRIB_REVISION/d' /etc/openwrt_release
 	# echo "DISTRIB_REVISION='R25.1.1'" >> /etc/openwrt_release
