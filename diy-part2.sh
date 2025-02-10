@@ -65,20 +65,12 @@ rm -f $CLASH_DIR/rule_provider/*
 
 # 链接sundaqiang/openwrt-packages
 ln -vsf $PWD/feeds/sundaqiang/luci-app-easyupdate/po/zh-cn/ $PWD/feeds/sundaqiang/luci-app-easyupdate/po/zh_Hans
+ln -vsf $PWD/feeds/sundaqiang/luci-app-wolplus/po/zh_Hans/ $PWD/feeds/sundaqiang/luci-app-wolplus/po/zh-cn
 # ln -vsf $PWD/feeds/sundaqiang/luci-app-wolplus/po/zh-cn/ $PWD/feeds/sundaqiang/luci-app-wolplus/po/zh_Hans
 sed -i "s#curl \"https.*tag_name.*#curl \"https://api.github.com/repos/\${github[2]}/\${github[3]}/releases\" | jq -r '.[] | select(.name | startswith(\"$BUILD_VER\")) | .tag_name' | head -n 1#" feeds/sundaqiang/luci-app-easyupdate/root/usr/bin/easyupdate.sh
 sed -i "s#curl \"https.*assets.*#curl \"https://api.github.com/repos/\${github[2]}/\${github[3]}/releases\" | jq -r \".[] | select(.name | startswith(\\\\\"$BUILD_VER\\\\\")) | select(.tag_name == \\\\\"\$(getCloudVer)\\\\\") | .assets[].browser_download_url\" | sed -n \"/\$suffix/p\")#" feeds/sundaqiang/luci-app-easyupdate/root/usr/bin/easyupdate.sh
 
 case $BUILD_BRANCH in
-  lede-18.06)
-    LOGO_FILE=package/feeds/luci/luci-app-serverchan/root/usr/share/serverchan/api/logo.jpg
-    SET_FILE=package/lean/default-settings/files/zzz-default-settings
-    # 添加luci-app-serverchan
-    git clone -b openwrt-18.06 https://github.com/tty228/luci-app-wechatpush.git package/xzhhzx222/luci-app-serverchan
-    # 添加luci-theme-argon
-    git clone -b 18.06 https://github.com/jerrykuku/luci-theme-argon.git package/xzhhzx222/luci-theme-argon
-    sed -i 's/luci-theme-bootstrap/luci-theme-argon/g' package/feeds/luci/luci/Makefile
-    ;;
   lede-23.05)
     LOGO_FILE=package/xzhhzx222/luci-app-wechatpush/root/usr/share/wechatpush/api/logo.jpg
     SET_FILE=package/lean/default-settings/files/zzz-default-settings
@@ -95,6 +87,7 @@ case $BUILD_BRANCH in
     # 添加luci-app-softethervpn
     git clone https://github.com/coolsnowwolf/luci.git package/coolsnowwolf/luci
     mv -vf package/coolsnowwolf/luci/applications/luci-app-softethervpn/ feeds/luci/applications/
+    ln -vsf $PWD/feeds/luci/applications/luci-app-softethervpn/po/zh-cn/ $PWD/feeds/luci/applications/luci-app-softethervpn/po/zh_Hans
     ln -vsf $PWD/feeds/luci/applications/luci-app-softethervpn/ $PWD/package/feeds/luci/
     rm -rf package/coolsnowwolf/luci/
     # 添加luci-app-wechatpush

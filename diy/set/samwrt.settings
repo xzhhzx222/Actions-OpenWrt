@@ -195,7 +195,7 @@ uci commit firewall
 uci set network.lan.proto='static'
 uci set network.lan.ipaddr='10.0.0.2'
 uci set network.lan.netmask='255.255.255.0'
-# uci set network.lan.delegate='0'
+uci set network.lan.delegate='0'
 uci set network.lan.ip6assign='64'
 uci set network.lan.ip6ifaceid='eui64'
 # wan

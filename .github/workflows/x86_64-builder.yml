@@ -22,7 +22,6 @@ on:
         default: 'immortalwrt-23.05'
         type: choice
         options:
-          - 'lede-18.06'
           - 'lede-23.05'
           - 'immortalwrt-21.02'
           - 'immortalwrt-23.05'
