@@ -205,7 +205,7 @@ uci set network.wan.proto='pppoe'
 uci del network.wan6
 # uci del network.globals.ula_prefix
 # loop
-uci set network.loopback.device='lo'
+# uci set network.loopback.device='lo'
 # lan
 uci del network.lan.type
 uci del network.lan.ifname
@@ -331,7 +331,6 @@ cat >> /etc/openclash/custom/openclash_custom_rules.list <<EOF
 - DOMAIN-SUFFIX,hddolby.com,DIRECT
 - DOMAIN-SUFFIX,hdfans.org,DIRECT
 - DOMAIN-SUFFIX,hdkyl.in,DIRECT
-- DOMAIN-SUFFIX,hdkylin.com,DIRECT
 - DOMAIN-SUFFIX,htpt.cc,DIRECT
 - DOMAIN-SUFFIX,hdtime.org,DIRECT
 - DOMAIN-SUFFIX,m-team.cc,DIRECT
@@ -344,16 +343,16 @@ cat >> /etc/openclash/custom/openclash_custom_rules.list <<EOF
 EOF
 uci commit openclash
 
-# Wechatpush or Serverchan Settings
+# Wechatpush Settings
 uci set wechatpush.config.enable='0'
 uci set wechatpush.config.device_name='SamWrt'
 uci set wechatpush.config.jsonpath='/usr/share/wechatpush/api/qywx_mpnews.json'
 uci set wechatpush.config.mediapath='/usr/share/wechatpush/api/logo.jpg'
 uci set wechatpush.config.oui_data='2'
 uci set wechatpush.config.debuglevel='1'
-uci set wechatpush.config.get_ipv4_mode='2'
-# uci set wechatpush.config.get_ipv4_mode='1'
-# uci set wechatpush.config.ipv4_interface='pppoe-wan'
+# uci set wechatpush.config.get_ipv4_mode='2'
+uci set wechatpush.config.get_ipv4_mode='1'
+uci set wechatpush.config.ipv4_interface='pppoe-wan'
 uci del wechatpush.config.cpu_notification
 uci add_list wechatpush.config.cpu_notification='load'
 uci add_list wechatpush.config.cpu_notification='temp'

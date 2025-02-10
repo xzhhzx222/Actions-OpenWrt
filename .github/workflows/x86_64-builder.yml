@@ -23,9 +23,8 @@ on:
         type: choice
         options:
           - 'lede-23.05'
-          - 'immortalwrt-21.02'
           - 'immortalwrt-23.05'
-          - 'immortalwrt-master'
+          - 'immortalwrt-24.10'
       version:
         description: 'Openwrt Build Version'
         required: true
@@ -57,11 +56,7 @@ jobs:
           immortalwrt-*)
             echo "DEPENDS_UBUNTU=diy/dep/immortalwrt.depends" >> $GITHUB_ENV
             echo "REPO_URL=https://github.com/immortalwrt/immortalwrt" >> $GITHUB_ENV
-            if [ ${BUILD_BRANCH:(-6)} != master ]; then
-              echo "REPO_BRANCH=openwrt-${BUILD_BRANCH:(-5)}" >> $GITHUB_ENV
-            else
-              echo "REPO_BRANCH=${BUILD_BRANCH:(-6)}" >> $GITHUB_ENV
-            fi
+            echo "REPO_BRANCH=openwrt-${BUILD_BRANCH:(-5)}" >> $GITHUB_ENV
             ;;
           lede-*)
             echo "DEPENDS_UBUNTU=diy/dep/lede.depends" >> $GITHUB_ENV
@@ -76,7 +71,7 @@ jobs:
       with:
         # this might remove tools that are actually needed,
         # if set to "true" but frees about 6 GB
-        tool-cache: true
+        tool-cache: false
         
         # all of these default to true, but feel free to set to
         # "false" if necessary for your workflow
