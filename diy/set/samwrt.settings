@@ -68,7 +68,7 @@ uci commit ddns
 # DHCP Settings
 uci set dhcp.@dnsmasq[0].rebind_protection='0'
 uci set dhcp.@dnsmasq[0].sequential_ip='1'
-# uci set dhcp.@dnsmasq[0].filter_aaaa='1'
+uci set dhcp.@dnsmasq[0].filter_aaaa='1'
 uci set dhcp.@dnsmasq[0].cachesize='0'
 while uci -q get dhcp.@host[-1] > /dev/null; do
 	uci del dhcp.@host[-1]
@@ -102,20 +102,22 @@ uci set dhcp.lan.start='20'
 uci set dhcp.lan.limit='99'
 uci set dhcp.lan.force='1'
 # ipv6
-uci set dhcp.lan.ra='server'
+uci del dhcp.lan.ra
 uci del dhcp.lan.dhcpv6
-uci set dhcp.lan.dns_service='0'
 uci del dhcp.lan.ndp
-uci set dhcp.lan.ra_default='1'
-uci set dhcp.lan.ra_slaac='1'
+uci del dhcp.lan.ra_slaac
 uci del dhcp.lan.ra_flags
-uci add_list dhcp.lan.ra_flags='none'
+# uci set dhcp.lan.ra='server'
+# uci del dhcp.lan.dhcpv6
+# uci set dhcp.lan.dns_service='0'
+# uci del dhcp.lan.ndp
+# uci set dhcp.lan.ra_default='1'
+# uci set dhcp.lan.ra_slaac='1'
+# uci del dhcp.lan.ra_flags
+# uci add_list dhcp.lan.ra_flags='none'
 uci commit dhcp
 
 # Firewall Settings
-# uci set firewall.@defaults[-1].fullcone='1'
-# uci del firewall.@defaults[-1].flow_offloading
-# uci del firewall.@defaults[-1].flow_offloading_hw
 uci del_list firewall.@zone[1].network='wan6'
 while uci -q get firewall.@zone[2] > /dev/null; do
 	uci del firewall.@zone[2]
@@ -196,40 +198,27 @@ uci set network.lan.proto='static'
 uci set network.lan.ipaddr='10.0.0.2'
 uci set network.lan.netmask='255.255.255.0'
 uci set network.lan.delegate='0'
-uci set network.lan.ip6assign='64'
-uci set network.lan.ip6ifaceid='eui64'
+# uci set network.lan.ip6assign='64'
+# uci set network.lan.ip6ifaceid='eui64'
 # wan
 uci set network.wan.proto='pppoe'
-# uci set network.wan.ipv6='0'
-# uci set network.wan.delegate='0'
+uci set network.wan.ipv6='0'
 uci del network.wan6
-# uci del network.globals.ula_prefix
-# loop
-# uci set network.loopback.device='lo'
 # lan
-uci del network.lan.type
-uci del network.lan.ifname
-uci set network.lan.device='br-lan'
-# uci del network.lan.dns
-# uci add_list network.lan.dns='223.5.5.5'
-# uci add_list network.lan.dns='8.8.4.4'
 while uci -q get network.@device[-1] > /dev/null; do
 	uci del network.@device[-1]
 done
 uci add network device
 uci set network.@device[-1].type='bridge'
 uci set network.@device[-1].name='br-lan'
-# uci del network.@device[0].ports
 uci add_list network.@device[-1].ports='eth0'
 uci add_list network.@device[-1].ports='eth1'
 uci add_list network.@device[-1].ports='eth2'
 uci add_list network.@device[-1].ports='eth3'
 uci add_list network.@device[-1].ports='eth4'
 uci add_list network.@device[-1].ports='tap_vpn'
-# uci set network.@device[-1].ipv6='0'
 # wan
 uci set network.wan.device='eth5'
-# uci set network.wan.sourcefilter='0'
 # iptv
 uci del network.iptv
 uci set network.iptv=interface
@@ -241,11 +230,9 @@ uci set network.@device[-1].type='bridge'
 uci set network.@device[-1].name='br-iptv'
 uci add_list network.@device[-1].ports='eth4.85'
 uci add_list network.@device[-1].ports='eth5.85'
-# uci set network.@device[-1].ipv6='0'
 uci commit network
 
 # Openclash Settings
-# uci set openclash.config.en_mode='redir-host'
 uci set openclash.config.operation_mode='redir-host'
 uci set openclash.config.skip_proxy_address='1'
 uci set openclash.config.common_ports='21 22 23 53 80 123 143 194 443 465 587 853 993 995 998 2052 2053 2082 2083 2086 2095 2096 5222 5228 5229 5230 8080 8443 8880 8888 8889'

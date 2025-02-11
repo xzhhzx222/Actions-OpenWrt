@@ -22,8 +22,8 @@
 echo 'src-git helloworld https://github.com/fw876/helloworld.git' >>feeds.conf.default
 
 # 添加xiaorouji/openwrt-passwall
-# echo 'src-git passwall_pkg https://github.com/xiaorouji/openwrt-passwall.git;packages' >>feeds.conf.default
-# echo 'src-git passwall_luci https://github.com/xiaorouji/openwrt-passwall.git;luci' >>feeds.conf.default
+# echo 'src-git passwall_pkg https://github.com/xiaorouji/openwrt-passwall-packages.git' >>feeds.conf.default
+# echo 'src-git passwall https://github.com/xiaorouji/openwrt-passwall.git' >>feeds.conf.default
 # echo 'src-git passwall2 https://github.com/xiaorouji/openwrt-passwall2.git' >>feeds.conf.default
 
 # 添加sundaqiang/openwrt-packages
