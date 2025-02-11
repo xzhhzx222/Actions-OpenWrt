@@ -58,7 +58,6 @@ curl -Ls -o $CLASH_DIR/core/core.tar.gz https://raw.githubusercontent.com/vernes
 # curl -Ls -o $CLASH_DIR/core/core.tar.gz https://raw.githubusercontent.com/vernesong/OpenClash/core/master/meta/clash-linux-amd64-v3.tar.gz
 tar -zxf $CLASH_DIR/core/core.tar.gz -C $CLASH_DIR/core
 mv -vf $CLASH_DIR/core/clash $CLASH_DIR/core/clash_meta
-chown 0:0 $CLASH_DIR/core/clash_meta
 rm -vf $CLASH_DIR/core/core.tar.gz
 rm -f $CLASH_DIR/rule_provider/*
 
