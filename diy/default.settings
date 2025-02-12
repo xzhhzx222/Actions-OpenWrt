@@ -1,5 +1,15 @@
 #!/bin/sh
 
+# Update openwrt_release
+sed -i '/DISTRIB_REVISION/d' /etc/openwrt_release
+echo "DISTRIB_REVISION=" >> /etc/openwrt_release
+sed -i '/DISTRIB_DESCRIPTION/d' /etc/openwrt_release
+echo "DISTRIB_DESCRIPTION=" >> /etc/openwrt_release
+sed -i '/DISTRIB_GITHUB/d' /etc/openwrt_release
+echo "DISTRIB_GITHUB=" >> /etc/openwrt_release
+sed -i '/DISTRIB_VERSIONS/d' /etc/openwrt_release
+echo "DISTRIB_VERSIONS=" >> /etc/openwrt_release
+
 # Decide Release Version
 # OpenWrt or ImmortalWrt
 DISTRIB_ID=$(grep DISTRIB_ID /etc/openwrt_release | cut -d "'" -f 2)
@@ -139,7 +149,7 @@ else
 		uci set dhcp.@host[$i].ip='192.168.0.1'$i''
 		uci set dhcp.@host[$i].leasetime='infinite'
 		if [ $i -gt 0 ]; then
-			do uci set dhcp.@host[$i].name='Lobby-PC'$i''
+			uci set dhcp.@host[$i].name='Lobby-PC'$i''
 		fi
 	done
 	uci set dhcp.@host[0].name='Jimmy-Server'
@@ -356,35 +366,13 @@ uci set openclash.config.enable_meta_sniffer_pure_ip='1'
 # uci set openclash.config.enable_meta_sniffer_custom ='1'
 uci set openclash.config.enable_custom_clash_rules='1'
 while uci -q get openclash.@dns_servers[-1] > /dev/null; do
-  uci del openclash.@dns_servers[-1]
+	uci del openclash.@dns_servers[-1]
 done
 uci add openclash dns_servers
 uci set openclash.@dns_servers[-1].enabled='1'
 uci set openclash.@dns_servers[-1].group='nameserver'
 uci set openclash.@dns_servers[-1].type='udp'
 uci set openclash.@dns_servers[-1].ip='223.5.5.5'
-# for i in $(seq 0 4); do
-# 	uci add openclash dns_servers
-# 	uci set openclash.@dns_servers[-1].enabled='1'
-#     if [ $i -le 1 ]; then
-#         uci set openclash.@dns_servers[-1].group='nameserver'
-#         uci set openclash.@dns_servers[-1].type='https'
-#     elif [ $i -le 3 ]; then
-#         uci set openclash.@dns_servers[-1].group='fallback'
-#         uci set openclash.@dns_servers[-1].type='tls'
-#     else
-#         uci set openclash.@dns_servers[-1].group='default'
-#         uci set openclash.@dns_servers[-1].type='udp'
-#     fi
-# done
-# uci set openclash.@dns_servers[0].ip='doh.pub/dns-query'
-# uci set openclash.@dns_servers[1].ip='dns.alidns.com/dns-query'
-# uci set openclash.@dns_servers[2].ip='8.8.4.4'
-# uci set openclash.@dns_servers[3].ip='1.1.1.1'
-# uci set openclash.@dns_servers[4].ip='223.5.5.5'
-# while uci -q get openclash.@authentication[-1] > /dev/null; do
-#   uci del openclash.@authentication[-1]
-# done
 echo >> /etc/openclash/custom/openclash_custom_chnroute_pass.list
 cat >> /etc/openclash/custom/openclash_custom_chnroute_pass.list <<EOF
 bing.com
@@ -412,7 +400,7 @@ uci commit openclash
 # Timewol Settings
 if [[ $DISTRIB_DESCRIPTION == JimmyWrt* ]]; then
 	while uci -q get timewol.@macclient[-1] > /dev/null; do
-	  uci del timewol.@macclient[-1]
+		uci del timewol.@macclient[-1]
 	done
 	for i in $(seq 0 3); do
 		uci add timewol macclient
@@ -519,15 +507,6 @@ sed -i '/other/d' /etc/opkg/distfeeds.conf
 sed -i '/passwall/d' /etc/opkg/distfeeds.conf
 sed -i '/sundaqiang/d' /etc/opkg/distfeeds.conf
 
-sed -i '/DISTRIB_REVISION/d' /etc/openwrt_release
-echo "DISTRIB_REVISION=" >> /etc/openwrt_release
-sed -i '/DISTRIB_DESCRIPTION/d' /etc/openwrt_release
-echo "DISTRIB_DESCRIPTION=" >> /etc/openwrt_release
-sed -i '/DISTRIB_GITHUB/d' /etc/openwrt_release
-echo "DISTRIB_GITHUB=" >> /etc/openwrt_release
-sed -i '/DISTRIB_VERSIONS/d' /etc/openwrt_release
-echo "DISTRIB_VERSIONS=" >> /etc/openwrt_release
-
 if [ $DISTRIB_ID = ImmortalWrt ]; then
 	sed -i "/log-facility/d" "/etc/dnsmasq.conf"
 	echo "log-facility=/dev/null" >> "/etc/dnsmasq.conf"
@@ -563,7 +542,6 @@ else
 
 	sed -i "s/# //g" /etc/opkg/distfeeds.conf
 	# sed -i '/openwrt_luci/ { s/snapshots/releases\/18.06.9/g; }'  /etc/opkg/distfeeds.conf
-	# sed -i 's/24.10.0-rc5/23.05-SNAPSHOT/g' /etc/opkg/distfeeds.conf
 	sed -i 's/24[^/]\+/23.05-SNAPSHOT/g' /etc/opkg/distfeeds.conf
 
 	# sed -i '/check_signature/d' /etc/opkg.conf
