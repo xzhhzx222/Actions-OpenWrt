@@ -116,8 +116,8 @@ echo "------------- Check End -------------"
 
 # DIY_SET=$GITHUB_WORKSPACE/diy/set/${BUILD_VER,,}.settings
 # DIY_LOGO=$GITHUB_WORKSPACE/diy/img/${BUILD_VER,,}.jpg
-DIY_SET=$GITHUB_WORKSPACE/default.settings
-DIY_LOGO=$GITHUB_WORKSPACE/openwrt.jpg
+DIY_SET=$GITHUB_WORKSPACE/diy/default.settings
+DIY_LOGO=$GITHUB_WORKSPACE/diy/openwrt.jpg
 
 echo "------------ Check Start ------------"
 echo "LOGO_FILE=$LOGO_FILE"
