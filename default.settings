@@ -18,9 +18,9 @@ uci commit luci
 
 # System Settings
 if [[ $DISTRIB_DESCRIPTION == SamWrt* ]]; then
-	uci set system.@system[0].hostname='samwrt'
+	uci set system.@system[0].hostname='SamWrt'
 else
-	uci set system.@system[0].hostname='jimmywrt'
+	uci set system.@system[0].hostname='JimmyWrt'
 fi
 uci -q batch <<-EOF
 	set system.@system[0].timezone='CST-8'
