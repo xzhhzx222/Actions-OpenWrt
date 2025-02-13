@@ -23,10 +23,12 @@
 # 删除已存在的软件包
 rm -rf feeds/luci/applications/luci-app-openclash/
 rm -rf feeds/luci/applications/luci-app-passwall*/
+rm -rf feeds/luci/applications/luci-app-timecontrol/
 rm -rf feeds/luci/applications/luci-app-wechatpush/
 rm -rf feeds/luci/themes/luci-theme-argon*/
 rm -rf package/feeds/luci/luci-app-openclash/
 rm -rf package/feeds/luci/luci-app-passwall*/
+rm -rf package/feeds/luci/luci-app-timecontrol/
 rm -rf package/feeds/luci/luci-app-wechatpush/
 rm -rf package/feeds/luci/luci-theme-argon*/
 
@@ -34,11 +36,11 @@ rm -rf package/feeds/luci/luci-theme-argon*/
 git clone https://github.com/sirpdboy/luci-app-advanced.git package/xzhhzx222/luci-app-advanced
 
 # 添加Lienol/openwrt-package
-# git clone https://github.com/Lienol/openwrt-package.git package/Lienol/openwrt-package
+git clone https://github.com/Lienol/openwrt-package.git package/Lienol/openwrt-package
 # mv -vf package/Lienol/openwrt-package/luci-app-control-timewol/ package/xzhhzx222/
-# mv -vf package/Lienol/openwrt-package/luci-app-control-weburl/ package/xzhhzx222/
-# mv -vf package/Lienol/openwrt-package/luci-app-timecontrol/ package/xzhhzx222/
-# rm -rf package/Lienol/
+mv -vf package/Lienol/openwrt-package/luci-app-control-weburl/ package/xzhhzx222/
+mv -vf package/Lienol/openwrt-package/luci-app-timecontrol/ package/xzhhzx222/
+rm -rf package/Lienol/
 
 # 添加vernesong/OpenClash
 CLASH_DIR=package/xzhhzx222/luci-app-openclash/root/etc/openclash

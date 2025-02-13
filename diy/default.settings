@@ -507,6 +507,9 @@ sed -i '/other/d' /etc/opkg/distfeeds.conf
 sed -i '/passwall/d' /etc/opkg/distfeeds.conf
 sed -i '/sundaqiang/d' /etc/opkg/distfeeds.conf
 
+sed -i 's/services/control/g' /usr/lib/lua/luci/controller/wolplus.lua
+sed -i 's/services/control/g' /usr/lib/lua/luci/view/wolplus/index.htm
+
 if [ $DISTRIB_ID = ImmortalWrt ]; then
 	sed -i "/log-facility/d" "/etc/dnsmasq.conf"
 	echo "log-facility=/dev/null" >> "/etc/dnsmasq.conf"
