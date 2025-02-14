@@ -69,7 +69,7 @@ ln -vsf $PWD/feeds/sundaqiang/luci-app-easyupdate/po/zh-cn/ $PWD/feeds/sundaqian
 # sed -i '1,7d' $PWD/feeds/sundaqiang/luci-app-wolplus/po/zh_Hans/wolplus.po
 sed -i 's/Wake on LAN/Wake on LAN +/g' $PWD/feeds/sundaqiang/luci-app-wolplus/luasrc/controller/wolplus.lua
 sed -i 's/wolplus/Wake on LAN +/g' $PWD/feeds/sundaqiang/luci-app-wolplus/po/zh_Hans/wolplus.po
-sed -i 's/macclient/Wake on LAN/g' $PWD/feeds/sundaqiang/luci-app-wolplus/po/zh_Hans/wolplus.po
+sed -i 's/macclient/Host Clients/g' $PWD/feeds/sundaqiang/luci-app-wolplus/po/zh_Hans/wolplus.po
 sed -i 's/name/Name/g' $PWD/feeds/sundaqiang/luci-app-wolplus/po/zh_Hans/wolplus.po
 sed -i 's/macaddr/MAC Address/g' $PWD/feeds/sundaqiang/luci-app-wolplus/po/zh_Hans/wolplus.po
 sed -i 's/maceth/Network Interface/g' $PWD/feeds/sundaqiang/luci-app-wolplus/po/zh_Hans/wolplus.po
@@ -79,7 +79,7 @@ echo "msgid \"Wake on LAN is a mechanism to remotely boot computers in the local
 echo "msgstr \"网络唤醒++是一个远程唤醒本地计算机的工具\"" >> $PWD/feeds/sundaqiang/luci-app-wolplus/po/zh_Hans/wolplus.po
 echo >> $PWD/feeds/sundaqiang/luci-app-wolplus/po/zh_Hans/wolplus.po
 echo "msgid \"Wake Up Host\"" >> $PWD/feeds/sundaqiang/luci-app-wolplus/po/zh_Hans/wolplus.po
-echo "msgstr \"唤醒主机\"" >> $PWD/feeds/sundaqiang/luci-app-wolplus/po/zh_Hans/wolplus.po
+echo "msgstr \"唤醒设备\"" >> $PWD/feeds/sundaqiang/luci-app-wolplus/po/zh_Hans/wolplus.po
 ###
 cat $PWD/feeds/sundaqiang/luci-app-wolplus/luasrc/controller/wolplus.lua
 cat $PWD/feeds/sundaqiang/luci-app-wolplus/po/zh_Hans/wolplus.po
