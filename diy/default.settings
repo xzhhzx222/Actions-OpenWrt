@@ -134,15 +134,15 @@ if [[ $DISTRIB_DESCRIPTION == SamWrt* ]]; then
 		uci set dhcp.@host[-1].leasetime='infinite'
 	done
 	uci set dhcp.@host[0].name='Sam-Desktop'
-	uci set dhcp.@host[0].mac='70:4d:7b:63:0a:37'
+	uci set dhcp.@host[0].mac='70:4D:7B:63:0A:37'
 	uci set dhcp.@host[1].name='Sam-Legion'
-	uci set dhcp.@host[1].mac='b0:3c:dc:8c:71:de'
+	uci set dhcp.@host[1].mac='B0:3C:DC:8C:71:DE'
 	uci set dhcp.@host[2].name='Sophie-Xiaoxin'
-	uci set dhcp.@host[2].mac='08:5b:d6:b0:76:83'
+	uci set dhcp.@host[2].mac='08:5B:D6:B0:76:83'
 	uci set dhcp.@host[3].name='Mom-Xiaomi13'
-	uci set dhcp.@host[3].mac='ee:cc:da:bf:0a:04'
+	uci set dhcp.@host[3].mac='EE:CC:DA:BF:0A:04'
 	uci set dhcp.@host[4].name='Dad-K40S'
-	uci set dhcp.@host[4].mac='be:36:f0:5e:0f:67'
+	uci set dhcp.@host[4].mac='BE:36:F0:5E:0F:67'
 else
 	for i in $(seq 0 4); do
 		uci add dhcp host
@@ -153,14 +153,14 @@ else
 		fi
 	done
 	uci set dhcp.@host[0].name='Jimmy-Server'
-	uci set dhcp.@host[0].mac='e0:94:67:4a:1a:69'
-	uci set dhcp.@host[1].mac='a8:a1:59:20:60:d5'
-	uci set dhcp.@host[2].mac='a8:a1:59:20:60:a1'
-	uci set dhcp.@host[3].mac='a8:a1:59:20:60:d7'
-	uci set dhcp.@host[4].mac='a8:a1:59:20:60:9f'
+	uci set dhcp.@host[0].mac='E0:94:67:4A:1A:69'
+	uci set dhcp.@host[1].mac='A8:A1:59:20:60:D5'
+	uci set dhcp.@host[2].mac='A8:A1:59:20:60:A1'
+	uci set dhcp.@host[3].mac='A8:A1:59:20:60:D7'
+	uci set dhcp.@host[4].mac='A8:A1:59:20:60:9F'
 fi
 uci set dhcp.lan.start='20'
-uci set dhcp.lan.limit='99'
+uci set dhcp.lan.limit='100'
 uci set dhcp.lan.force='1'
 # ipv6 off
 uci del dhcp.lan.ra

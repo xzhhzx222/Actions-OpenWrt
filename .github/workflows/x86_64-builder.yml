@@ -19,10 +19,10 @@ on:
       branch:
         description: 'Openwrt Build Branch'
         required: true
-        default: 'immortalwrt-23.05'
+        default: 'immortalwrt-24.10'
         type: choice
         options:
-          - 'lede-23.05'
+          - 'lede'
           - 'immortalwrt-23.05'
           - 'immortalwrt-24.10'
       version:
@@ -59,7 +59,7 @@ jobs:
             echo "REPO_URL=https://github.com/immortalwrt/immortalwrt" >> $GITHUB_ENV
             echo "REPO_BRANCH=openwrt-${BUILD_BRANCH:(-5)}" >> $GITHUB_ENV
             ;;
-          lede-*)
+          lede)
             echo "DEPENDS_UBUNTU=diy/dep/lede.depends" >> $GITHUB_ENV
             echo "REPO_URL=https://github.com/coolsnowwolf/lede" >> $GITHUB_ENV
             echo "REPO_BRANCH=master" >> $GITHUB_ENV

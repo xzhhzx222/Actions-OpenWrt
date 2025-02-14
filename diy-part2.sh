@@ -67,6 +67,23 @@ rm -f $CLASH_DIR/rule_provider/*
 ln -vsf $PWD/feeds/sundaqiang/luci-app-easyupdate/po/zh-cn/ $PWD/feeds/sundaqiang/luci-app-easyupdate/po/zh_Hans
 # ln -vsf $PWD/feeds/sundaqiang/luci-app-wolplus/po/zh-cn/ $PWD/feeds/sundaqiang/luci-app-wolplus/po/zh_Hans
 # sed -i '1,7d' $PWD/feeds/sundaqiang/luci-app-wolplus/po/zh_Hans/wolplus.po
+sed -i 's/Wake on LAN/Wake on LAN +/g' $PWD/feeds/sundaqiang/luci-app-wolplus/luasrc/controller/wolplus.lua
+sed -i 's/wolplus/Wake on LAN +/g' $PWD/feeds/sundaqiang/luci-app-wolplus/po/zh_Hans/wolplus.po
+sed -i 's/macclient/Wake on LAN/g' $PWD/feeds/sundaqiang/luci-app-wolplus/po/zh_Hans/wolplus.po
+sed -i 's/name/Name/g' $PWD/feeds/sundaqiang/luci-app-wolplus/po/zh_Hans/wolplus.po
+sed -i 's/macaddr/MAC Address/g' $PWD/feeds/sundaqiang/luci-app-wolplus/po/zh_Hans/wolplus.po
+sed -i 's/maceth/Network Interface/g' $PWD/feeds/sundaqiang/luci-app-wolplus/po/zh_Hans/wolplus.po
+sed -i 's/awake/Awake/g' $PWD/feeds/sundaqiang/luci-app-wolplus/po/zh_Hans/wolplus.po
+echo >> $PWD/feeds/sundaqiang/luci-app-wolplus/po/zh_Hans/wolplus.po
+echo "msgid \"Wake on LAN is a mechanism to remotely boot computers in the local network.\"" >> $PWD/feeds/sundaqiang/luci-app-wolplus/po/zh_Hans/wolplus.po
+echo "msgstr \"网络唤醒++是一个远程唤醒本地计算机的工具\"" >> $PWD/feeds/sundaqiang/luci-app-wolplus/po/zh_Hans/wolplus.po
+echo >> $PWD/feeds/sundaqiang/luci-app-wolplus/po/zh_Hans/wolplus.po
+echo "msgid \"Wake Up Host\"" >> $PWD/feeds/sundaqiang/luci-app-wolplus/po/zh_Hans/wolplus.po
+echo "msgstr \"唤醒主机\"" >> $PWD/feeds/sundaqiang/luci-app-wolplus/po/zh_Hans/wolplus.po
+###
+cat $PWD/feeds/sundaqiang/luci-app-wolplus/luasrc/controller/wolplus.lua
+cat $PWD/feeds/sundaqiang/luci-app-wolplus/po/zh_Hans/wolplus.po
+###
 sed -i "s#curl \"https.*tag_name.*#curl \"https://api.github.com/repos/\${github[2]}/\${github[3]}/releases\" | jq -r '.[] | select(.name | startswith(\"$BUILD_VER\")) | .tag_name' | head -n 1#" feeds/sundaqiang/luci-app-easyupdate/root/usr/bin/easyupdate.sh
 sed -i "s#curl \"https.*assets.*#curl \"https://api.github.com/repos/\${github[2]}/\${github[3]}/releases\" | jq -r \".[] | select(.name | startswith(\\\\\"$BUILD_VER\\\\\")) | select(.tag_name == \\\\\"\$(getCloudVer)\\\\\") | .assets[].browser_download_url\" | sed -n \"/\$suffix/p\")#" feeds/sundaqiang/luci-app-easyupdate/root/usr/bin/easyupdate.sh
 
