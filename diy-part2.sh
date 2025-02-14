@@ -98,7 +98,7 @@ git clone https://github.com/jerrykuku/luci-theme-argon.git package/xzhhzx222/lu
 sed -i 's/luci-theme-bootstrap/luci-theme-argon/g' package/feeds/luci/luci-light/Makefile
 
 case $BUILD_BRANCH in
-  lede-23.05)
+  lede)
     SET_FILE=package/lean/default-settings/files/zzz-default-settings
     # 替换msd_lite
     # git clone -b openwrt-23.05 https://github.com/immortalwrt/packages.git package/immortalwrt/packages
