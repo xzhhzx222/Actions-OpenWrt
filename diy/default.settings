@@ -35,7 +35,6 @@ fi
 uci -q batch <<-EOF
 	set system.@system[0].timezone='CST-8'
 	set system.@system[0].zonename='Asia/Shanghai'
-	
 	set system.ntp.enable_server='1'
 	set system.ntp.interface='lan'
 	set system.ntp.use_dhcp='0'
@@ -48,8 +47,9 @@ EOF
 uci commit system
 
 # DDNS Settings
-uci del ddns.myddns_ipv4
-uci del ddns.myddns_ipv6
+while uci -q get ddns.@service[-1] > /dev/null; do
+	uci del ddns.@service[-1]
+done
 if [[ $DISTRIB_DESCRIPTION == SamWrt* ]]; then
 	# root
 	uci set ddns.cf_root=service
@@ -120,8 +120,9 @@ fi
 uci commit ddns
 
 # DHCP Settings
-uci set dhcp.@dnsmasq[0].rebind_protection='0'
+uci set dhcp.@dnsmasq[0].dns_redirect='1'
 uci set dhcp.@dnsmasq[0].sequential_ip='1'
+uci set dhcp.@dnsmasq[0].rebind_protection='0'
 uci set dhcp.@dnsmasq[0].filter_aaaa='1'
 uci set dhcp.@dnsmasq[0].cachesize='0'
 while uci -q get dhcp.@host[-1] > /dev/null; do
@@ -312,7 +313,6 @@ if [[ $DISTRIB_DESCRIPTION == SamWrt* ]]; then
 	uci set network.iptv=interface
 	uci set network.iptv.proto='none'
 	uci set network.iptv.device='br-iptv'
-	# uci set network.iptv.delegate='0'
 	uci add network device
 	uci set network.@device[-1].type='bridge'
 	uci set network.@device[-1].name='br-iptv'
@@ -493,11 +493,11 @@ uci commit wolplus
 # EOF
 if [[ $DISTRIB_DESCRIPTION == SamWrt* ]]; then
 	cat >> /etc/dnsmasq.conf <<EOF
-	dhcp-option-force=vi-encap:0,2,"HGW-CT"
-	dhcp-option-force=lan,125,00:00:00:00:10:02:06:48:47:57:2d:43:54:0a:02:20:00:0b:02:00:55
-	dhcp-option=lan,60,00:00:01:00:02:03:43:50:45:03:0e:45:38:20:47:50:4f:4e:20:52:4f:55:54:45:52:04:03:31:2E:30
-	dhcp-option=lan,15
-	dhcp-option=lan,28
+dhcp-option-force=vi-encap:0,2,"HGW-CT"
+dhcp-option-force=lan,125,00:00:00:00:10:02:06:48:47:57:2d:43:54:0a:02:20:00:0b:02:00:55
+dhcp-option=lan,60,00:00:01:00:02:03:43:50:45:03:0e:45:38:20:47:50:4f:4e:20:52:4f:55:54:45:52:04:03:31:2E:30
+dhcp-option=lan,15
+dhcp-option=lan,28
 EOF
 fi
 
