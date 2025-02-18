@@ -377,7 +377,7 @@ uci set openclash.config.geodata_loader='standard'
 uci set openclash.config.enable_geoip_dat='1'
 uci set openclash.config.enable_meta_sniffer='1'
 uci set openclash.config.enable_meta_sniffer_pure_ip='1'
-uci set openclash.config.enable_custom_clash_rules='1'
+uci set openclash.config.enable_meta_sniffer_custom='1'
 while uci -q get openclash.@dns_servers[-1] > /dev/null; do
   uci del openclash.@dns_servers[-1]
 done
