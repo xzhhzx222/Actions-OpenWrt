@@ -35,14 +35,16 @@ fi
 uci -q batch <<-EOF
   set system.@system[0].timezone='CST-8'
   set system.@system[0].zonename='Asia/Shanghai'
+  
   set system.ntp.enable_server='1'
   set system.ntp.interface='lan'
   set system.ntp.use_dhcp='0'
+  
   delete system.ntp.server
-  add_list system.ntp.server='ntp1.aliyun.com'
-  add_list system.ntp.server='ntp.tencent.com'
-  add_list system.ntp.server='ntp.ntsc.ac.cn'
-  add_list system.ntp.server='time.apple.com'
+  add_list system.ntp.server="ntp.tencent.com"
+  add_list system.ntp.server="ntp1.aliyun.com"
+  add_list system.ntp.server="ntp.ntsc.ac.cn"
+  add_list system.ntp.server="cn.ntp.org.cn"
 EOF
 uci commit system
 
@@ -120,7 +122,7 @@ fi
 uci commit ddns
 
 # DHCP Settings
-uci set dhcp.@dnsmasq[0].dns_redirect='1'
+uci set dhcp.@dnsmasq[0].dns_redirect='0'
 uci set dhcp.@dnsmasq[0].sequential_ip='1'
 uci set dhcp.@dnsmasq[0].rebind_protection='0'
 uci set dhcp.@dnsmasq[0].filter_aaaa='1'
@@ -304,8 +306,10 @@ uci set network.wan.proto='pppoe'
 uci set network.wan.ipv6='0'
 uci del network.wan6
 # lan
-# uci set network.@device[-1].type='bridge'
-# uci set network.@device[-1].name='br-lan'
+while uci -q get network.@device[1] > /dev/null; do
+  uci del network.@device[1]
+done
+uci del network.@device[-1].ports
 uci add_list network.@device[-1].ports='eth0'
 uci add_list network.@device[-1].ports='eth1'
 uci add_list network.@device[-1].ports='eth2'
@@ -328,14 +332,6 @@ if [[ $DISTRIB_DESCRIPTION == SamWrt* ]]; then
   uci set network.iptv=interface
   uci set network.iptv.proto='none'
   uci set network.iptv.device='br-iptv'
-  i=0
-  while uci -q get network.@device[$i] > /dev/null; do
-    if [ $(uci -q get network.@device[$i].name) = "br-iptv" ]; then
-      uci del network.@device[$i]
-    else
-      i=$(($i + 1))
-    fi
-  done
   uci add network device
   uci set network.@device[-1].type='bridge'
   uci set network.@device[-1].name='br-iptv'
@@ -354,20 +350,18 @@ uci set openclash.config.intranet_allowed='0'
 uci set openclash.config.geo_auto_update='0'
 # uci set openclash.config.geo_update_week_time='*'
 # uci set openclash.config.geo_update_day_time='2'
-# uci set openclash.config.geo_custom_url='https://testingcf.jsdelivr.net/gh/alecthw/mmdb_china_ip_list@release/lite/Country.mmdb'
+# uci set openclash.config.geo_custom_url='https://github.com/alecthw/mmdb_china_ip_list/releases/latest/download/Country.mmdb'
 uci set openclash.config.geoip_auto_update='1'
 uci set openclash.config.geoip_update_week_time='*'
 uci set openclash.config.geoip_update_day_time='7'
-# uci set openclash.config.geoip_custom_url='https://fastly.jsdelivr.net/gh/Loyalsoldier/v2ray-rules-dat@release/geoip.dat'
 uci set openclash.config.geoip_custom_url='https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geoip.dat'
 uci set openclash.config.geosite_auto_update='1'
 uci set openclash.config.geosite_update_week_time='*'
 uci set openclash.config.geosite_update_day_time='7'
-# uci set openclash.config.geosite_custom_url='https://testingcf.jsdelivr.net/gh/Loyalsoldier/v2ray-rules-dat@release/geosite.dat'
 uci set openclash.config.geosite_custom_url='https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geosite.dat'
 uci set openclash.config.chnr_auto_update='1'
 uci set openclash.config.chnr_update_week_time='*'
-uci set openclash.config.chnr_update_day_time='5'
+uci set openclash.config.chnr_update_day_time='11'
 # uci set openclash.config.chnr_custom_url='https://ispip.clang.cn/all_cn.txt'
 uci set openclash.config.chnr_custom_url='https://github.com/Hackl0us/GeoIP2-CN/raw/release/CN-ip-cidr.txt'
 uci set openclash.config.chnr6_custom_url='https://ispip.clang.cn/all_cn_ipv6.txt'
@@ -375,18 +369,14 @@ uci set openclash.config.core_version='linux-amd64'
 # uci set openclash.config.core_version='linux-amd64-v3'
 uci set openclash.config.log_level='error'
 uci set openclash.config.enable_custom_dns='1'
-# uci set openclash.config.append_wan_dns='1'
-# uci set openclash.config.custom_fallback_filter='1'
 uci set openclash.config.enable_tcp_concurrent='1'
 uci set openclash.config.enable_unified_delay='1'
-# uci set openclash.config.keep_alive_interval='15'
 uci set openclash.config.find_process_mode='off'
 uci set openclash.config.global_client_fingerprint='chrome'
 uci set openclash.config.geodata_loader='standard'
 uci set openclash.config.enable_geoip_dat='1'
 uci set openclash.config.enable_meta_sniffer='1'
 uci set openclash.config.enable_meta_sniffer_pure_ip='1'
-# uci set openclash.config.enable_meta_sniffer_custom ='1'
 uci set openclash.config.enable_custom_clash_rules='1'
 while uci -q get openclash.@dns_servers[-1] > /dev/null; do
   uci del openclash.@dns_servers[-1]
@@ -459,7 +449,6 @@ uci set wechatpush.config.jsonpath='/usr/share/wechatpush/api/qywx_mpnews.json'
 uci set wechatpush.config.mediapath='/usr/share/wechatpush/api/logo.jpg'
 uci set wechatpush.config.oui_data='2'
 uci set wechatpush.config.debuglevel='1'
-# uci set wechatpush.config.get_ipv4_mode='2'
 uci set wechatpush.config.get_ipv4_mode='1'
 uci set wechatpush.config.ipv4_interface='pppoe-wan'
 uci del wechatpush.config.cpu_notification

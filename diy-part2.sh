@@ -52,6 +52,9 @@ echo "------------- Check End -------------"
 git clone --depth=1 https://github.com/vernesong/OpenClash.git package/vernesong/OpenClash
 mv -vf package/vernesong/OpenClash/luci-app-openclash/ package/xzhhzx222/
 rm -rf package/vernesong/
+rm -vf $CLASH_DIR/china_ip*
+curl -Ls -o $CLASH_DIR/china_ip_route.ipset https://github.com/Hackl0us/GeoIP2-CN/raw/release/CN-ip-cidr.txt
+curl -Ls -o $CLASH_DIR/china_ip6_route.ipset https://ispip.clang.cn/all_cn_ipv6.txt
 rm -vf $CLASH_DIR/Geo*
 curl -Ls -o $CLASH_DIR/GeoIP.dat https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geoip.dat
 curl -Ls -o $CLASH_DIR/GeoSite.dat https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geosite.dat
@@ -65,8 +68,6 @@ rm -f $CLASH_DIR/rule_provider/*
 
 # 链接sundaqiang/openwrt-packages
 ln -vsf $PWD/feeds/sundaqiang/luci-app-easyupdate/po/zh-cn/ $PWD/feeds/sundaqiang/luci-app-easyupdate/po/zh_Hans
-# ln -vsf $PWD/feeds/sundaqiang/luci-app-wolplus/po/zh-cn/ $PWD/feeds/sundaqiang/luci-app-wolplus/po/zh_Hans
-# sed -i '1,7d' $PWD/feeds/sundaqiang/luci-app-wolplus/po/zh_Hans/wolplus.po
 sed -i 's/Wake on LAN/Wake on LAN +/g' $PWD/feeds/sundaqiang/luci-app-wolplus/luasrc/controller/wolplus.lua
 sed -i 's/wolplus/Wake on LAN +/g' $PWD/feeds/sundaqiang/luci-app-wolplus/po/zh_Hans/wolplus.po
 sed -i 's/macclient/Host Clients/g' $PWD/feeds/sundaqiang/luci-app-wolplus/po/zh_Hans/wolplus.po
@@ -80,10 +81,6 @@ echo "msgstr \"网络唤醒++是一个远程唤醒本地计算机的工具\"" >>
 echo >> $PWD/feeds/sundaqiang/luci-app-wolplus/po/zh_Hans/wolplus.po
 echo "msgid \"Wake Up Host\"" >> $PWD/feeds/sundaqiang/luci-app-wolplus/po/zh_Hans/wolplus.po
 echo "msgstr \"唤醒设备\"" >> $PWD/feeds/sundaqiang/luci-app-wolplus/po/zh_Hans/wolplus.po
-###
-cat $PWD/feeds/sundaqiang/luci-app-wolplus/luasrc/controller/wolplus.lua
-cat $PWD/feeds/sundaqiang/luci-app-wolplus/po/zh_Hans/wolplus.po
-###
 sed -i "s#curl \"https.*tag_name.*#curl \"https://api.github.com/repos/\${github[2]}/\${github[3]}/releases\" | jq -r '.[] | select(.name | startswith(\"$BUILD_VER\")) | .tag_name' | head -n 1#" feeds/sundaqiang/luci-app-easyupdate/root/usr/bin/easyupdate.sh
 sed -i "s#curl \"https.*assets.*#curl \"https://api.github.com/repos/\${github[2]}/\${github[3]}/releases\" | jq -r \".[] | select(.name | startswith(\\\\\"$BUILD_VER\\\\\")) | select(.tag_name == \\\\\"\$(getCloudVer)\\\\\") | .assets[].browser_download_url\" | sed -n \"/\$suffix/p\")#" feeds/sundaqiang/luci-app-easyupdate/root/usr/bin/easyupdate.sh
 
@@ -130,8 +127,6 @@ echo "------------ Check Start ------------"
 ls -l package/xzhhzx222/
 echo "------------- Check End -------------"
 
-# DIY_SET=$GITHUB_WORKSPACE/diy/set/${BUILD_VER,,}.settings
-# DIY_LOGO=$GITHUB_WORKSPACE/diy/img/${BUILD_VER,,}.jpg
 DIY_SET=$GITHUB_WORKSPACE/diy/default.settings
 DIY_LOGO=$GITHUB_WORKSPACE/diy/openwrt.jpg
 
@@ -146,7 +141,6 @@ echo "------------- Check End -------------"
 [ -e $DIY_SET ] && mv -vf $DIY_SET $SET_FILE
 
 sed -i "s/DISTRIB_REVISION=/DISTRIB_REVISION=\'${RELEASE_VER}\'/" $SET_FILE
-# sed -i "s/DISTRIB_DESCRIPTION=\"/\"DISTRIB_DESCRIPTION=\'${BUILD_VER} \'\"/" $SET_FILE
 sed -i "s/\"DISTRIB_DESCRIPTION=\"/\"DISTRIB_DESCRIPTION=\'${BUILD_VER} \'\"/" $SET_FILE
 sed -i "s#DISTRIB_GITHUB=#DISTRIB_GITHUB=\'${RELEASE_REPO}\'#" $SET_FILE
 sed -i "s/DISTRIB_VERSIONS=/DISTRIB_VERSIONS=\'${RELEASE_TAG}\'/" $SET_FILE
