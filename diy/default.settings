@@ -266,7 +266,7 @@ while uci -q get firewall.@rule[9] > /dev/null; do
 done
 for i in $(seq 0 2); do
   uci add firewall rule
-  uci set firewall.@rule[-1].src='wan'
+  uci set firewall.@rule[-1].src='*'
   uci set firewall.@rule[-1].target='ACCEPT'
   uci set firewall.@rule[-1].family='ipv4'
   if [ $i = 0 ]; then
