@@ -269,19 +269,15 @@ for i in $(seq 0 2); do
   uci set firewall.@rule[-1].src='*'
   uci set firewall.@rule[-1].target='ACCEPT'
   uci set firewall.@rule[-1].family='ipv4'
-  if [ $i = 0 ]; then
-    uci set firewall.@rule[-1].name='Softether-OpenVPN'
-    uci set firewall.@rule[-1].dest_port='1194'
-  elif [ $i = 1 ]; then
-    uci set firewall.@rule[-1].name='Softether-IPSec'
-    uci add_list firewall.@rule[-1].proto='udp'
-    uci set firewall.@rule[-1].dest_port='500 1701 4500'
-  else
-    uci set firewall.@rule[-1].name='Softether-Server'
-    uci add_list firewall.@rule[-1].proto='tcp'
-    uci set firewall.@rule[-1].dest_port='5555'
-  fi
 done
+uci set firewall.@rule[9].name='Softether-OpenVPN'
+uci set firewall.@rule[9].dest_port='1194'
+uci set firewall.@rule[10].name='Softether-IPSec'
+uci add_list firewall.@rule[10].proto='udp'
+uci set firewall.@rule[10].dest_port='500 1701 4500'
+uci set firewall.@rule[11].name='Softether-Server'
+uci add_list firewall.@rule[11].proto='tcp'
+uci set firewall.@rule[11].dest_port='5555'
 uci commit firewall
 
 # Msd_lite Settings
@@ -441,13 +437,15 @@ fi
 
 # Wechatpush Settings
 uci set wechatpush.config.enable='0'
+uci set wechatpush.config.jsonpath='/usr/share/wechatpush/api/qywx_mpnews.json'
+uci set wechatpush.config.userid='xzhhzx222'
+uci set wechatpush.config.agentid='1000003'
+uci set wechatpush.config.mediapath='/usr/share/wechatpush/api/logo.jpg'
 if [[ $DISTRIB_DESCRIPTION == SamWrt* ]]; then
   uci set wechatpush.config.device_name='SamWrt'
 else
   uci set wechatpush.config.device_name='JimmyWrt'
 fi
-uci set wechatpush.config.jsonpath='/usr/share/wechatpush/api/qywx_mpnews.json'
-uci set wechatpush.config.mediapath='/usr/share/wechatpush/api/logo.jpg'
 uci set wechatpush.config.oui_data='2'
 uci set wechatpush.config.debuglevel='1'
 uci set wechatpush.config.get_ipv4_mode='1'
@@ -471,12 +469,12 @@ uci add_list wechatpush.config.send_notification='router_status'
 uci add_list wechatpush.config.send_notification='router_temp'
 uci add_list wechatpush.config.send_notification='wan_info'
 uci add_list wechatpush.config.send_notification='client_list'
-uci set wechatpush.config.do_not_disturb_mode='2'
+uci set wechatpush.config.do_not_disturb_mode='1'
 uci set wechatpush.config.do_not_disturb_starttime='0'
 uci set wechatpush.config.do_not_disturb_endtime='8'
 uci set wechatpush.config.cpu_threshold_duration='300'
 uci set wechatpush.config.cpu_notification_delay='3600'
-uci set wechatpush.config.passive_mode='1'
+# uci set wechatpush.config.passive_mode='1'
 uci commit wechatpush
 
 # Wolplus Settings
