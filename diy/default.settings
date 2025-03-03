@@ -182,6 +182,11 @@ uci del dhcp.lan.ra_flags
 # uci add_list dhcp.lan.ra_flags='none'
 uci commit dhcp
 
+# Easyupdate Settings
+uci set easyupdate.main.keepconfig='0'
+uci set easyupdate.main.forceflash='0'
+uci commit easyupdate
+
 # Firewall Settings
 uci del firewall.@defaults[-1].flow_offloading
 uci del firewall.@defaults[-1].flow_offloading_hw
@@ -339,7 +344,7 @@ uci commit network
 # Openclash Settings
 uci set openclash.config.operation_mode='redir-host'
 uci set openclash.config.skip_proxy_address='1'
-uci set openclash.config.common_ports='1'
+uci set openclash.config.common_ports='21 22 23 53 80 123 143 194 443 465 587 853 993 995 998 2052 2053 2082 2083 2086 2095 2096 5222 5228 5229 5230 8080 8443 8880 8888 8889'
 uci set openclash.config.china_ip_route='1'
 uci set openclash.config.lan_interface_name='br-lan'
 uci set openclash.config.intranet_allowed='0'
@@ -395,6 +400,7 @@ cat >> /etc/openclash/custom/openclash_custom_rules.list <<EOF
 - DOMAIN-SUFFIX,hddolby.com,DIRECT
 - DOMAIN-SUFFIX,hdfans.org,DIRECT
 - DOMAIN-SUFFIX,hdkyl.in,DIRECT
+- DOMAIN-SUFFIX,hdkylin.com,DIRECT
 - DOMAIN-SUFFIX,htpt.cc,DIRECT
 - DOMAIN-SUFFIX,hdtime.org,DIRECT
 - DOMAIN-SUFFIX,m-team.cc,DIRECT
@@ -469,7 +475,7 @@ uci add_list wechatpush.config.send_notification='router_status'
 uci add_list wechatpush.config.send_notification='router_temp'
 uci add_list wechatpush.config.send_notification='wan_info'
 uci add_list wechatpush.config.send_notification='client_list'
-uci set wechatpush.config.do_not_disturb_mode='1'
+uci set wechatpush.config.do_not_disturb_mode='2'
 uci set wechatpush.config.do_not_disturb_starttime='0'
 uci set wechatpush.config.do_not_disturb_endtime='8'
 uci set wechatpush.config.cpu_threshold_duration='300'
