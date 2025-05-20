@@ -394,22 +394,21 @@ bing.com
 EOF
 echo >> /etc/openclash/custom/openclash_custom_rules.list
 cat >> /etc/openclash/custom/openclash_custom_rules.list <<EOF
+- DOMAIN-SUFFIX,bwh81.net,DIRECT
 - DOMAIN-SUFFIX,btschool.club,DIRECT
 - DOMAIN-SUFFIX,haidan.video,DIRECT
 - DOMAIN-SUFFIX,hdarea.club,DIRECT
 - DOMAIN-SUFFIX,hddolby.com,DIRECT
 - DOMAIN-SUFFIX,hdfans.org,DIRECT
 - DOMAIN-SUFFIX,hdkyl.in,DIRECT
-- DOMAIN-SUFFIX,hdkylin.com,DIRECT
-- DOMAIN-SUFFIX,htpt.cc,DIRECT
 - DOMAIN-SUFFIX,hdtime.org,DIRECT
+- DOMAIN-SUFFIX,htpt.cc,DIRECT
 - DOMAIN-SUFFIX,m-team.cc,DIRECT
 - DOMAIN-SUFFIX,m-team.io,DIRECT
 - DOMAIN-SUFFIX,nicept.net,DIRECT
 - DOMAIN-SUFFIX,okpt.net,DIRECT
 - DOMAIN-SUFFIX,pttime.org,DIRECT
 - DOMAIN-SUFFIX,ultrahd.net,DIRECT
-- DOMAIN-SUFFIX,bwh81.net,DIRECT
 EOF
 uci commit openclash
 

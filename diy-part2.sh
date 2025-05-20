@@ -22,12 +22,12 @@
 
 # 删除已存在的软件包
 rm -rf feeds/luci/applications/luci-app-openclash/
-rm -rf feeds/luci/applications/luci-app-passwall*/
+rm -rf feeds/luci/applications/luci-app-passwall/
 rm -rf feeds/luci/applications/luci-app-timecontrol/
 rm -rf feeds/luci/applications/luci-app-wechatpush/
 rm -rf feeds/luci/themes/luci-theme-argon*/
 rm -rf package/feeds/luci/luci-app-openclash/
-rm -rf package/feeds/luci/luci-app-passwall*/
+rm -rf package/feeds/luci/luci-app-passwall/
 rm -rf package/feeds/luci/luci-app-timecontrol/
 rm -rf package/feeds/luci/luci-app-wechatpush/
 rm -rf package/feeds/luci/luci-theme-argon*/
@@ -53,7 +53,7 @@ git clone --depth=1 https://github.com/vernesong/OpenClash.git package/vernesong
 mv -vf package/vernesong/OpenClash/luci-app-openclash/ package/xzhhzx222/
 rm -rf package/vernesong/
 rm -vf $CLASH_DIR/china_ip*
-curl -Ls -o $CLASH_DIR/china_ip_route.ipset https://github.com/Hackl0us/GeoIP2-CN/raw/release/CN-ip-cidr.txt
+curl -Ls -o $CLASH_DIR/china_ip_route.ipset https://raw.githubusercontent.com/Hackl0us/GeoIP2-CN/release/CN-ip-cidr.txt
 curl -Ls -o $CLASH_DIR/china_ip6_route.ipset https://ispip.clang.cn/all_cn_ipv6.txt
 rm -vf $CLASH_DIR/Geo*
 curl -Ls -o $CLASH_DIR/GeoIP.dat https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geoip.dat
