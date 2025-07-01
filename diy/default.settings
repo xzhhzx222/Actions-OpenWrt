@@ -398,6 +398,7 @@ bing.com
 EOF
 echo >> /etc/openclash/custom/openclash_custom_rules.list
 cat >> /etc/openclash/custom/openclash_custom_rules.list <<EOF
+- DOMAIN,get.geojs.io,DIRECT
 - DOMAIN-SUFFIX,bwh81.net,DIRECT
 # - DOMAIN-SUFFIX,btschool.club,DIRECT
 # - DOMAIN-SUFFIX,haidan.video,DIRECT
