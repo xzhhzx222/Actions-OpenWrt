@@ -35,12 +35,15 @@ rm -rf package/feeds/luci/luci-theme-argon*/
 # 添加sirpdboy/luci-app-advanced
 git clone https://github.com/sirpdboy/luci-app-advanced.git package/xzhhzx222/luci-app-advanced
 
+# 添加sirpdboy/luci-app-timecontrol
+git clone https://github.com/sirpdboy/luci-app-timecontrol.git package/xzhhzx222/luci-app-timecontrol
+
 # 添加Lienol/openwrt-package
-git clone https://github.com/Lienol/openwrt-package.git package/Lienol/openwrt-package
+# git clone https://github.com/Lienol/openwrt-package.git package/Lienol/openwrt-package
 # mv -vf package/Lienol/openwrt-package/luci-app-control-timewol/ package/xzhhzx222/
-mv -vf package/Lienol/openwrt-package/luci-app-control-weburl/ package/xzhhzx222/
-mv -vf package/Lienol/openwrt-package/luci-app-timecontrol/ package/xzhhzx222/
-rm -rf package/Lienol/
+# mv -vf package/Lienol/openwrt-package/luci-app-control-weburl/ package/xzhhzx222/
+# mv -vf package/Lienol/openwrt-package/luci-app-timecontrol/ package/xzhhzx222/
+# rm -rf package/Lienol/
 
 # 添加vernesong/OpenClash
 CLASH_DIR=package/xzhhzx222/luci-app-openclash/root/etc/openclash
@@ -52,18 +55,17 @@ echo "------------- Check End -------------"
 git clone --depth=1 https://github.com/vernesong/OpenClash.git package/vernesong/OpenClash
 mv -vf package/vernesong/OpenClash/luci-app-openclash/ package/xzhhzx222/
 rm -rf package/vernesong/
-rm -vf $CLASH_DIR/china_ip*
-curl -Ls -o $CLASH_DIR/china_ip_route.ipset https://raw.githubusercontent.com/Hackl0us/GeoIP2-CN/release/CN-ip-cidr.txt
-curl -Ls -o $CLASH_DIR/china_ip6_route.ipset https://ispip.clang.cn/all_cn_ipv6.txt
-rm -vf $CLASH_DIR/*.mmdb
-curl -Ls -o $CLASH_DIR/Country.mmdb https://github.com/alecthw/mmdb_china_ip_list/releases/latest/download/Country.mmdb
-curl -Ls -o $CLASH_DIR/ASN.mmdb https://github.com/xishang0128/geoip/releases/latest/download/GeoLite2-ASN.mmdb
-rm -vf $CLASH_DIR/.dat
+rm -vf $CLASH_DIR/*.dat
 curl -Ls -o $CLASH_DIR/GeoIP.dat https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geoip.dat
 curl -Ls -o $CLASH_DIR/GeoSite.dat https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geosite.dat
+rm -vf $CLASH_DIR/*.ipset
+curl -Ls -o $CLASH_DIR/china_ip_route.ipset https://github.com/Hackl0us/GeoIP2-CN/raw/release/CN-ip-cidr.txt
+curl -Ls -o $CLASH_DIR/china_ip6_route.ipset https://ispip.clang.cn/all_cn_ipv6.txt
+rm -vf $CLASH_DIR/*.mmdb
+curl -Ls -o $CLASH_DIR/Country.mmdb https://raw.githubusercontent.com/alecthw/mmdb_china_ip_list/release/Country.mmdb
+curl -Ls -o $CLASH_DIR/ASN.mmdb https://raw.githubusercontent.com/xishang0128/geoip/release/GeoLite2-ASN.mmdb
 mkdir -p $CLASH_DIR/core
 curl -Ls -o $CLASH_DIR/core/core.tar.gz https://raw.githubusercontent.com/vernesong/OpenClash/core/master/meta/clash-linux-amd64.tar.gz
-# curl -Ls -o $CLASH_DIR/core/core.tar.gz https://raw.githubusercontent.com/vernesong/OpenClash/core/master/meta/clash-linux-amd64-v3.tar.gz
 tar -zxf $CLASH_DIR/core/core.tar.gz -C $CLASH_DIR/core
 mv -vf $CLASH_DIR/core/clash $CLASH_DIR/core/clash_meta
 rm -vf $CLASH_DIR/core/core.tar.gz
