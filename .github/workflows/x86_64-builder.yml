@@ -25,14 +25,14 @@ on:
           - 'lede'
           - 'immortalwrt-23.05'
           - 'immortalwrt-24.10'
-      version:
-        description: 'Openwrt Build Version'
-        required: true
-        default: 'SamWrt'
-        type: choice
-        options:
-          - 'SamWrt'
-          - 'JimmyWrt'
+      # version:
+      #   description: 'Openwrt Build Version'
+      #   required: true
+      #   default: 'SamWrt'
+      #   type: choice
+      #   options:
+      #     - 'SamWrt'
+      #     - 'JimmyWrt'
 
 env:
   FEEDS_CONF: feeds.conf.default
@@ -44,7 +44,7 @@ env:
   UPLOAD_RELEASE: true
   TZ: Asia/Shanghai
   BUILD_BRANCH: ${{ github.event.inputs.branch }}
-  BUILD_VER: ${{ github.event.inputs.version }}
+  # BUILD_VER: ${{ github.event.inputs.version }}
 
 jobs:
   build:
@@ -170,7 +170,7 @@ jobs:
       uses: actions/upload-artifact@main
       if: steps.compile.outputs.status == 'success' && env.UPLOAD_BIN_DIR == 'true'
       with:
-        name: ${{ env.BUILD_VER }}_bin${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
+        name: OpenWrt_bin${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
         path: openwrt/bin
 
     - name: Organize files
@@ -192,7 +192,7 @@ jobs:
       uses: actions/upload-artifact@main
       if: steps.organize.outputs.status == 'success' && !cancelled()
       with:
-        name: ${{ env.BUILD_VER }}_firmware${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
+        name: OpenWrt_firmware${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
         path: ${{ env.FIRMWARE }}
 
     - name: Generate release tag
@@ -211,7 +211,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        name: ${{ env.BUILD_VER }} ${{ env.RELEASE_VER }}
+        name: OpenWrt ${{ env.RELEASE_VER }}
         tag_name: ${{ env.RELEASE_TAG }}
         body_path: release.txt
         files: ${{ env.FIRMWARE }}/*
