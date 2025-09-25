@@ -288,7 +288,7 @@ else
   # echo "DISTRIB_REVISION='R25.8.8'" >> /etc/openwrt_release
   # sed -i '/DISTRIB_DESCRIPTION/d' /etc/openwrt_release
   # echo "DISTRIB_DESCRIPTION='LEDE '" >> /etc/openwrt_release
-  #
+
   # sed -i '/OPENWRT_RELEASE/d' /usr/lib/os-release
   # echo 'OPENWRT_RELEASE="LEDE R25.8.8"' >> /usr/lib/os-release
 

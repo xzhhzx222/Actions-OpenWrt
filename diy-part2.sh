@@ -86,8 +86,6 @@ echo "msgstr \"网络唤醒++是一个远程唤醒本地计算机的工具\"" >>
 echo >> $PWD/feeds/sundaqiang/luci-app-wolplus/po/zh_Hans/wolplus.po
 echo "msgid \"Wake Up Host\"" >> $PWD/feeds/sundaqiang/luci-app-wolplus/po/zh_Hans/wolplus.po
 echo "msgstr \"唤醒设备\"" >> $PWD/feeds/sundaqiang/luci-app-wolplus/po/zh_Hans/wolplus.po
-# sed -i "s#curl \"https.*tag_name.*#curl \"https://api.github.com/repos/\${github[2]}/\${github[3]}/releases\" | jq -r '.[] | select(.name | startswith(\"$BUILD_VER\")) | .tag_name' | head -n 1#" feeds/sundaqiang/luci-app-easyupdate/root/usr/bin/easyupdate.sh
-# sed -i "s#curl \"https.*assets.*#curl \"https://api.github.com/repos/\${github[2]}/\${github[3]}/releases\" | jq -r \".[] | select(.name | startswith(\\\\\"$BUILD_VER\\\\\")) | select(.tag_name == \\\\\"\$(getCloudVer)\\\\\") | .assets[].browser_download_url\" | sed -n \"/\$suffix/p\")#" feeds/sundaqiang/luci-app-easyupdate/root/usr/bin/easyupdate.sh
 
 # 添加luci-app-wechatpush
 LOGO_FILE=package/xzhhzx222/luci-app-wechatpush/root/usr/share/wechatpush/api/logo.jpg
@@ -147,12 +145,8 @@ echo "------------- Check End -------------"
 
 sed -i "s/DISTRIB_REVISION=/DISTRIB_REVISION=\'${RELEASE_VER}\'/" $SET_FILE
 # sed -i "s/\"DISTRIB_DESCRIPTION=\"/\"DISTRIB_DESCRIPTION=\'${BUILD_VER} \'\"/" $SET_FILE
-# sed -i "s#DISTRIB_GITHUB=#DISTRIB_GITHUB=\'${RELEASE_REPO}\'#" $SET_FILE
-# sed -i "s/DISTRIB_VERSIONS=/DISTRIB_VERSIONS=\'${RELEASE_TAG}\'/" $SET_FILE
 
 echo "------------ Check Start ------------"
 grep -m 1 "DISTRIB_REVISION=" $SET_FILE
-grep -m 1 "DISTRIB_DESCRIPTION=" $SET_FILE
-# grep "DISTRIB_GITHUB=" $SET_FILE
-# grep "DISTRIB_VERSIONS=" $SET_FILE
+# grep -m 1 "DISTRIB_DESCRIPTION=" $SET_FILE
 echo "------------- Check End -------------"

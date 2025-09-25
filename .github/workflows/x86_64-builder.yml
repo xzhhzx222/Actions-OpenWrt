@@ -65,7 +65,8 @@ jobs:
             echo "REPO_BRANCH=master" >> $GITHUB_ENV
             ;;
         esac
-        # echo "CONFIG_FILE=diy/cfg/${BUILD_VER,,}.config" >> $GITHUB_ENV
+        echo "RELEASE_VER=$(date +"%y.%m.%d_%H%M")" >> $GITHUB_ENV
+        echo "RELEASE_TAG=$(date +"%Y%m%d_%H%M%S_")$(git rev-parse --short HEAD)" >> $GITHUB_ENV
   
     - name: Free Disk Space (Ubuntu)
       uses: jlumbroso/free-disk-space@main
@@ -133,9 +134,6 @@ jobs:
     - name: Load custom configuration
       run: |
         [ -e files ] && mv -v files openwrt/files
-        echo "------------ Check Start ------------"
-        echo "CONFIG_FILE=$CONFIG_FILE"
-        echo "------------- Check End -------------"
         [ -e $CONFIG_FILE ] && mv -v $CONFIG_FILE openwrt/.config
         chmod +x $DIY_P2_SH
         cd openwrt
@@ -156,7 +154,6 @@ jobs:
         cd openwrt
         echo -e "$(nproc) thread compile"
         make -j$(nproc) || make -j1 || make -j1 V=s
-        #echo "::set-output name=status::success"
         echo "status=success" >> $GITHUB_OUTPUT
         grep '^CONFIG_TARGET.*DEVICE.*=y' .config | sed -r 's/.*DEVICE_(.*)=y/\1/' > DEVICE_NAME
         [ -s DEVICE_NAME ] && echo "DEVICE_NAME=_$(cat DEVICE_NAME)" >> $GITHUB_ENV
@@ -199,8 +196,6 @@ jobs:
       id: tag
       if: steps.organize.outputs.status == 'success' && env.UPLOAD_FIRMWARE == 'true' && !cancelled()
       run: |
-        echo "RELEASE_VER=$(date +"%y.%m.%d_%H%M")" >> $GITHUB_ENV
-        echo "RELEASE_TAG=$(date +"%Y%m%d_%H%M%S_")$(git rev-parse --short HEAD)" >> $GITHUB_ENV
         touch release.txt
         echo "[Build Branch]: ${{ env.BUILD_BRANCH }}" >> release.txt
         echo "status=success" >> $GITHUB_OUTPUT
