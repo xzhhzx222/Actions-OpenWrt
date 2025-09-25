@@ -129,12 +129,6 @@ jobs:
 
     - name: Install feeds
       run: cd openwrt && ./scripts/feeds install -a
-    
-    - name: Openwrt AutoUpdate
-      run: |
-        echo "RELEASE_VER=$(date +"Ver%y.%m.%d_%H%M")" >> $GITHUB_ENV
-        echo "RELEASE_TAG=$(date +"%Y%m%d_%H%M%S_")$(git rev-parse --short HEAD)" >> $GITHUB_ENV
-        echo "RELEASE_REPO=https://github.com/${{ github.repository }}" >> $GITHUB_ENV
 
     - name: Load custom configuration
       run: |
@@ -205,9 +199,10 @@ jobs:
       id: tag
       if: steps.organize.outputs.status == 'success' && env.UPLOAD_FIRMWARE == 'true' && !cancelled()
       run: |
+        echo "RELEASE_VER=$(date +"Ver%y.%m.%d_%H%M")" >> $GITHUB_ENV
+        echo "RELEASE_TAG=$(date +"%Y%m%d_%H%M%S_")$(git rev-parse --short HEAD)" >> $GITHUB_ENV
         touch release.txt
         echo "[Build Branch]: ${{ env.BUILD_BRANCH }}" >> release.txt
-        # echo "[Build Version]: ${{ env.BUILD_VER }}" >> release.txt
         echo "status=success" >> $GITHUB_OUTPUT
 
     - name: Upload firmware to release
