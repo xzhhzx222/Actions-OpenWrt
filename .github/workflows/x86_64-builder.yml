@@ -199,7 +199,7 @@ jobs:
       id: tag
       if: steps.organize.outputs.status == 'success' && env.UPLOAD_FIRMWARE == 'true' && !cancelled()
       run: |
-        echo "RELEASE_VER=$(date +"Ver%y.%m.%d_%H%M")" >> $GITHUB_ENV
+        echo "RELEASE_VER=$(date +"%y.%m.%d_%H%M")" >> $GITHUB_ENV
         echo "RELEASE_TAG=$(date +"%Y%m%d_%H%M%S_")$(git rev-parse --short HEAD)" >> $GITHUB_ENV
         touch release.txt
         echo "[Build Branch]: ${{ env.BUILD_BRANCH }}" >> release.txt
@@ -211,7 +211,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        name: OpenWrt ${{ env.RELEASE_VER }}
+        name: OpenWrt_ver${{ env.RELEASE_VER }}
         tag_name: ${{ env.RELEASE_TAG }}
         body_path: release.txt
         files: ${{ env.FIRMWARE }}/*
