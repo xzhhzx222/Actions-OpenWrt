@@ -51,23 +51,6 @@ jobs:
     runs-on: ubuntu-22.04
 
     steps:
-    - name: Decide Branch and Version
-      run: |
-        case $BUILD_BRANCH in
-          immortalwrt-*)
-            echo "DEPENDS_UBUNTU=diy/dep/immortalwrt.depends" >> $GITHUB_ENV
-            echo "REPO_URL=https://github.com/immortalwrt/immortalwrt" >> $GITHUB_ENV
-            echo "REPO_BRANCH=openwrt-${BUILD_BRANCH:(-5)}" >> $GITHUB_ENV
-            ;;
-          lede)
-            echo "DEPENDS_UBUNTU=diy/dep/lede.depends" >> $GITHUB_ENV
-            echo "REPO_URL=https://github.com/coolsnowwolf/lede" >> $GITHUB_ENV
-            echo "REPO_BRANCH=master" >> $GITHUB_ENV
-            ;;
-        esac
-        echo "RELEASE_VER=$(date +"%y.%m.%d_%H%M")" >> $GITHUB_ENV
-        echo "RELEASE_TAG=$(date +"%Y%m%d_%H%M%S_")$(git rev-parse --short HEAD)" >> $GITHUB_ENV
-  
     - name: Free Disk Space (Ubuntu)
       uses: jlumbroso/free-disk-space@main
       with:
@@ -94,6 +77,21 @@ jobs:
     - name: Checkout
       uses: actions/checkout@main
     
+    - name: Decide Branch
+      run: |
+        case $BUILD_BRANCH in
+          immortalwrt-*)
+            echo "DEPENDS_UBUNTU=diy/dep/immortalwrt.depends" >> $GITHUB_ENV
+            echo "REPO_URL=https://github.com/immortalwrt/immortalwrt" >> $GITHUB_ENV
+            echo "REPO_BRANCH=openwrt-${BUILD_BRANCH:(-5)}" >> $GITHUB_ENV
+            ;;
+          lede)
+            echo "DEPENDS_UBUNTU=diy/dep/lede.depends" >> $GITHUB_ENV
+            echo "REPO_URL=https://github.com/coolsnowwolf/lede" >> $GITHUB_ENV
+            echo "REPO_BRANCH=master" >> $GITHUB_ENV
+            ;;
+        esac
+    
     - name: Initialization environment
       env:
         DEBIAN_FRONTEND: noninteractive
@@ -109,6 +107,11 @@ jobs:
         sudo -E apt-get -qq clean
         sudo timedatectl set-timezone "$TZ"
         sudo chown $USER:$GROUPS $GITHUB_WORKSPACE
+    
+    - name: Generate release information
+      run: |
+        echo "RELEASE_VER=$(date +"%y.%m.%d_%H%M")" >> $GITHUB_ENV
+        echo "RELEASE_TAG=$(date +"%Y%m%d_%H%M%S_")$(git rev-parse --short HEAD)" >> $GITHUB_ENV
 
     - name: Clone source code
       run: |
