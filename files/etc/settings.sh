@@ -1,14 +1,11 @@
 #!/bin/sh
-# homeconf.sh
 
 samwrt() {
-    chmod +x /etc/samwrt.sh
-    sh /etc/samwrt.sh
+    chmod +x /etc/samwrt.sh && sh /etc/samwrt.sh
 }
 
 jimmywrt() {
-    chmod +x /etc/jimmywrt.sh
-    sh /etc/jimmywrt.sh
+    chmod +x /etc/jimmywrt.sh && sh /etc/jimmywrt.sh
 }
 
 echo "Load Settings:"

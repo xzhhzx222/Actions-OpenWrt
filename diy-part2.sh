@@ -72,7 +72,6 @@ rm -vf $CLASH_DIR/core/core.tar.gz
 rm -f $CLASH_DIR/rule_provider/*
 
 # 链接sundaqiang/openwrt-packages
-# ln -vsf $PWD/feeds/sundaqiang/luci-app-easyupdate/po/zh-cn/ $PWD/feeds/sundaqiang/luci-app-easyupdate/po/zh_Hans
 sed -i 's/Wake on LAN/Wake on LAN +/g' $PWD/feeds/sundaqiang/luci-app-wolplus/luasrc/controller/wolplus.lua
 sed -i 's/wolplus/Wake on LAN +/g' $PWD/feeds/sundaqiang/luci-app-wolplus/po/zh_Hans/wolplus.po
 sed -i 's/macclient/Host Clients/g' $PWD/feeds/sundaqiang/luci-app-wolplus/po/zh_Hans/wolplus.po
@@ -111,11 +110,6 @@ case $BUILD_BRANCH in
     # ln -vsf $PWD/feeds/luci/applications/luci-app-msd_lite/ $PWD/package/feeds/luci/
     # rm -rf package/immortalwrt/luci/
     # 添加luci-app-softethervpn
-    git clone https://github.com/coolsnowwolf/luci.git package/coolsnowwolf/luci
-    mv -vf package/coolsnowwolf/luci/applications/luci-app-softethervpn/ feeds/luci/applications/
-    ln -vsf $PWD/feeds/luci/applications/luci-app-softethervpn/po/zh-cn/ $PWD/feeds/luci/applications/luci-app-softethervpn/po/zh_Hans
-    ln -vsf $PWD/feeds/luci/applications/luci-app-softethervpn/ $PWD/package/feeds/luci/
-    rm -rf package/coolsnowwolf/luci/
     ;;
   immortalwrt-*)
     SET_FILE=package/emortal/default-settings/files/99-default-settings

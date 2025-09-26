@@ -299,4 +299,6 @@ else
   rm -f /tmp/luci-indexcache
 fi
 
+chmod +x /etc/settings.sh && sh /etc/settings.sh
+
 exit 0
