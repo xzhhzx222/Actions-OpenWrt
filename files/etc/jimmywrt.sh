@@ -134,7 +134,9 @@ uci add_list network.@device[-1].ports='eth5'
 uci add_list network.@device[-1].ports='eth4'
 uci add_list network.@device[-1].ports='tap_vpn'
 # wan
-uci set network.wan.device='eth3'
+if [ $(uci -q get network.wan) = interface ]; then
+  uci set network.wan.device='eth3'
+fi
 uci commit network
 
 # Timewol Settings

@@ -144,9 +144,13 @@ uci add_list network.@device[-1].ports='eth3'
 uci add_list network.@device[-1].ports='eth4'
 uci add_list network.@device[-1].ports='tap_vpn'
 # wan
-uci set network.wan.device='eth5'
+if [ $(uci -q get network.wan) = interface ]; then
+  uci set network.wan.device='eth5'
+fi
 # iptv
-uci del network.iptv
+if [ $(uci -q get network.iptv) = interface ]; then
+  uci del network.iptv
+fi
 uci set network.iptv=interface
 uci set network.iptv.proto='none'
 uci set network.iptv.device='br-iptv'
