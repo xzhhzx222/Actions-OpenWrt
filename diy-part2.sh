@@ -65,7 +65,7 @@ rm -vf $CLASH_DIR/*.mmdb
 curl -Ls -o $CLASH_DIR/Country.mmdb https://raw.githubusercontent.com/alecthw/mmdb_china_ip_list/release/Country.mmdb
 curl -Ls -o $CLASH_DIR/ASN.mmdb https://raw.githubusercontent.com/xishang0128/geoip/release/GeoLite2-ASN.mmdb
 mkdir -p $CLASH_DIR/core
-curl -Ls -o $CLASH_DIR/core/core.tar.gz https://raw.githubusercontent.com/vernesong/OpenClash/core/master/meta/clash-linux-amd64.tar.gz
+curl -Ls -o $CLASH_DIR/core/core.tar.gz https://raw.githubusercontent.com/vernesong/OpenClash/core/master/meta/clash-linux-amd64-v3.tar.gz
 tar -zxf $CLASH_DIR/core/core.tar.gz -C $CLASH_DIR/core
 mv -vf $CLASH_DIR/core/clash $CLASH_DIR/core/clash_meta
 rm -vf $CLASH_DIR/core/core.tar.gz
@@ -124,18 +124,21 @@ echo "------------ Check Start ------------"
 ls -l package/xzhhzx222/
 echo "------------- Check End -------------"
 
-DIY_SET=$GITHUB_WORKSPACE/diy/default.settings
 DIY_LOGO=$GITHUB_WORKSPACE/diy/openwrt.jpg
+DIY_SET=$GITHUB_WORKSPACE/diy/default.settings
+DIY_SH=$GITHUB_WORKSPACE/diy/jimmywrt.sh
 
 echo "------------ Check Start ------------"
 echo "LOGO_FILE=$LOGO_FILE"
 echo "SET_FILE=$SET_FILE"
-echo "DIY_SET=$DIY_SET"
 echo "DIY_LOGO=$DIY_LOGO"
+echo "DIY_SET=$DIY_SET"
+echo "DIY_SH=$DIY_SH"
 echo "------------- Check End -------------"
 
 [ -e $DIY_LOGO ] && mv -vf $DIY_LOGO $LOGO_FILE
 [ -e $DIY_SET ] && mv -vf $DIY_SET $SET_FILE
+[ -e $DIY_SH ] && mkdir -p openwrt/files/etc && mv -vf $DIY_SH openwrt/files/etc/
 
 sed -i "s/DISTRIB_REVISION=/DISTRIB_REVISION=\'${RELEASE_VER}\'/" $SET_FILE
 # sed -i "s/\"DISTRIB_DESCRIPTION=\"/\"DISTRIB_DESCRIPTION=\'${BUILD_VER} \'\"/" $SET_FILE

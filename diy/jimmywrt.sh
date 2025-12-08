@@ -67,6 +67,7 @@ uci set dhcp.@host[4].mac='A8:A1:59:20:60:9F'
 uci commit dhcp
 
 # Firewall Settings
+uci del firewall.@zone[2]
 while uci -q get firewall.@redirect[-1] > /dev/null; do
   uci del firewall.@redirect[-1]
 done
@@ -134,9 +135,9 @@ uci add_list network.@device[-1].ports='eth5'
 uci add_list network.@device[-1].ports='eth4'
 uci add_list network.@device[-1].ports='tap_vpn'
 # wan
-if [ $(uci -q get network.wan) = interface ]; then
-  uci set network.wan.device='eth3'
-fi
+uci set network.wan.device='eth3'
+# iptv
+uci del network.iptv
 uci commit network
 
 # Timewol Settings
