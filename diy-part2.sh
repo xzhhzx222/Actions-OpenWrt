@@ -141,9 +141,7 @@ echo "------------- Check End -------------"
 [ -e $DIY_SH ] && mkdir -p openwrt/files/etc && mv -vf $DIY_SH openwrt/files/etc/
 
 sed -i "s/DISTRIB_REVISION=/DISTRIB_REVISION=\'${RELEASE_VER}\'/" $SET_FILE
-# sed -i "s/\"DISTRIB_DESCRIPTION=\"/\"DISTRIB_DESCRIPTION=\'${BUILD_VER} \'\"/" $SET_FILE
 
 echo "------------ Check Start ------------"
 grep -m 1 "DISTRIB_REVISION=" $SET_FILE
-# grep -m 1 "DISTRIB_DESCRIPTION=" $SET_FILE
 echo "------------- Check End -------------"
