@@ -4,7 +4,7 @@
 sed -i '/DISTRIB_REVISION/d' /etc/openwrt_release
 echo "DISTRIB_REVISION=" >> /etc/openwrt_release
 sed -i '/DISTRIB_DESCRIPTION/d' /etc/openwrt_release
-echo "DISTRIB_DESCRIPTION=SamWrt" >> /etc/openwrt_release
+echo "DISTRIB_DESCRIPTION='SamWrt'" >> /etc/openwrt_release
 
 # Decide Release Version
 # OpenWrt or ImmortalWrt

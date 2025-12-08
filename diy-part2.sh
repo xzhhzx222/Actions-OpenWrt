@@ -138,7 +138,7 @@ echo "------------- Check End -------------"
 
 [ -e $DIY_LOGO ] && mv -vf $DIY_LOGO $LOGO_FILE
 [ -e $DIY_SET ] && mv -vf $DIY_SET $SET_FILE
-[ -e $DIY_SH ] && mkdir -p openwrt/files/etc && mv -vf $DIY_SH openwrt/files/etc/
+[ -e $DIY_SH ] && mkdir -p files/etc && mv -vf $DIY_SH files/etc/
 
 sed -i "s/DISTRIB_REVISION=/DISTRIB_REVISION=\'${RELEASE_VER}\'/" $SET_FILE
 

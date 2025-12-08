@@ -2,7 +2,7 @@
 
 # Update openwrt_release
 sed -i '/DISTRIB_DESCRIPTION/d' /etc/openwrt_release
-echo "DISTRIB_DESCRIPTION=JimmyWrt" >> /etc/openwrt_release
+echo "DISTRIB_DESCRIPTION='JimmyWrt'" >> /etc/openwrt_release
 
 # System Settings
 uci set system.@system[0].hostname='JimmyWrt'
