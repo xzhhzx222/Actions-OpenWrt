@@ -1,8 +1,8 @@
 #!/bin/sh
 
 # Update openwrt_release
-sed -i '/DISTRIB_DESCRIPTION/d' /etc/openwrt_release
-echo "DISTRIB_DESCRIPTION='JimmyWrt'" >> /etc/openwrt_release
+# sed -i '/DISTRIB_DESCRIPTION/d' /etc/openwrt_release
+# echo "DISTRIB_DESCRIPTION='JimmyWrt'" >> /etc/openwrt_release
 
 # System Settings
 uci set system.@system[0].hostname='JimmyWrt'
@@ -64,7 +64,9 @@ uci add_list network.@device[-1].ports='eth4'
 uci add_list network.@device[-1].ports='eth5'
 uci add_list network.@device[-1].ports='tap_vpn'
 # wan
-uci set network.wan.device='eth3'
+if uci -q get network.wan > /dev/null; then
+  uci set network.wan.device='eth3'
+fi
 # iptv
 uci del network.iptv
 uci commit network
