@@ -109,7 +109,6 @@ case $BUILD_BRANCH in
     # mv -vf package/immortalwrt/luci/applications/luci-app-msd_lite/ feeds/luci/applications/
     # ln -vsf $PWD/feeds/luci/applications/luci-app-msd_lite/ $PWD/package/feeds/luci/
     # rm -rf package/immortalwrt/luci/
-    # 添加luci-app-softethervpn
     ;;
   immortalwrt-*)
     SET_FILE=package/emortal/default-settings/files/99-default-settings
