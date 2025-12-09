@@ -120,11 +120,6 @@ uci set dhcp.@host[4].name='Dad-K40S'
 uci set dhcp.@host[4].mac='BE:36:F0:5E:0F:67'
 uci commit dhcp
 
-# Easyupdate Settings
-# uci set easyupdate.main.keepconfig='0'
-# uci set easyupdate.main.forceflash='0'
-# uci commit easyupdate
-
 # Firewall Settings
 uci del firewall.@defaults[-1].flow_offloading
 uci del firewall.@defaults[-1].flow_offloading_hw
@@ -218,9 +213,11 @@ uci commit firewall
 uci set network.lan.ipaddr='10.0.0.2'
 uci set network.lan.proto='static'
 uci set network.lan.netmask='255.255.255.0'
+# ipv6 off
 uci set network.lan.delegate='0'
 uci del network.lan.ip6assign
 # ipv6 on
+# uci set network.lan.delegate='1'
 # uci set network.lan.ip6assign='64'
 # uci set network.lan.ip6ifaceid='eui64'
 while uci -q get network.@device[1] > /dev/null; do
@@ -237,7 +234,7 @@ uci add_list network.@device[-1].ports='tap_vpn'
 if uci -q get network.wan > /dev/null; then
   uci set network.wan.device='eth5'
   uci set network.wan.proto='pppoe'
-  uci set network.wan.ipv6='0'
+  uci set network.wan.ppp_ipv6='0'
   uci del network.wan6
 fi
 # iptv
@@ -256,6 +253,7 @@ uci commit network
 
 # Openclash Settings
 uci set openclash.config.en_mode='redir-host'
+uci set openclash.config.operation_mode='redir-host'
 uci set openclash.config.skip_proxy_address='1'
 uci set openclash.config.common_ports='21 22 23 53 80 123 143 194 443 465 587 853 993 995 998 2052 2053 2082 2083 2086 2095 2096 5222 5228 5229 5230 8080 8443 8880 8888 8889'
 uci set openclash.config.china_ip_route='1'
@@ -297,14 +295,14 @@ uci set openclash.config.enable_meta_sniffer='1'
 uci set openclash.config.enable_meta_sniffer_pure_ip='1'
 uci set openclash.config.enable_meta_sniffer_custom='1'
 uci set openclash.config.enable_custom_clash_rules='1'
-while uci -q get openclash.@dns_servers[-1] > /dev/null; do
-  uci del openclash.@dns_servers[-1]
-done
-uci add openclash dns_servers
-uci set openclash.@dns_servers[-1].enabled='1'
-uci set openclash.@dns_servers[-1].group='nameserver'
-uci set openclash.@dns_servers[-1].type='udp'
-uci set openclash.@dns_servers[-1].ip='223.5.5.5'
+# while uci -q get openclash.@dns_servers[-1] > /dev/null; do
+#   uci del openclash.@dns_servers[-1]
+# done
+# uci add openclash dns_servers
+# uci set openclash.@dns_servers[-1].enabled='1'
+# uci set openclash.@dns_servers[-1].group='nameserver'
+# uci set openclash.@dns_servers[-1].type='udp'
+# uci set openclash.@dns_servers[-1].ip='223.5.5.5'
 echo >> /etc/openclash/custom/openclash_custom_chnroute_pass.list
 cat >> /etc/openclash/custom/openclash_custom_chnroute_pass.list <<EOF
 bing.com
@@ -368,12 +366,16 @@ uci set wechatpush.config.passive_mode='1'
 uci commit wechatpush
 
 # Wolplus Settings
+while uci -q get wolplus.@macclient[-1] > /dev/null; do
+  uci del wolplus.@macclient[-1]
+done
 uci set wolplus.pc1=macclient
 uci set wolplus.pc1.name='Sam-Desktop'
 uci set wolplus.pc1.maceth='br-lan'
 uci set wolplus.pc1.macaddr='70:4D:7B:63:0A:37'
 uci commit wolplus
 
+sed -i "/dhcp-option/d" "/etc/dnsmasq.conf"
 # cat >> /etc/dnsmasq.conf <<EOF
 # dhcp-option-force=125,00:00:00:00:1a:02:06:48:47:57:2d:43:54:03:04:5a:58:48:4e:0a:02:20:00:0b:02:00:55:0d:02:00:2e
 # dhcp-option=15
@@ -438,6 +440,6 @@ else
   rm -f /tmp/luci-indexcache
 fi
 
-chmod +x /etc/settings.sh
+chmod +x /etc/jimmywrt.sh
 
 exit 0
