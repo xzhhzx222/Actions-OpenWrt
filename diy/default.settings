@@ -116,8 +116,8 @@ uci set dhcp.@host[2].name='Sophie-Xiaoxin'
 uci set dhcp.@host[2].mac='08:5B:D6:B0:76:83'
 uci set dhcp.@host[3].name='Mom-Xiaomi13'
 uci set dhcp.@host[3].mac='EE:CC:DA:BF:0A:04'
-uci set dhcp.@host[4].name='Dad-K40S'
-uci set dhcp.@host[4].mac='BE:36:F0:5E:0F:67'
+uci set dhcp.@host[4].name='Dad-Ace6T'
+uci set dhcp.@host[4].mac='3A:D0:F2:0F:6C:CA'
 uci commit dhcp
 
 # Firewall Settings
@@ -310,7 +310,10 @@ EOF
 echo >> /etc/openclash/custom/openclash_custom_rules.list
 cat >> /etc/openclash/custom/openclash_custom_rules.list <<EOF
 - DOMAIN,get.geojs.io,DIRECT
+- DOMAIN-KEYWORD,hga,HK
+- DOMAIN-KEYWORD,mos,HK
 - DOMAIN-SUFFIX,bwh81.net,DIRECT
+- DOMAIN-SUFFIX,vmiss.com,DIRECT
 - DOMAIN-SUFFIX,hdkylin.com,DIRECT
 - DOMAIN-SUFFIX,htpt.cc,DIRECT
 - DOMAIN-SUFFIX,okpt.net,DIRECT
@@ -410,11 +413,6 @@ else
 
   rm -f /www/luci-static/resources/view/status/include/70_ddns.js
   rm -f /www/luci-static/resources/view/status/include/80_upnp.js
-
-  # sed -i 's#downloads.openwrt.org#mirrors.tencent.com/lede#g' /etc/opkg/distfeeds.conf
-  # sed -i 's#downloads.openwrt.org#mirrors.tencent.com/lede#g' /etc/apk/repositories.d/distfeeds.list
-  # sed -i 's/root::0:0:99999:7:::/root:$1$V4UetPzk$CYXluq4wUazHjmCDBCqXF.:0:0:99999:7:::/g' /etc/shadow
-  # sed -i 's/root:::0:99999:7:::/root:$1$V4UetPzk$CYXluq4wUazHjmCDBCqXF.:0:0:99999:7:::/g' /etc/shadow
 
   sed -i "s/# //g" /etc/opkg/distfeeds.conf
   # sed -i '/helloworld/d' /etc/opkg/distfeeds.conf
