@@ -359,13 +359,12 @@ uci del wechatpush.config.send_notification
 uci add_list wechatpush.config.send_notification='router_status'
 uci add_list wechatpush.config.send_notification='router_temp'
 uci add_list wechatpush.config.send_notification='wan_info'
-# uci add_list wechatpush.config.send_notification='client_list'
+uci add_list wechatpush.config.send_notification='client_list'
 uci set wechatpush.config.do_not_disturb_mode='2'
 uci set wechatpush.config.do_not_disturb_starttime='0'
 uci set wechatpush.config.do_not_disturb_endtime='8'
 uci set wechatpush.config.cpu_threshold_duration='300'
 uci set wechatpush.config.cpu_notification_delay='3600'
-uci set wechatpush.config.passive_mode='1'
 uci commit wechatpush
 
 # Wolplus Settings
