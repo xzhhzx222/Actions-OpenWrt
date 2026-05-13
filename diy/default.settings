@@ -11,7 +11,7 @@
 DISTRIB_ID=$(grep DISTRIB_ID /etc/openwrt_release | cut -d "'" -f 2)
 
 # Luci Settings
-uci set luci.main.lang=zh_cn
+uci set luci.main.lang='zh_cn'
 if [ $DISTRIB_ID = ImmortalWrt ]; then
   uci set luci.diag.dns='openwrt.org'
   uci set luci.diag.ping='openwrt.org'
@@ -31,10 +31,10 @@ uci -q batch <<-EOF
   set system.ntp.use_dhcp='0'
   
   delete system.ntp.server
-  add_list system.ntp.server="ntp.tencent.com"
-  add_list system.ntp.server="ntp1.aliyun.com"
-  add_list system.ntp.server="ntp.ntsc.ac.cn"
-  add_list system.ntp.server="cn.ntp.org.cn"
+  add_list system.ntp.server='ntp1.aliyun.com'
+  add_list system.ntp.server='ntp.tencent.com'
+  add_list system.ntp.server='ntp.ntsc.ac.cn'
+  add_list system.ntp.server='cn.ntp.org.cn'
 EOF
 uci commit system
 
@@ -423,12 +423,12 @@ else
   sed -i '/REDIRECT --to-ports 53/d' /etc/firewall.user
 
   # sed -i '/DISTRIB_REVISION/d' /etc/openwrt_release
-  # echo "DISTRIB_REVISION='R25.10.10'" >> /etc/openwrt_release
+  # echo "DISTRIB_REVISION='R26.02.20'" >> /etc/openwrt_release
   # sed -i '/DISTRIB_DESCRIPTION/d' /etc/openwrt_release
   # echo "DISTRIB_DESCRIPTION='LEDE '" >> /etc/openwrt_release
 
   # sed -i '/OPENWRT_RELEASE/d' /usr/lib/os-release
-  # echo 'OPENWRT_RELEASE="LEDE R25.10.10"' >> /usr/lib/os-release
+  # echo 'OPENWRT_RELEASE="LEDE R26.04.04"' >> /usr/lib/os-release
 
   sed -i '/log-facility/d' /etc/dnsmasq.conf
   echo "log-facility=/dev/null" >> /etc/dnsmasq.conf
