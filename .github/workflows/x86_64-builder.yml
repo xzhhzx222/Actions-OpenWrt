@@ -202,19 +202,22 @@ jobs:
         files: ${{ env.FIRMWARE }}/*
         make_latest: true
 
-    - name: Delete workflow runs
-      uses: Mattraks/delete-workflow-runs@main
+    - name: Delete releases and workflows runs
+      # uses: Mattraks/delete-workflow-runs@main
+      uses: ophub/delete-releases-workflows@main
       with:
-        token: ${{ github.token }}
-        repository: ${{ github.repository }}
-        retain_days: 0
-        keep_minimum_runs: 4
-
-    - name: Remove old Releases
-      uses: dev-drprasad/delete-older-releases@master
-      if: steps.tag.outputs.status == 'success' && env.UPLOAD_RELEASE == 'true' && !cancelled()
-      with:
-        keep_latest: 6
+        delete_releases: true
+        releases_keep_latest: 5
         delete_tags: true
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        delete_workflows: true
+        workflows_keep_day: 30
+        gh_token: ${{ secrets.GITHUB_TOKEN }}
+
+    # - name: Remove old Releases
+    #   uses: dev-drprasad/delete-older-releases@master
+    #   if: steps.tag.outputs.status == 'success' && env.UPLOAD_RELEASE == 'true' && !cancelled()
+    #   with:
+    #     keep_latest: 6
+    #     delete_tags: true
+    #   env:
+    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
