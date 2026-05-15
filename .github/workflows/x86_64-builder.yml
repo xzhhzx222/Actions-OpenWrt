@@ -36,10 +36,12 @@ jobs:
 
     steps:
     - name: Checkout
-      uses: actions/checkout@main
+      uses: actions/checkout@v6
+      with:
+        fetch-depth: 0
     
     - name: Free Disk Space (Ubuntu)
-      uses: endersonmenezes/free-disk-space@main
+      uses: endersonmenezes/free-disk-space@v3
       with:
         remove_android: true
         remove_dotnet: true
@@ -54,14 +56,12 @@ jobs:
       env:
         DEBIAN_FRONTEND: noninteractive
       run: |
-        # sudo rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/CodeQL
         sudo docker image prune --all --force
         sudo -E apt-get -qq update
         sudo -E apt-get -qq install $(curl -fsSL https://raw.githubusercontent.com/xzhhzx222/Actions-OpenWrt/main/diy/ubuntu.depends)
         sudo -E apt-get -qq autoremove --purge
         sudo -E apt-get -qq clean
         sudo timedatectl set-timezone "$TZ"
-        # sudo chown $USER:$GROUPS $GITHUB_WORKSPACE
     
     - name: Create virtual disk for extended storage
       run: |
@@ -133,7 +133,7 @@ jobs:
       run: df -hT
 
     - name: Upload bin directory
-      uses: actions/upload-artifact@main
+      uses: actions/upload-artifact@v7
       if: steps.compile.outputs.status == 'success' && env.UPLOAD_BIN_DIR == 'true'
       with:
         name: OpenWrt_bin${{ env.DEVICE_NAME }}_${{ env.FILE_DATE }}
@@ -153,7 +153,7 @@ jobs:
         echo "status=success" >> $GITHUB_OUTPUT
 
     - name: Upload firmware directory
-      uses: actions/upload-artifact@main
+      uses: actions/upload-artifact@v7
       if: steps.organize.outputs.status == 'success' && !cancelled()
       with:
         name: OpenWrt_firmware${{ env.DEVICE_NAME }}_${{ env.FILE_DATE }}
@@ -169,7 +169,7 @@ jobs:
         echo "status=success" >> $GITHUB_OUTPUT
 
     - name: Upload firmware to release
-      uses: softprops/action-gh-release@master
+      uses: softprops/action-gh-release@v3
       if: steps.tag.outputs.status == 'success' && !cancelled()
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
