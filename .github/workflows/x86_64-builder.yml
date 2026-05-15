@@ -39,31 +39,86 @@ env:
 
 jobs:
   build:
-    runs-on: ubuntu-22.04
+    # runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
 
     steps:
-    - name: Free Disk Space (Ubuntu)
-      uses: jlumbroso/free-disk-space@main
-      with:
-        # this might remove tools that are actually needed,
-        # if set to "true" but frees about 6 GB
-        tool-cache: false
-           
-        # all of these default to true, but feel free to set to
-        # "false" if necessary for your workflow
-        android: true
-        dotnet: true
-        haskell: true
-        large-packages: true
-        docker-images: true
-        swap-storage: true
+    # - name: Free Disk Space (Ubuntu)
+    #   uses: jlumbroso/free-disk-space@main
+    #   with:
+    #     # this might remove tools that are actually needed,
+    #     # if set to "true" but frees about 6 GB
+    #     tool-cache: false
+        #       
+    #     # all of these default to true, but feel free to set to
+    #     # "false" if necessary for your workflow
+    #     android: true
+    #     dotnet: true
+    #     haskell: true
+    #     large-packages: true
+    #     docker-images: true
+    #     swap-storage: true
+    
+    - name: Before freeing up disk space
+      run: |
+        echo "Before freeing up disk space"
+        echo "=============================================================================="
+        df -hT
+        echo "=============================================================================="
 
-    - name: Maximize build space
-      uses: easimon/maximize-build-space@master
+    - name: Free Disk Space
+      uses: endersonmenezes/free-disk-space@v3
       with:
-          root-reserve-mb: 2048
-          swap-size-mb: 1024
-          # remove-dotnet: 'true'
+        remove_android: true
+        remove_dotnet: true
+        remove_haskell: true
+        remove_tool_cache: true
+        remove_swap: true
+        # remove_packages: "azure-cli google-cloud-cli microsoft-edge-stable google-chrome-stable chromedriver google-cloud-sdk firefox postgresql* temurin-* *llvm* mysql* dotnet-sdk-* gfortran* imagemagick* *-jdk mongodb-* mono-* monodoc-* unixodbc-dev ant* perl libgl1-mesa-dri apache2* imagemagick* nginx phantomjs php* libpq-dev r-base* ruby* sphinxsearch"
+        remove_packages: "azure-cli google-cloud-cli microsoft-edge-stable google-chrome-stable firefox postgresql* temurin-* *llvm* mysql* dotnet-sdk-*"
+        remove_packages_one_command: true
+        # remove_folders: "/usr/share/swift /usr/share/miniconda /usr/share/az* /usr/local/lib/node_modules /usr/local/share/chromium /usr/local/share/powershell /usr/local/julia* /usr/local/aws-cli /usr/local/aws-sam-cli /usr/share/gradle* /usr/local/bin/azcopy /usr/share/kotlinc /usr/share/apache-maven-* /usr/local/share/gecko_driver /usr/share/lintian"
+        remove_folders: "/usr/share/swift /usr/share/miniconda /usr/share/az* /usr/local/lib/node_modules /usr/local/share/chromium /usr/local/share/powershell /usr/local/julia /usr/local/aws-cli /usr/local/aws-sam-cli /usr/share/gradle"
+
+    - name: After freeing up disk space
+      run: |
+        echo "After freeing up disk space"
+        echo "=============================================================================="
+        df -hT
+        echo "=============================================================================="
+
+    - name: Create simulated physical disk
+      run: |
+        echo "Cleaning up Docker Images"
+        sudo docker system prune --all --force --volumes
+
+        echo "Clean Docker Images complete"
+        echo "=============================================================================="
+        df -hT
+        echo "=============================================================================="
+
+        mnt_size=$(expr $(df -h /mnt | tail -1 | awk '{print $4}' | sed 's/[[:alpha:]]//g' | sed 's/\..*//') - 1)
+        root_size=$(expr $(df -h / | tail -1 | awk '{print $4}' | sed 's/[[:alpha:]]//g' | sed 's/\..*//') - 4)
+        sudo truncate -s "${mnt_size}"G /mnt/mnt.img
+        sudo truncate -s "${root_size}"G /root.img
+        LOOP_MNT=$(sudo losetup -f --show /mnt/mnt.img)
+        LOOP_ROOT=$(sudo losetup -f --show /root.img)
+        sudo pvcreate "$LOOP_MNT" "$LOOP_ROOT"
+        sudo vgcreate github "$LOOP_MNT" "$LOOP_ROOT"
+        sudo lvcreate -n runner -l 100%FREE github
+        sudo mkfs.xfs -f -i sparse=0 -b size=4096 /dev/github/runner
+        sudo mkdir -p /builder
+        sudo mount /dev/github/runner /builder
+        sudo rm -rf "${GITHUB_WORKSPACE:?}"
+        sudo mkdir -p "$GITHUB_WORKSPACE"
+        sudo mount --bind /builder "$GITHUB_WORKSPACE"
+        sudo chown -R runner:runner "$GITHUB_WORKSPACE"
+
+        echo "Disk adjustment finished. Ready for heavy building!"
+        echo "Simulated physical disk complete"
+        echo "=============================================================================="
+        df -hT
+        echo "=============================================================================="
 
     - name: Checkout
       uses: actions/checkout@main
@@ -87,8 +142,8 @@ jobs:
       env:
         DEBIAN_FRONTEND: noninteractive
       run: |
-        sudo rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/CodeQL
-        sudo docker image prune --all --force
+        # sudo rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/CodeQL
+        # sudo docker image prune --all --force
         sudo -E apt-get -qq update
         echo "------------ Check Start ------------"
         echo "DEPENDS_UBUNTU=$DEPENDS_UBUNTU"
