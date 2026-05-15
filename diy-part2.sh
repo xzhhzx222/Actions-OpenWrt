@@ -96,28 +96,11 @@ sed -i 's/\${1} ${nowtime}/${nowtime}\\\\n${1}/g' package/xzhhzx222/luci-app-wec
 git clone https://github.com/jerrykuku/luci-theme-argon.git package/xzhhzx222/luci-theme-argon
 sed -i 's/luci-theme-bootstrap/luci-theme-argon/g' package/feeds/luci/luci-light/Makefile
 
-case $BUILD_BRANCH in
-  lede)
-    SET_FILE=package/lean/default-settings/files/zzz-default-settings
-    # 替换msd_lite
-    # git clone -b openwrt-23.05 https://github.com/immortalwrt/packages.git package/immortalwrt/packages
-    # rm -rf feeds/packages/net/msd_lite/
-    # mv -vf package/immortalwrt/packages/net/msd_lite/ feeds/packages/net/
-    # rm -rf package/immortalwrt/packages/
-    # 添加luci-app-msd_lite
-    # git clone -b openwrt-23.05 https://github.com/immortalwrt/luci.git package/immortalwrt/luci
-    # mv -vf package/immortalwrt/luci/applications/luci-app-msd_lite/ feeds/luci/applications/
-    # ln -vsf $PWD/feeds/luci/applications/luci-app-msd_lite/ $PWD/package/feeds/luci/
-    # rm -rf package/immortalwrt/luci/
-    ;;
-  immortalwrt-*)
-    SET_FILE=package/emortal/default-settings/files/99-default-settings
-    # 修改default-settings
-    sed -i '/define Package\/default-settings-chn/,/endef/d' package/emortal/default-settings/Makefile
-    sed -i '/default-settings-chn/d' package/emortal/default-settings/Makefile
-    sed -i 's/+luci/& +@LUCI_LANG_zh_Hans +luci-i18n-base-zh-cn/g' package/emortal/default-settings/Makefile
-    ;;
-esac
+# 修改default-settings
+SET_FILE=package/emortal/default-settings/files/99-default-settings
+sed -i '/define Package\/default-settings-chn/,/endef/d' package/emortal/default-settings/Makefile
+sed -i '/default-settings-chn/d' package/emortal/default-settings/Makefile
+sed -i 's/+luci/& +@LUCI_LANG_zh_Hans +luci-i18n-base-zh-cn/g' package/emortal/default-settings/Makefile
 
 echo "------------ Check Start ------------"
 ls -l package/xzhhzx222/
