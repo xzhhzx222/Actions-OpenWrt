@@ -56,7 +56,7 @@ jobs:
       env:
         DEBIAN_FRONTEND: noninteractive
       run: |
-        sudo docker image prune --all --force
+        sudo docker system prune --all --force --volumes
         sudo -E apt-get -qq update
         sudo -E apt-get -qq install $(curl -fsSL https://raw.githubusercontent.com/xzhhzx222/Actions-OpenWrt/main/diy/ubuntu.depends)
         sudo -E apt-get -qq autoremove --purge
