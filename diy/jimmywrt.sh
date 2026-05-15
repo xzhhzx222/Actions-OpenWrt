@@ -38,7 +38,6 @@ uci set dhcp.@host[4].mac='A8:A1:59:20:60:9F'
 uci commit dhcp
 
 # Firewall Settings
-uci del firewall.@zone[2]
 for i in $(seq 0 8); do
   if [ $i -le 1 ]; then
     uci set firewall.@redirect[$i].dest_ip='192.168.0.1'
@@ -68,8 +67,29 @@ if uci -q get network.wan > /dev/null; then
   uci set network.wan.device='eth3'
 fi
 # iptv
-uci del network.iptv
+if uci -q get network.iptv > /dev/null; then
+  uci del network.iptv
+fi
+uci set network.iptv=interface
+uci set network.iptv.proto='none'
+uci set network.iptv.device='br-iptv'
+uci add network device
+uci set network.@device[-1].type='bridge'
+uci set network.@device[-1].name='br-iptv'
+uci add_list network.@device[-1].ports='eth3.85'
+uci add_list network.@device[-1].ports='eth5.85'
 uci commit network
+
+# Openclash Settings
+uci set openclash.config.delay_start='90'
+uci set openclash.config.core_version='linux-amd64-v2'
+if uci -q get openclash.config.lan_ac_black_macs > /dev/null; then
+  uci del openclash.config.lan_ac_black_macs
+fi
+uci add_list openclash.config.lan_ac_black_macs='50:af:73:47:9a:49'
+# uci add_list openclash.config.lan_ac_black_macs='eth0'
+# uci add_list openclash.config.lan_ac_black_macs='eth0'
+uci commit openclash
 
 # Timewol Settings
 while uci -q get timewol.@macclient[-1] > /dev/null; do
@@ -106,7 +126,5 @@ uci set wolplus.pc2.macaddr='A8:A1:59:20:60:A1'
 uci set wolplus.pc3.macaddr='A8:A1:59:20:60:D7'
 uci set wolplus.pc4.macaddr='A8:A1:59:20:60:9F'
 uci commit wolplus
-
-sed -i "/dhcp-option/d" "/etc/dnsmasq.conf"
 
 exit 0
