@@ -15,18 +15,10 @@ name: Build OpenWrt x86_64
 on:
   repository_dispatch:
   workflow_dispatch:
-    inputs:
-      branch:
-        description: 'Openwrt Build Branch'
-        required: true
-        default: 'immortalwrt-24.10'
-        type: choice
-        options:
-          - 'lede'
-          - 'immortalwrt-23.05'
-          - 'immortalwrt-24.10'
 
 env:
+  REPO_URL: https://github.com/immortalwrt/immortalwrt
+  REPO_BRANCH: openwrt-24.10
   FEEDS_CONF: feeds.conf.default
   CONFIG_FILE: .config
   DIY_P1_SH: diy-part1.sh
@@ -35,38 +27,18 @@ env:
   UPLOAD_FIRMWARE: true
   UPLOAD_RELEASE: true
   TZ: Asia/Shanghai
-  BUILD_BRANCH: ${{ github.event.inputs.branch }}
 
 jobs:
   build:
     # runs-on: ubuntu-22.04
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
+    if: ${{ github.event.repository.owner.id == github.event.sender.id }}
 
     steps:
-    # - name: Free Disk Space (Ubuntu)
-    #   uses: jlumbroso/free-disk-space@main
-    #   with:
-    #     # this might remove tools that are actually needed,
-    #     # if set to "true" but frees about 6 GB
-    #     tool-cache: false
-        #       
-    #     # all of these default to true, but feel free to set to
-    #     # "false" if necessary for your workflow
-    #     android: true
-    #     dotnet: true
-    #     haskell: true
-    #     large-packages: true
-    #     docker-images: true
-    #     swap-storage: true
+    - name: Checkout
+      uses: actions/checkout@main
     
-    - name: Before freeing up disk space
-      run: |
-        echo "Before freeing up disk space"
-        echo "=============================================================================="
-        df -hT
-        echo "=============================================================================="
-
-    - name: Free Disk Space
+    - name: Free Disk Space (Ubuntu)
       uses: endersonmenezes/free-disk-space@main
       with:
         remove_android: true
@@ -74,93 +46,47 @@ jobs:
         remove_haskell: true
         remove_tool_cache: true
         remove_swap: true
-        # remove_packages: "azure-cli google-cloud-cli microsoft-edge-stable google-chrome-stable chromedriver google-cloud-sdk firefox postgresql* temurin-* *llvm* mysql* dotnet-sdk-* gfortran* imagemagick* *-jdk mongodb-* mono-* monodoc-* unixodbc-dev ant* perl libgl1-mesa-dri apache2* imagemagick* nginx phantomjs php* libpq-dev r-base* ruby* sphinxsearch"
         remove_packages: "azure-cli google-cloud-cli microsoft-edge-stable google-chrome-stable firefox postgresql* temurin-* *llvm* mysql* dotnet-sdk-*"
         remove_packages_one_command: true
-        # remove_folders: "/usr/share/swift /usr/share/miniconda /usr/share/az* /usr/local/lib/node_modules /usr/local/share/chromium /usr/local/share/powershell /usr/local/julia* /usr/local/aws-cli /usr/local/aws-sam-cli /usr/share/gradle* /usr/local/bin/azcopy /usr/share/kotlinc /usr/share/apache-maven-* /usr/local/share/gecko_driver /usr/share/lintian"
         remove_folders: "/usr/share/swift /usr/share/miniconda /usr/share/az* /usr/local/lib/node_modules /usr/local/share/chromium /usr/local/share/powershell /usr/local/julia /usr/local/aws-cli /usr/local/aws-sam-cli /usr/share/gradle"
-
-    - name: After freeing up disk space
-      run: |
-        echo "After freeing up disk space"
-        echo "=============================================================================="
-        df -hT
-        echo "=============================================================================="
-
-    - name: Create simulated physical disk
-      run: |
-        echo "Cleaning up Docker Images"
-        sudo docker system prune --all --force --volumes
-
-        echo "Clean Docker Images complete"
-        echo "=============================================================================="
-        df -hT
-        echo "=============================================================================="
-
-        mnt_size=$(expr $(df -h /mnt | tail -1 | awk '{print $4}' | sed 's/[[:alpha:]]//g' | sed 's/\..*//') - 1)
-        root_size=$(expr $(df -h / | tail -1 | awk '{print $4}' | sed 's/[[:alpha:]]//g' | sed 's/\..*//') - 4)
-        sudo truncate -s "${mnt_size}"G /mnt/mnt.img
-        sudo truncate -s "${root_size}"G /root.img
-        LOOP_MNT=$(sudo losetup -f --show /mnt/mnt.img)
-        LOOP_ROOT=$(sudo losetup -f --show /root.img)
-        sudo pvcreate "$LOOP_MNT" "$LOOP_ROOT"
-        sudo vgcreate github "$LOOP_MNT" "$LOOP_ROOT"
-        sudo lvcreate -n runner -l 100%FREE github
-        sudo mkfs.xfs -f -i sparse=0 -b size=4096 /dev/github/runner
-        sudo mkdir -p /builder
-        sudo mount /dev/github/runner /builder
-        sudo rm -rf "${GITHUB_WORKSPACE:?}"
-        sudo mkdir -p "$GITHUB_WORKSPACE"
-        sudo mount --bind /builder "$GITHUB_WORKSPACE"
-        sudo chown -R runner:runner "$GITHUB_WORKSPACE"
-
-        echo "Disk adjustment finished. Ready for heavy building!"
-        echo "Simulated physical disk complete"
-        echo "=============================================================================="
-        df -hT
-        echo "=============================================================================="
-
-    - name: Checkout
-      uses: actions/checkout@main
-    
-    - name: Decide Branch
-      run: |
-        case $BUILD_BRANCH in
-          immortalwrt-*)
-            echo "DEPENDS_UBUNTU=diy/dep/immortalwrt.depends" >> $GITHUB_ENV
-            echo "REPO_URL=https://github.com/immortalwrt/immortalwrt" >> $GITHUB_ENV
-            echo "REPO_BRANCH=openwrt-${BUILD_BRANCH:(-5)}" >> $GITHUB_ENV
-            ;;
-          lede)
-            echo "DEPENDS_UBUNTU=diy/dep/lede.depends" >> $GITHUB_ENV
-            echo "REPO_URL=https://github.com/coolsnowwolf/lede" >> $GITHUB_ENV
-            echo "REPO_BRANCH=master" >> $GITHUB_ENV
-            ;;
-        esac
     
     - name: Initialization environment
       env:
         DEBIAN_FRONTEND: noninteractive
       run: |
         # sudo rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/CodeQL
-        # sudo docker image prune --all --force
+        sudo docker image prune --all --force
         sudo -E apt-get -qq update
-        echo "------------ Check Start ------------"
-        echo "DEPENDS_UBUNTU=$DEPENDS_UBUNTU"
-        echo "------------- Check End -------------"
-        sudo -E apt-get -qq install $(cat $DEPENDS_UBUNTU)
+        # sudo -E apt-get -qq install $(cat $DEPENDS_UBUNTU)
+        sudo -E apt-get -qq install $(curl -fsSL https://raw.githubusercontent.com/xzhhzx222/Actions-OpenWrt/main/diy/dep/immortalwrt.depends)
         sudo -E apt-get -qq autoremove --purge
         sudo -E apt-get -qq clean
         sudo timedatectl set-timezone "$TZ"
-        sudo chown $USER:$GROUPS $GITHUB_WORKSPACE
+        # sudo chown $USER:$GROUPS $GITHUB_WORKSPACE
+    
+    - name: Create virtual disk for extended storage
+        run: |
+          mnt_size=$(expr $(df -h /mnt | tail -1 | awk '{print $4}' | sed 's/[[:alpha:]]//g' | sed 's/\..*//') - 1)
+          root_size=$(expr $(df -h / | tail -1 | awk '{print $4}' | sed 's/[[:alpha:]]//g' | sed 's/\..*//') - 4)
+          sudo truncate -s "${mnt_size}"G /mnt/mnt.img
+          sudo truncate -s "${root_size}"G /root.img
+          sudo losetup /dev/loop6 /mnt/mnt.img
+          sudo losetup /dev/loop7 /root.img
+          sudo pvcreate /dev/loop6
+          sudo pvcreate /dev/loop7
+          sudo vgcreate github /dev/loop6 /dev/loop7
+          sudo lvcreate -n runner -l 100%FREE github
+          sudo mkfs.xfs -f -i sparse=0 -b size=4096 /dev/github/runner
+          sudo mkdir -p /builder
+          sudo mount /dev/github/runner /builder
+          sudo chown -R runner:runner /builder
+          df -Th
 
     - name: Clone source code
+      working-directory: /builder
       run: |
-        echo "------------ Check Start ------------"
-        echo "REPO_URL=$REPO_URL"
-        echo "REPO_BRANCH=$REPO_BRANCH"
-        echo "------------- Check End -------------"
         git clone $REPO_URL -b $REPO_BRANCH --single-branch --filter=blob:none openwrt
+        ln -sf /builder/openwrt $GITHUB_WORKSPACE/openwrt
 
     - name: Load custom feeds
       run: |
@@ -216,16 +142,14 @@ jobs:
 
     - name: Organize files
       id: organize
-      if: steps.compile.outputs.status == 'success' && env.UPLOAD_FIRMWARE == 'true' && !cancelled()
+      if: env.UPLOAD_FIRMWARE == 'true' && !cancelled()
       run: |
         cd openwrt/bin/targets/*/*
         rm -rf packages
-        if [[ $BUILD_BRANCH == immortalwrt-* ]]; then
-          sed -i 's/immortalwrt/openwrt/g' sha256sums
-          for filename in immortalwrt-*; do
-            mv -v "$filename" "openwrt-${filename#immortalwrt-}"
-          done
-        fi
+        sed -i 's/immortalwrt/openwrt/g' sha256sums
+        for filename in immortalwrt-*; do
+          mv -v "$filename" "openwrt-${filename#immortalwrt-}"
+        done
         echo "FIRMWARE=$PWD" >> $GITHUB_ENV
         echo "status=success" >> $GITHUB_OUTPUT
 
@@ -238,11 +162,11 @@ jobs:
 
     - name: Generate release tag
       id: tag
-      if: steps.organize.outputs.status == 'success' && env.UPLOAD_FIRMWARE == 'true' && !cancelled()
+      if: env.UPLOAD_RELEASE == 'true' && !cancelled()
       run: |
-        echo "release_name=ver$(date +"%y.%m.%d_%H%M")" >> $GITHUB_OUTPUT
+        echo "release_name=$(date +"%y.%m.%d-%H%M")" >> $GITHUB_OUTPUT
         touch release.txt
-        echo "[Build Branch]: ${{ env.BUILD_BRANCH }}" >> release.txt
+        echo "[Build Branch]: ${{ env.REPO_BRANCH }}" >> release.txt
         echo "status=success" >> $GITHUB_OUTPUT
 
     - name: Upload firmware to release
@@ -255,10 +179,9 @@ jobs:
         tag_name: ${{ env.FILE_DATE }}
         body_path: release.txt
         files: ${{ env.FIRMWARE }}/*
-        make_latest: true
+        # make_latest: true
 
     - name: Delete releases and workflows runs
-      # uses: Mattraks/delete-workflow-runs@main
       uses: ophub/delete-releases-workflows@main
       with:
         delete_releases: true
@@ -267,12 +190,3 @@ jobs:
         delete_workflows: true
         workflows_keep_day: 30
         gh_token: ${{ secrets.GITHUB_TOKEN }}
-
-    # - name: Remove old Releases
-    #   uses: dev-drprasad/delete-older-releases@master
-    #   if: steps.tag.outputs.status == 'success' && env.UPLOAD_RELEASE == 'true' && !cancelled()
-    #   with:
-    #     keep_latest: 6
-    #     delete_tags: true
-    #   env:
-    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
