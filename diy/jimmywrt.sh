@@ -86,9 +86,8 @@ uci set openclash.config.core_version='linux-amd64-v2'
 if uci -q get openclash.config.lan_ac_black_macs > /dev/null; then
   uci del openclash.config.lan_ac_black_macs
 fi
-uci add_list openclash.config.lan_ac_black_macs='50:af:73:47:9a:49'
-# uci add_list openclash.config.lan_ac_black_macs='eth0'
-# uci add_list openclash.config.lan_ac_black_macs='eth0'
+uci add_list openclash.config.lan_ac_black_macs='50:AF:73:47:9A:49'
+# uci add_list openclash.config.lan_ac_black_macs='50:AF:73:47:9A:49'
 uci commit openclash
 
 # Timewol Settings

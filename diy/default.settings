@@ -327,9 +327,6 @@ uci commit openclash
 # uci set turboacc.config.bbr_cca='0'
 # uci commit turboacc
 
-# uci set upnpd.config.enabled='1'
-# uci commit upnpd
-
 # Wechatpush Settings
 uci set wechatpush.config.enable='0'
 uci set wechatpush.config.jsonpath='/usr/share/wechatpush/api/qywx_mpnews.json'
