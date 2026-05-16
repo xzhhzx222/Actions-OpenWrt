@@ -23,12 +23,10 @@
 # 删除已存在的软件包
 rm -rf feeds/luci/applications/luci-app-openclash/
 rm -rf feeds/luci/applications/luci-app-passwall/
-rm -rf feeds/luci/applications/luci-app-timecontrol/
 rm -rf feeds/luci/applications/luci-app-wechatpush/
 rm -rf feeds/luci/themes/luci-theme-argon*/
 rm -rf package/feeds/luci/luci-app-openclash/
 rm -rf package/feeds/luci/luci-app-passwall/
-rm -rf package/feeds/luci/luci-app-timecontrol/
 rm -rf package/feeds/luci/luci-app-wechatpush/
 rm -rf package/feeds/luci/luci-theme-argon*/
 
