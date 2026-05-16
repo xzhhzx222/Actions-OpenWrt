@@ -75,16 +75,16 @@ jobs:
         sudo vgcreate github /dev/loop6 /dev/loop7
         sudo lvcreate -n runner -l 100%FREE github
         sudo mkfs.xfs -f -i sparse=0 -b size=4096 /dev/github/runner
-        sudo mkdir -p /builder
-        sudo mount /dev/github/runner /builder
-        sudo chown -R runner:runner /builder
+        sudo mkdir -p /workdir
+        sudo mount /dev/github/runner /workdir
+        sudo chown -R runner:runner /workdir
         df -Th
 
     - name: Clone source code
-      working-directory: /builder
+      working-directory: /workdir
       run: |
         git clone $REPO_URL -b $REPO_BRANCH --single-branch --filter=blob:none openwrt
-        ln -sf /builder/openwrt $GITHUB_WORKSPACE/openwrt
+        ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
 
     - name: Load custom feeds
       run: |
@@ -164,6 +164,7 @@ jobs:
       run: |
         echo "release_name=$(date +"%y.%m.%d-%H%M")" >> $GITHUB_OUTPUT
         touch release.txt
+        echo "[Build Repo]: ${{ env.REPO_URL }}" >> release.txt
         echo "[Build Branch]: ${{ env.REPO_BRANCH }}" >> release.txt
         echo "status=success" >> $GITHUB_OUTPUT
 
@@ -177,7 +178,6 @@ jobs:
         tag_name: ${{ env.FILE_DATE }}
         body_path: release.txt
         files: ${{ env.FIRMWARE }}/*
-        # make_latest: true
 
     - name: Delete releases and workflows runs
       uses: ophub/delete-releases-workflows@main
