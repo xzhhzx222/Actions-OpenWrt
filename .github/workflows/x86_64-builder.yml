@@ -191,12 +191,10 @@ jobs:
       with:
         TITLE: |
           ${{ github.repository }}
-          工作流状态提醒
+          工作流 ${{ github.workflow }} 编译结束
         CONTENT: |
-          <b>编译已正常结束！！！</b>
-          - 名称：${{ github.workflow }}
-          - 发布：OpenWrt_${{ steps.tag.outputs.release_name }}
-          - 标签：${{ env.FILE_DATE }}
+          <b>最新固件已发布！！！</b>
+          - 名称：OpenWrt_${{ steps.tag.outputs.release_name }}
           - 链接：https://github.com/${{ github.repository }}/releases/latest
         IMAGE: https://raw.githubusercontent.com/xzhhzx222/Actions-OpenWrt/main/diy/openwrt.jpg
         CORPID: ${{ secrets.CORPID }}
