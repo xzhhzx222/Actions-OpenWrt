@@ -186,8 +186,8 @@ jobs:
     #     workflows_keep_day: 30
     #     gh_token: ${{ secrets.GITHUB_TOKEN }}
     
-    - name: Env
-      run: echo "TESTID=$(date +"%Y-%m-%d %H:%M:%S")" >> $GITHUB_ENV
+    # - name: Env
+    #   run: echo "TESTID=$(date +"%Y-%m-%d %H:%M:%S")" >> $GITHUB_ENV
     
     # - name: Test
     #   env:
@@ -199,11 +199,11 @@ jobs:
     - name: Send Message to Wechat
       uses: HollowMan6/Wechat-Timed-Message@main
       with:
-        TITLE: ${{ github.repository }} 状态
+        TITLE: ${{ github.workflow }}
         CONTENT: |
-          ${{ env.TESTID }} 工作流程: ${{ github.workflow }}
-          ${{ env.TESTID }} 监控仓库: ${{ env.REPO_URL }}
-          ${{ env.TESTID }} ${{ env.REPO_BRANCH }}源码更新，编译完成
+          Repository: ${{ env.REPO_URL }}
+          Branch: ${{ env.REPO_BRANCH }}
+          Notice: Source Code Updated, Triggering Automatic Compilation...
         IMAGE: https://raw.githubusercontent.com/xzhhzx222/Actions-OpenWrt/main/diy/openwrt.jpg
         CORPID: ${{ secrets.CORPID }}
         CORPSECRET: ${{ secrets.CORPSECRET }}
