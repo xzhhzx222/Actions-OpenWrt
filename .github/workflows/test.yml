@@ -201,11 +201,11 @@ jobs:
       with:
         TITLE: |
           ${{ github.repository }}
-          工作流状态提醒：
+          工作流状态提醒
         CONTENT: |
+          **发现源码更新，触发自动编译...**
           - 名称：${{ github.workflow }}
           - 分支：${{ env.REPO_BRANCH }}
-          发现源码更新，触发自动编译...
         IMAGE: https://raw.githubusercontent.com/xzhhzx222/Actions-OpenWrt/main/diy/openwrt.jpg
         CORPID: ${{ secrets.CORPID }}
         CORPSECRET: ${{ secrets.CORPSECRET }}
