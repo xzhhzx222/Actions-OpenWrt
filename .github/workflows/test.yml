@@ -92,13 +92,14 @@ jobs:
     #     cd openwrt
     #     $GITHUB_WORKSPACE/$DIY_P1_SH
     
-    # - name: Env
-    #   env:
-    #     TESTID: ${{ secrets.TESTID }}
-    
-    - name: Test
+    - name: Env
       env:
         TESTID: ${{ secrets.TESTID }}
+      run: echo $TESTID
+    
+    - name: Test
+      # env:
+      #   TESTID: ${{ secrets.TESTID }}
       run: cat $GITHUB_WORKSPACE/$DIY_P1_SH
 
     # - name: Update feeds
