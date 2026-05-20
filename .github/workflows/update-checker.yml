@@ -75,7 +75,7 @@ jobs:
         CONTENT: |
           项目: ${{ github.repository }}
           流程: ${{ github.workflow }}
-          immortalwrt/$REPO_BRANCH源码更新，编译中...
+          immortalwrt/${{ env.REPO_BRANCH }}源码更新，编译中...
         IMAGE: https://raw.githubusercontent.com/xzhhzx222/Actions-OpenWrt/main/diy/openwrt.jpg
         CORPID: ${{ secrets.CORPID }}
         CORPSECRET: ${{ secrets.CORPSECRET }}
