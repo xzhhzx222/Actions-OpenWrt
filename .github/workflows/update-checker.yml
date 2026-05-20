@@ -66,15 +66,3 @@ jobs:
     #   with:
     #     retain_days: 0
     #     keep_minimum_runs: 2
-    - name: Send Message to Wechat
-      uses: HollowMan6/Wechat-Timed-Message@main
-      with:
-        TITLE: GitHub Actions 通知
-        CONTENT: |
-          项目: ${{ github.repository }}
-          流程: ${{ github.workflow }}
-          immortalwrt/openwrt-24.10源码更新，编译中...
-        IMAGE: https://raw.githubusercontent.com/xzhhzx222/Actions-OpenWrt/main/diy/openwrt.jpg
-        CORPID: ${{ secrets.CORPID }}
-        CORPSECRET: ${{ secrets.CORPSECRET }}
-        AGENTID: ${{ secrets.AGENTID }}
