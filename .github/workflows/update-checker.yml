@@ -69,9 +69,12 @@ jobs:
     - name: Send Message to Wechat
       uses: HollowMan6/Wechat-Timed-Message@main
       with:
-        TITLE: Test
-        MSG: Msg
-        CONTENT: Content
+        TITLE: GitHub Actions 通知
+        # MSG: Msg
+        CONTENT: |
+          📦 项目: ${{ github.repository }}
+          🌿 分支: ${{ github.ref_name }}
+          👤 提交人: ${{ github.actor }}
         IMAGE: https://raw.githubusercontent.com/xzhhzx222/Actions-OpenWrt/main/diy/openwrt.jpg
         CORPID: ${{ secrets.CORPID }}
         CORPSECRET: ${{ secrets.CORPSECRET }}
