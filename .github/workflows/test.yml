@@ -92,8 +92,8 @@ jobs:
     #     cd openwrt
     #     $GITHUB_WORKSPACE/$DIY_P1_SH
     
-    - name: Env
-      run: echo "TESTID=$(date +"%Y-%m-%d %H:%M:%S")" >> $GITHUB_ENV
+    # - name: Env
+    #   run: echo "TESTID=$(date +"%Y-%m-%d %H:%M:%S")" >> $GITHUB_ENV
     
     # - name: Test
     #   env:
@@ -200,12 +200,12 @@ jobs:
       uses: HollowMan6/Wechat-Timed-Message@main
       with:
         TITLE: |
-          ${{ env.TESTID }}
+          # ${{ env.TESTID }}
           ${{ github.repository }} 状态
         CONTENT: |
-          工作流程: ${{ github.workflow }}
-          监控仓库: ${{ env.REPO_URL }}
-          ${{ env.REPO_BRANCH }}源码更新，编译完成
+          $(date +"%Y-%m-%d %H:%M:%S")  工作流程: ${{ github.workflow }}
+          $(date +"%Y-%m-%d %H:%M:%S")  监控仓库: ${{ env.REPO_URL }}
+          $(date +"%Y-%m-%d %H:%M:%S")  ${{ env.REPO_BRANCH }}源码更新，编译完成
         IMAGE: https://raw.githubusercontent.com/xzhhzx222/Actions-OpenWrt/main/diy/openwrt.jpg
         CORPID: ${{ secrets.CORPID }}
         CORPSECRET: ${{ secrets.CORPSECRET }}
