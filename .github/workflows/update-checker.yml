@@ -69,7 +69,9 @@ jobs:
     - name: Send Message to Wechat
       uses: HollowMan6/Wechat-Timed-Message@main
       with:
-        TITLE: "\"${{ github.repository }}\\nGitHub Actions 通知\""
+        TITLE: |
+          ${{ github.repository }}
+          GitHub Actions 通知
         CONTENT: |
           项目: ${{ github.repository }}
           流程: ${{ github.workflow }}
