@@ -200,7 +200,7 @@ jobs:
       uses: HollowMan6/Wechat-Timed-Message@main
       with:
         TITLE: |
-          ${{ env.TESTID }
+          ${{ env.TESTID }}
           ${{ github.repository }} 状态
         CONTENT: |
           工作流程: ${{ github.workflow }}
