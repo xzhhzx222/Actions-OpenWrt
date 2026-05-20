@@ -191,7 +191,7 @@ jobs:
       with:
         TITLE: |
           ${{ steps.tag.outputs.release_name }}
-          ${{ github.repository } 状态
+          ${{ github.repository }} 状态
         CONTENT: |
           工作流程: ${{ github.workflow }}
           监控仓库: ${{ env.REPO_URL }}
