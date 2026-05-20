@@ -33,10 +33,10 @@ jobs:
     runs-on: ubuntu-24.04
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@v6
-      with:
-        fetch-depth: 0
+    # - name: Checkout
+    #   uses: actions/checkout@v6
+    #   with:
+    #     fetch-depth: 0
     
     # - name: Free Disk Space (Ubuntu)
     #   uses: endersonmenezes/free-disk-space@v3
@@ -92,15 +92,15 @@ jobs:
     #     cd openwrt
     #     $GITHUB_WORKSPACE/$DIY_P1_SH
     
-    # - name: Env
-    #   run: echo "TESTID=${{ secrets.TESTID }}" >> $GITHUB_ENV
+    - name: Env
+      run: echo "TESTID=$(date +"%Y-%m-%d %H:%M:%S")" >> $GITHUB_ENV
     
-    - name: Test
-      # env:
-      #   TESTID: ${{ secrets.TESTID }}
-      run: |
-        chmod +x $DIY_P1_SH
-        $GITHUB_WORKSPACE/$DIY_P1_SH
+    # - name: Test
+    #   env:
+    #     TESTID: ${{ secrets.TESTID }}
+    #   run: |
+    #     chmod +x $DIY_P1_SH
+    #     $GITHUB_WORKSPACE/$DIY_P1_SH
 
     # - name: Update feeds
     #   run: cd openwrt && ./scripts/feeds update -a
@@ -196,17 +196,17 @@ jobs:
     #     workflows_keep_day: 30
     #     gh_token: ${{ secrets.GITHUB_TOKEN }}
     
-    # - name: Send Message to Wechat
-    #   uses: HollowMan6/Wechat-Timed-Message@main
-    #   with:
-    #     TITLE: |
-    #       ${{ steps.tag.outputs.release_name }}
-    #       ${{ github.repository }} 状态
-    #     CONTENT: |
-    #       工作流程: ${{ github.workflow }}
-    #       监控仓库: ${{ env.REPO_URL }}
-    #       ${{ env.REPO_BRANCH }}源码更新，编译完成
-    #     IMAGE: https://raw.githubusercontent.com/xzhhzx222/Actions-OpenWrt/main/diy/openwrt.jpg
-    #     CORPID: ${{ secrets.CORPID }}
-    #     CORPSECRET: ${{ secrets.CORPSECRET }}
-    #     AGENTID: ${{ secrets.AGENTID }}
+    - name: Send Message to Wechat
+      uses: HollowMan6/Wechat-Timed-Message@main
+      with:
+        TITLE: |
+          ${{ env.TESTID }
+          ${{ github.repository }} 状态
+        CONTENT: |
+          工作流程: ${{ github.workflow }}
+          监控仓库: ${{ env.REPO_URL }}
+          ${{ env.REPO_BRANCH }}源码更新，编译完成
+        IMAGE: https://raw.githubusercontent.com/xzhhzx222/Actions-OpenWrt/main/diy/openwrt.jpg
+        CORPID: ${{ secrets.CORPID }}
+        CORPSECRET: ${{ secrets.CORPSECRET }}
+        AGENTID: ${{ secrets.AGENTID }}
