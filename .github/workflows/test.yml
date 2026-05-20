@@ -224,6 +224,7 @@ jobs:
       uses: HollowMan6/Wechat-Timed-Message@main
       with:
         TITLE: |
+          ${{ github.repository }}
           ${{ github.workflow }} 发现更新
         CONTENT: |
           <b>发现源码更新，触发自动编译...</b>
