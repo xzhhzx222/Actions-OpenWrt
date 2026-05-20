@@ -224,11 +224,11 @@ jobs:
       uses: HollowMan6/Wechat-Timed-Message@main
       with:
         TITLE: |
-          ${{ github.repository }}
-          工作流状态提醒
+          ${{ github.workflow }} 发现更新
         CONTENT: |
           <b>发现源码更新，触发自动编译...</b>
           - 名称：${{ github.workflow }}
+          - 仓库：${{ env.REPO_URL }}
           - 分支：${{ env.REPO_BRANCH }}
         IMAGE: https://raw.githubusercontent.com/xzhhzx222/Actions-OpenWrt/main/diy/openwrt.jpg
         CORPID: ${{ secrets.CORPID }}
