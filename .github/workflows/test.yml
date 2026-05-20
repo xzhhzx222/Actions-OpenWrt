@@ -202,7 +202,7 @@ jobs:
         wechat_id: ${{ secrets.CORPID }} # 企业微信id
         agent_secret: ${{ secrets.CORPSECRET }} # 应用密钥
         agent_id: ${{ secrets.AGENTID }} #应用id
-        to_user:  @all # 消息接收人，多个使用竖线|分割,默认为空发送给所有人
+        to_user: @all # 消息接收人，多个使用竖线|分割,默认为空发送给所有人
         msgtype: markdown
         send_step: main # 消息发送时机 main 正常流程  post action 执行完成后发送
         content: |
