@@ -93,9 +93,7 @@ jobs:
     #     $GITHUB_WORKSPACE/$DIY_P1_SH
     
     - name: Env
-      env:
-        TESTID: ${{ secrets.TESTID }}
-      run: echo $TESTID
+      run: echo "TESTID=${{ secrets.TESTID }}" >> $GITHUB_ENV
     
     - name: Test
       # env:
