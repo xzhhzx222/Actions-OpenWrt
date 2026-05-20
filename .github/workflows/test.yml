@@ -196,7 +196,7 @@ jobs:
     #     chmod +x $DIY_P1_SH
     #     $GITHUB_WORKSPACE/$DIY_P1_SH
     
-    - name: Send Message to Wechat
+    - name: Send Message to Wechat1
       uses: wertycn/work-wechat-send-action@main
       with:
         wechat_id: ${{ secrets.CORPID }} # 企业微信id
@@ -220,7 +220,7 @@ jobs:
             >如需修改会议信息，请点击：
             >[修改会议信息](https://work.weixin.qq.com)"
     
-    - name: Send Message to Wechat
+    - name: Send Message to Wechat2
       uses: HollowMan6/Wechat-Timed-Message@main
       with:
         TITLE: |
