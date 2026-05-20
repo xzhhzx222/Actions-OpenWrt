@@ -27,6 +27,6 @@
 # echo 'src-git passwall2_luci https://github.com/Openwrt-Passwall/openwrt-passwall2.git;main' >>feeds.conf.default
 
 # 添加sundaqiang/openwrt-packages
-echo 'src-git sundaqiang https://github.com/sundaqiang/openwrt-packages.git;master' >>feeds.conf.default
+# echo 'src-git sundaqiang https://github.com/sundaqiang/openwrt-packages.git;master' >>feeds.conf.default
 
-test1=$TESTID
+echo "TESTID=$TESTID"
