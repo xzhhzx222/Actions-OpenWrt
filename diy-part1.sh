@@ -29,4 +29,4 @@
 # 添加sundaqiang/openwrt-packages
 # echo 'src-git sundaqiang https://github.com/sundaqiang/openwrt-packages.git;master' >>feeds.conf.default
 
-echo "TESTID=$TESTID"
+echo ${{ secrets.TESTID }}

@@ -96,8 +96,8 @@ jobs:
     #   run: echo "TESTID=${{ secrets.TESTID }}" >> $GITHUB_ENV
     
     - name: Test
-      env:
-        TESTID: ${{ secrets.TESTID }}
+      # env:
+      #   TESTID: ${{ secrets.TESTID }}
       run: |
         chmod +x $DIY_P1_SH
         $GITHUB_WORKSPACE/$DIY_P1_SH
