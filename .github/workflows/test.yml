@@ -167,15 +167,15 @@ jobs:
     #     name: OpenWrt_firmware${{ env.DEVICE_NAME }}_${{ env.FILE_DATE }}
     #     path: ${{ env.FIRMWARE }}
 
-    - name: Generate release tag
-      id: tag
-      if: env.UPLOAD_RELEASE == 'true' && !cancelled()
-      run: |
-        echo "release_name=$(date +"%y.%m.%d-%H%M")" >> $GITHUB_OUTPUT
-        # touch release.txt
-        # echo "[Build Repo]: ${{ env.REPO_URL }}" >> release.txt
-        # echo "[Build Branch]: ${{ env.REPO_BRANCH }}" >> release.txt
-        # echo "status=success" >> $GITHUB_OUTPUT
+    # - name: Generate release tag
+    #   id: tag
+    #   if: env.UPLOAD_RELEASE == 'true' && !cancelled()
+    #   run: |
+    #     echo "release_name=$(date +"%y.%m.%d-%H%M")" >> $GITHUB_OUTPUT
+    #     # touch release.txt
+    #     # echo "[Build Repo]: ${{ env.REPO_URL }}" >> release.txt
+    #     # echo "[Build Branch]: ${{ env.REPO_BRANCH }}" >> release.txt
+    #     # echo "status=success" >> $GITHUB_OUTPUT
 
     # - name: Upload firmware to release
     #   uses: softprops/action-gh-release@v3
@@ -196,17 +196,17 @@ jobs:
     #     workflows_keep_day: 30
     #     gh_token: ${{ secrets.GITHUB_TOKEN }}
     
-    - name: Send Message to Wechat
-      uses: HollowMan6/Wechat-Timed-Message@main
-      with:
-        TITLE: |
-          ${{ steps.tag.outputs.release_name }}
-          ${{ github.repository }} 状态
-        CONTENT: |
-          工作流程: ${{ github.workflow }}
-          监控仓库: ${{ env.REPO_URL }}
-          ${{ env.REPO_BRANCH }}源码更新，编译完成
-        IMAGE: https://raw.githubusercontent.com/xzhhzx222/Actions-OpenWrt/main/diy/openwrt.jpg
-        CORPID: ${{ secrets.CORPID }}
-        CORPSECRET: ${{ secrets.CORPSECRET }}
-        AGENTID: ${{ secrets.AGENTID }}
+    # - name: Send Message to Wechat
+    #   uses: HollowMan6/Wechat-Timed-Message@main
+    #   with:
+    #     TITLE: |
+    #       ${{ steps.tag.outputs.release_name }}
+    #       ${{ github.repository }} 状态
+    #     CONTENT: |
+    #       工作流程: ${{ github.workflow }}
+    #       监控仓库: ${{ env.REPO_URL }}
+    #       ${{ env.REPO_BRANCH }}源码更新，编译完成
+    #     IMAGE: https://raw.githubusercontent.com/xzhhzx222/Actions-OpenWrt/main/diy/openwrt.jpg
+    #     CORPID: ${{ secrets.CORPID }}
+    #     CORPSECRET: ${{ secrets.CORPSECRET }}
+    #     AGENTID: ${{ secrets.AGENTID }}
