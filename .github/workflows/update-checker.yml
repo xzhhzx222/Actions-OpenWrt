@@ -69,7 +69,7 @@ jobs:
     - name: Send Message to Wechat
       uses: HollowMan6/Wechat-Timed-Message@main
       with:
-        TITLE: ${{ steps.tag.outputs.release_name }}\\nGitHub Actions 通知
+        TITLE: "${{ steps.tag.outputs.release_name }}\\nGitHub Actions 通知"
         CONTENT: |
           项目: ${{ github.repository }}
           流程: ${{ github.workflow }}
