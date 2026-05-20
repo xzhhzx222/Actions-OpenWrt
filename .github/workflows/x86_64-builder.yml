@@ -38,19 +38,6 @@ jobs:
       with:
         fetch-depth: 0
     
-    - name: Send Message to Wechat
-      uses: HollowMan6/Wechat-Timed-Message@main
-      with:
-        TITLE: GitHub Actions 通知
-        CONTENT: |
-          项目: ${{ github.repository }}
-          流程: ${{ github.workflow }}
-          immortalwrt/$REPO_BRANCH源码更新，编译中...
-        IMAGE: https://raw.githubusercontent.com/xzhhzx222/Actions-OpenWrt/main/diy/openwrt.jpg
-        CORPID: ${{ secrets.CORPID }}
-        CORPSECRET: ${{ secrets.CORPSECRET }}
-        AGENTID: ${{ secrets.AGENTID }}
-    
     - name: Free Disk Space (Ubuntu)
       uses: endersonmenezes/free-disk-space@v3
       with:
@@ -198,3 +185,18 @@ jobs:
         delete_workflows: true
         workflows_keep_day: 30
         gh_token: ${{ secrets.GITHUB_TOKEN }}
+    
+    - name: Send Message to Wechat
+      uses: HollowMan6/Wechat-Timed-Message@main
+      with:
+        TITLE: |
+          ${{ steps.tag.outputs.release_name }}
+          ${{ github.repository } 状态
+        CONTENT: |
+          工作流程: ${{ github.workflow }}
+          监控仓库: ${{ env.REPO_URL }}
+          ${{ env.REPO_BRANCH }}源码更新，编译完成
+        IMAGE: https://raw.githubusercontent.com/xzhhzx222/Actions-OpenWrt/main/diy/openwrt.jpg
+        CORPID: ${{ secrets.CORPID }}
+        CORPSECRET: ${{ secrets.CORPSECRET }}
+        AGENTID: ${{ secrets.AGENTID }}
