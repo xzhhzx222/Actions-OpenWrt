@@ -62,6 +62,7 @@ jobs:
         event-type: Source Code Update
 
     - name: Send Message to Wechat
+      if: steps.cacheHash.outputs.cache-hit != 'true'
       uses: HollowMan6/Wechat-Timed-Message@main
       with:
         TITLE: |
