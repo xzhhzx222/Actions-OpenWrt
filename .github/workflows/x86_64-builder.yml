@@ -54,7 +54,12 @@ jobs:
       env:
         DEBIAN_FRONTEND: noninteractive
       run: |
-        sudo docker system prune --all --force --volumes
+        # sudo docker system prune --all --force --volumes
+        sudo docker container prune --force
+        sudo docker network prune --force
+        sudo docker image prune --force
+        sudo docker builder prune --all --force
+        sudo docker volume prune --force
         sudo -E apt-get -qq update
         sudo -E apt-get -qq install $(cat diy/ubuntu.depends)
         sudo -E apt-get -qq autoremove --purge
