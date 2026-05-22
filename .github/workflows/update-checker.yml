@@ -72,7 +72,8 @@ jobs:
           <b>编译任务已触发！！！</b>
           - 仓库：${{ env.REPO_URL }}
           - 分支：${{ env.REPO_BRANCH }}
-        IMAGE: https://raw.githubusercontent.com/xzhhzx222/Actions-OpenWrt/main/diy/openwrt.jpg
+          - 详情：https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        IMAGE: https://raw.githubusercontent.com/${{ github.repository }}/${{ github.ref_name }}/diy/openwrt.jpg
         CORPID: ${{ secrets.CORPID }}
         CORPSECRET: ${{ secrets.CORPSECRET }}
         AGENTID: ${{ secrets.AGENTID }}
