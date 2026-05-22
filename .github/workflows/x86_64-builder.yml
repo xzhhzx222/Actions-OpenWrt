@@ -10,7 +10,7 @@
 # See /LICENSE for more information.
 #
 
-name: Build OpenWrt x86_64
+name: x86_64 Builder
 
 on:
   repository_dispatch:
