@@ -180,6 +180,7 @@ jobs:
         tag_name: ${{ env.FILE_DATE }}
         body_path: release.txt
         files: ${{ env.FIRMWARE }}/*
+        make_latest: true
 
     - name: Delete releases and workflows runs
       uses: ophub/delete-releases-workflows@main
