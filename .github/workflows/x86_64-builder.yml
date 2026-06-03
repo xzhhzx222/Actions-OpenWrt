@@ -15,11 +15,19 @@ name: x86_64 Builder
 on:
   repository_dispatch:
   workflow_dispatch:
+    inputs:
+      branch:
+        description: 'ImmortalWrt Branch'
+        required: true
+        default: 'openwrt-25.12'
+        type: choice
+        options:
+          - 'openwrt-24.10'
+          - 'openwrt-25.12'
 
 env:
   REPO_URL: https://github.com/immortalwrt/immortalwrt
-  # REPO_BRANCH: openwrt-24.10
-  REPO_BRANCH: openwrt-25.12
+  REPO_BRANCH: ${{ github.event.inputs.branch }}
   FEEDS_CONF: feeds.conf.default
   CONFIG_FILE: .config
   DIY_P1_SH: diy-part1.sh
