@@ -19,7 +19,7 @@
 
 
 # 添加fw876/helloworld
-# echo 'src-git helloworld https://github.com/fw876/helloworld.git' >>feeds.conf.default
+echo 'src-git helloworld https://github.com/fw876/helloworld.git' >>feeds.conf.default
 
 # 添加Openwrt-Passwall/openwrt-passwall
 # echo 'src-git passwall_packages https://github.com/Openwrt-Passwall/openwrt-passwall-packages.git;main' >>feeds.conf.default
