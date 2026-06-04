@@ -10,7 +10,7 @@
 # See /LICENSE for more information.
 #
 
-name: immortalwrt-24.10 Checker
+name: 24.10 Checker
 
 env:
   REPO_URL: https://github.com/immortalwrt/immortalwrt
