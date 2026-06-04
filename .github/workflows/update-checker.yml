@@ -60,6 +60,10 @@ jobs:
         # token: ${{ github.token }}
         token: ${{ secrets.GITHUB_TOKEN }}
         event-type: Source Code Update
+        client-payload: |
+          {
+            "branch": {{ env.REPO_BRANCH }}
+          }
 
     - name: Send Message to Wechat
       if: steps.cacheHash.outputs.cache-hit != 'true'

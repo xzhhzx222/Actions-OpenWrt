@@ -14,6 +14,7 @@ name: x86_64 Builder
 
 on:
   repository_dispatch:
+    types: [Source Code Update]
   workflow_dispatch:
     inputs:
       branch:
@@ -27,7 +28,7 @@ on:
 
 env:
   REPO_URL: https://github.com/immortalwrt/immortalwrt
-  REPO_BRANCH: ${{ github.event.inputs.branch }}
+  REPO_BRANCH: ${{ github.event.client_payload.branch }} || ${{ github.event.inputs.branch }}
   FEEDS_CONF: feeds.conf.default
   CONFIG_FILE: .config
   DIY_P1_SH: diy-part1.sh
