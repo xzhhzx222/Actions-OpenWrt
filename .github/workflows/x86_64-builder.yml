@@ -209,10 +209,10 @@ jobs:
           工作流 ${{ github.workflow }} 编译成功
         CONTENT: |
           <b>最新固件已发布！！！</b>
-          - 分支：<a href="${{ env.REPO_URL }}/tree/${{ env.REPO_BRANCH }}">${{ env.REPO_BRANCH }}</a>
           - 名称：ImmortalWrt_${{ steps.tag.outputs.release_name }}
-          - 链接：https://github.com/${{ github.repository }}/releases/tag/${{ env.FILE_DATE }}
-          - 详情：https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          - 分支：<a href="${{ env.REPO_URL }}/tree/${{ env.REPO_BRANCH }}">${{ env.REPO_BRANCH }}</a>
+          - 标签：<a href="https://github.com/${{ github.repository }}/releases/tag/${{ env.FILE_DATE }}">${{ env.FILE_DATE }}</a>
+          - 后台：<a href="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}">点击查看详情</a>
         IMAGE: https://raw.githubusercontent.com/${{ github.repository }}/${{ github.ref_name }}/diy/openwrt.jpg
         CORPID: ${{ secrets.CORPID }}
         CORPSECRET: ${{ secrets.CORPSECRET }}

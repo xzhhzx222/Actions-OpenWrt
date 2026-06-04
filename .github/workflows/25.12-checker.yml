@@ -65,7 +65,7 @@ jobs:
           工作流 ${{ github.workflow }} 发现更新
         CONTENT: |
           <b>编译任务已触发！！！</b>
-          - 详情：<a href="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}">点击查看</a>
+          - 后台：<a href="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}">点击查看详情</a>
         IMAGE: https://raw.githubusercontent.com/${{ github.repository }}/${{ github.ref_name }}/diy/openwrt.jpg
         CORPID: ${{ secrets.CORPID }}
         CORPSECRET: ${{ secrets.CORPSECRET }}
