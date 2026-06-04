@@ -13,19 +13,13 @@
 name: Update Checker
 
 env:
-  # REPO_URL: https://github.com/coolsnowwolf/lede
-  # REPO_BRANCH: master
-  REPO_URL: https://github.com/immortalwrt/immortalwrt
-  # REPO_BRANCH: master
-  # REPO_BRANCH: openwrt-24.10
-  REPO_BRANCH: openwrt-25.12
+  REPO_URL: https://github.com/coolsnowwolf/lede
+  REPO_BRANCH: master
 
 on:
   workflow_dispatch:
   # schedule:
   #  - cron: 0 */18 * * *
-  schedule:
-   - cron: 0 */12 * * *
 
 jobs:
   check:
@@ -41,8 +35,7 @@ jobs:
 
     - name: Compare Commit Hash
       id: cacheHash
-      # uses: actions/cache@v3
-      uses: actions/cache@v5
+      uses: actions/cache@v3
       with:
         path: .commitHash
         key: commitHash_${{ steps.getHash.outputs.commitHash }}
@@ -54,36 +47,13 @@ jobs:
 
     - name: Trigger build
       if: steps.cacheHash.outputs.cache-hit != 'true'
-      # uses: peter-evans/repository-dispatch@v2
-      uses: peter-evans/repository-dispatch@v4
+      uses: peter-evans/repository-dispatch@v2
       with:
-        # token: ${{ github.token }}
-        token: ${{ secrets.GITHUB_TOKEN }}
+        token: ${{ github.token }}
         event-type: Source Code Update
-        client-payload: |
-          {
-            "branch": "${{ env.REPO_BRANCH }}"
-          }
-
-    - name: Send Message to Wechat
-      if: steps.cacheHash.outputs.cache-hit != 'true'
-      uses: HollowMan6/Wechat-Timed-Message@main
-      with:
-        TITLE: |
-          ${{ github.repository }}
-          工作流 ${{ github.workflow }} 发现更新
-        CONTENT: |
-          <b>编译任务已触发！！！</b>
-          - 仓库：${{ env.REPO_URL }}
-          - 分支：${{ env.REPO_BRANCH }}
-          - 详情：https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
-        IMAGE: https://raw.githubusercontent.com/${{ github.repository }}/${{ github.ref_name }}/diy/openwrt.jpg
-        CORPID: ${{ secrets.CORPID }}
-        CORPSECRET: ${{ secrets.CORPSECRET }}
-        AGENTID: ${{ secrets.AGENTID }}
     
-    # - name: Delete workflow runs
-    #   uses: Mattraks/delete-workflow-runs@v2
-    #   with:
-    #     retain_days: 0
-    #     keep_minimum_runs: 2
+    - name: Delete workflow runs
+      uses: Mattraks/delete-workflow-runs@v2
+      with:
+        retain_days: 0
+        keep_minimum_runs: 2
