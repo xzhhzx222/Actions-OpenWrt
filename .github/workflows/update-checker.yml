@@ -62,7 +62,7 @@ jobs:
         event-type: Source Code Update
         client-payload: |
           {
-            "branch": {{ env.REPO_BRANCH }}
+            "branch": "${{ env.REPO_BRANCH }}"
           }
 
     - name: Send Message to Wechat
