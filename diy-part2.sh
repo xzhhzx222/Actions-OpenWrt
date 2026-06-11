@@ -23,10 +23,12 @@
 # 删除已存在的软件包
 rm -rf feeds/luci/applications/luci-app-openclash/
 rm -rf feeds/luci/applications/luci-app-passwall/
+rm -rf feeds/luci/applications/luci-app-rtp2httpd/
 rm -rf feeds/luci/applications/luci-app-wechatpush/
 rm -rf feeds/luci/themes/luci-theme-argon*/
 rm -rf package/feeds/luci/luci-app-openclash/
 rm -rf package/feeds/luci/luci-app-passwall/
+rm -rf package/feeds/luci/luci-app-rtp2httpd/
 rm -rf package/feeds/luci/luci-app-wechatpush/
 rm -rf package/feeds/luci/luci-theme-argon*/
 
@@ -38,10 +40,13 @@ git clone https://github.com/sirpdboy/luci-app-timecontrol.git package/xzhhzx222
 
 # 添加Lienol/openwrt-package
 # git clone https://github.com/Lienol/openwrt-package.git package/Lienol/openwrt-package
-# mv -vf package/Lienol/openwrt-package/luci-app-control-timewol/ package/xzhhzx222/
 # mv -vf package/Lienol/openwrt-package/luci-app-control-weburl/ package/xzhhzx222/
-# mv -vf package/Lienol/openwrt-package/luci-app-timecontrol/ package/xzhhzx222/
 # rm -rf package/Lienol/
+
+# 添加stackia/rtp2httpd
+git clone https://github.com/stackia/rtp2httpd.git package/stackia/rtp2httpd
+mv -vf package/stackia/rtp2httpd/openwrt-support/* package/xzhhzx222/
+rm -rf package/stackia/rtp2httpd/
 
 # 添加vernesong/OpenClash
 CLASH_DIR=package/xzhhzx222/luci-app-openclash/root/etc/openclash
