@@ -24,13 +24,13 @@
 rm -rf feeds/luci/applications/luci-app-openclash/
 rm -rf feeds/luci/applications/luci-app-passwall/
 rm -rf feeds/luci/applications/luci-app-rtp2httpd/
-rm -rf feeds/luci/applications/luci-app-wechatpush/
+# rm -rf feeds/luci/applications/luci-app-wechatpush/
 rm -rf feeds/luci/themes/luci-theme-argon*/
 rm -rf feeds/packages/net/rtp2httpd/
 rm -rf package/feeds/luci/luci-app-openclash/
 rm -rf package/feeds/luci/luci-app-passwall/
 rm -rf package/feeds/luci/luci-app-rtp2httpd/
-rm -rf package/feeds/luci/luci-app-wechatpush/
+# rm -rf package/feeds/luci/luci-app-wechatpush/
 rm -rf package/feeds/luci/luci-theme-argon*/
 rm -rf package/feeds/packages/rtp2httpd/
 
@@ -47,7 +47,10 @@ git clone https://github.com/sirpdboy/luci-app-timecontrol.git package/xzhhzx222
 
 # 添加stackia/rtp2httpd
 git clone https://github.com/stackia/rtp2httpd.git package/stackia/rtp2httpd
-mv -vf package/stackia/rtp2httpd/openwrt-support/* package/xzhhzx222/
+mv -vf package/stackia/rtp2httpd/openwrt-support/rtp2httpd package/xzhhzx222/
+mv -vf package/stackia/rtp2httpd/openwrt-support/luci-app-rtp2httpd package/xzhhzx222/
+mv -vf package/xzhhzx222/rtp2httpd/Makefile.versioned package/xzhhzx222/rtp2httpd/Makefile
+mv -vf package/xzhhzx222/luci-app-rtp2httpd/Makefile.versioned package/xzhhzx222/luci-app-rtp2httpd/Makefile
 rm -rf package/stackia/rtp2httpd/
 
 # 添加vernesong/OpenClash
