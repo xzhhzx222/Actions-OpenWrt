@@ -26,11 +26,13 @@ rm -rf feeds/luci/applications/luci-app-passwall/
 rm -rf feeds/luci/applications/luci-app-rtp2httpd/
 rm -rf feeds/luci/applications/luci-app-wechatpush/
 rm -rf feeds/luci/themes/luci-theme-argon*/
+rm -rf feeds/packages/net/rtp2httpd/
 rm -rf package/feeds/luci/luci-app-openclash/
 rm -rf package/feeds/luci/luci-app-passwall/
 rm -rf package/feeds/luci/luci-app-rtp2httpd/
 rm -rf package/feeds/luci/luci-app-wechatpush/
 rm -rf package/feeds/luci/luci-theme-argon*/
+rm -rf package/feeds/packages/rtp2httpd/
 
 # 添加sirpdboy/luci-app-advanced
 git clone https://github.com/sirpdboy/luci-app-advanced.git package/xzhhzx222/luci-app-advanced
