@@ -28,3 +28,40 @@ echo 'src-git helloworld https://github.com/fw876/helloworld.git' >>feeds.conf.d
 
 # 添加sundaqiang/openwrt-packages
 echo 'src-git sundaqiang https://github.com/sundaqiang/openwrt-packages.git;master' >>feeds.conf.default
+
+PKG_DIR=package/xzhhzx222
+echo "------------ Check Start ------------"
+echo "PKG_DIR=$PKG_DIR"
+echo "------------- Check End -------------"
+
+# 添加sirpdboy/luci-app-advanced
+git clone https://github.com/sirpdboy/luci-app-advanced.git $PKG_DIR/luci-app-advanced
+
+# 添加sirpdboy/luci-app-timecontrol
+git clone https://github.com/sirpdboy/luci-app-timecontrol.git $PKG_DIR/luci-app-timecontrol
+
+# 添加Lienol/openwrt-package
+# git clone https://github.com/Lienol/openwrt-package.git package/Lienol/openwrt-package
+# mv -vf package/Lienol/openwrt-package/luci-app-control-weburl/ $PKG_DIR/
+# rm -rf package/Lienol/
+
+# 添加stackia/rtp2httpd
+git clone https://github.com/stackia/rtp2httpd.git package/stackia/rtp2httpd
+mv -vf package/stackia/rtp2httpd/openwrt-support/rtp2httpd $PKG_DIR/
+mv -vf package/stackia/rtp2httpd/openwrt-support/luci-app-rtp2httpd $PKG_DIR/
+rm -rf package/stackia/
+
+# 添加vernesong/OpenClash
+git clone --depth=1 https://github.com/vernesong/OpenClash.git package/vernesong/OpenClash
+mv -vf package/vernesong/OpenClash/luci-app-openclash/ $PKG_DIR/
+rm -rf package/vernesong/
+
+# 添加luci-app-wechatpush
+git clone https://github.com/tty228/luci-app-wechatpush.git $PKG_DIR/luci-app-wechatpush
+
+# 添加luci-theme-argon
+git clone https://github.com/jerrykuku/luci-theme-argon.git $PKG_DIR/luci-theme-argon
+
+echo "------------ Check Start ------------"
+ls -l $PKG_DIR/
+echo "------------- Check End -------------"

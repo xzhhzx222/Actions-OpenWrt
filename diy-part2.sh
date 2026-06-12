@@ -21,48 +21,34 @@
 
 
 # 删除已存在的软件包
-rm -rf feeds/luci/applications/luci-app-openclash/
-rm -rf feeds/luci/applications/luci-app-passwall/
-rm -rf feeds/luci/applications/luci-app-rtp2httpd/
+# rm -rf feeds/luci/applications/luci-app-openclash/
+# rm -rf feeds/luci/applications/luci-app-passwall/
+# rm -rf feeds/luci/applications/luci-app-rtp2httpd/
 # rm -rf feeds/luci/applications/luci-app-wechatpush/
-rm -rf feeds/luci/themes/luci-theme-argon*/
-rm -rf feeds/packages/net/rtp2httpd/
-rm -rf package/feeds/luci/luci-app-openclash/
-rm -rf package/feeds/luci/luci-app-passwall/
-rm -rf package/feeds/luci/luci-app-rtp2httpd/
+# rm -rf feeds/luci/themes/luci-theme-argon*/
+# rm -rf feeds/packages/net/rtp2httpd/
+# rm -rf package/feeds/luci/luci-app-openclash/
+# rm -rf package/feeds/luci/luci-app-passwall/
+# rm -rf package/feeds/luci/luci-app-rtp2httpd/
 # rm -rf package/feeds/luci/luci-app-wechatpush/
-rm -rf package/feeds/luci/luci-theme-argon*/
-rm -rf package/feeds/packages/rtp2httpd/
+# rm -rf package/feeds/luci/luci-theme-argon*/
+# rm -rf package/feeds/packages/rtp2httpd/
 
-# 添加sirpdboy/luci-app-advanced
-git clone https://github.com/sirpdboy/luci-app-advanced.git package/xzhhzx222/luci-app-advanced
+PKG_DIR=package/xzhhzx222
+echo "------------ Check Start ------------"
+echo "PKG_DIR=$PKG_DIR"
+echo "------------- Check End -------------"
 
-# 添加sirpdboy/luci-app-timecontrol
-git clone https://github.com/sirpdboy/luci-app-timecontrol.git package/xzhhzx222/luci-app-timecontrol
+# 修改stackia/rtp2httpd
+mv -vf $PKG_DIR/rtp2httpd/Makefile.versioned $PKG_DIR/rtp2httpd/Makefile
+mv -vf $PKG_DIR/luci-app-rtp2httpd/Makefile.versioned $PKG_DIR/luci-app-rtp2httpd/Makefile
 
-# 添加Lienol/openwrt-package
-# git clone https://github.com/Lienol/openwrt-package.git package/Lienol/openwrt-package
-# mv -vf package/Lienol/openwrt-package/luci-app-control-weburl/ package/xzhhzx222/
-# rm -rf package/Lienol/
-
-# 添加stackia/rtp2httpd
-git clone https://github.com/stackia/rtp2httpd.git package/stackia/rtp2httpd
-mv -vf package/stackia/rtp2httpd/openwrt-support/rtp2httpd package/xzhhzx222/
-mv -vf package/stackia/rtp2httpd/openwrt-support/luci-app-rtp2httpd package/xzhhzx222/
-mv -vf package/xzhhzx222/rtp2httpd/Makefile.versioned package/xzhhzx222/rtp2httpd/Makefile
-mv -vf package/xzhhzx222/luci-app-rtp2httpd/Makefile.versioned package/xzhhzx222/luci-app-rtp2httpd/Makefile
-rm -rf package/stackia/rtp2httpd/
-
-# 添加vernesong/OpenClash
-CLASH_DIR=package/xzhhzx222/luci-app-openclash/root/etc/openclash
-
+CLASH_DIR=$PKG_DIR/luci-app-openclash/root/etc/openclash
 echo "------------ Check Start ------------"
 echo "CLASH_DIR=$CLASH_DIR"
 echo "------------- Check End -------------"
 
-git clone --depth=1 https://github.com/vernesong/OpenClash.git package/vernesong/OpenClash
-mv -vf package/vernesong/OpenClash/luci-app-openclash/ package/xzhhzx222/
-rm -rf package/vernesong/
+# 修改vernesong/OpenClash
 # rm -vf $CLASH_DIR/*.dat
 curl -Ls -o $CLASH_DIR/GeoIP.dat https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geoip.dat
 curl -Ls -o $CLASH_DIR/GeoSite.dat https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geosite.dat
@@ -79,7 +65,7 @@ mv -vf $CLASH_DIR/core/clash $CLASH_DIR/core/clash_meta
 rm -vf $CLASH_DIR/core/core.tar.gz
 # rm -f $CLASH_DIR/rule_provider/*
 
-# 链接sundaqiang/openwrt-packages
+# 修改sundaqiang/openwrt-packages
 sed -i 's/Wake on LAN/Wake on LAN +/g' $PWD/feeds/sundaqiang/luci-app-wolplus/luasrc/controller/wolplus.lua
 sed -i 's/wolplus/Wake on LAN +/g' $PWD/feeds/sundaqiang/luci-app-wolplus/po/zh_Hans/wolplus.po
 sed -i 's/macclient/Host Clients/g' $PWD/feeds/sundaqiang/luci-app-wolplus/po/zh_Hans/wolplus.po
@@ -94,14 +80,12 @@ echo >> $PWD/feeds/sundaqiang/luci-app-wolplus/po/zh_Hans/wolplus.po
 echo "msgid \"Wake Up Host\"" >> $PWD/feeds/sundaqiang/luci-app-wolplus/po/zh_Hans/wolplus.po
 echo "msgstr \"唤醒设备\"" >> $PWD/feeds/sundaqiang/luci-app-wolplus/po/zh_Hans/wolplus.po
 
-# 添加luci-app-wechatpush
-LOGO_FILE=package/xzhhzx222/luci-app-wechatpush/root/usr/share/wechatpush/api/logo.jpg
-git clone https://github.com/tty228/luci-app-wechatpush.git package/xzhhzx222/luci-app-wechatpush
-# sed -i 's/\${str_linefeed}/\\\\n/g' package/xzhhzx222/luci-app-wechatpush/root/usr/share/wechatpush/api/qywx_mpnews.json
-sed -i 's/\${1} ${nowtime}/${nowtime}\\\\n${1}/g' package/xzhhzx222/luci-app-wechatpush/root/usr/share/wechatpush/api/qywx_mpnews.json
+# 修改luci-app-wechatpush
+LOGO_FILE=$PKG_DIR/luci-app-wechatpush/root/usr/share/wechatpush/api/logo.jpg
+# sed -i 's/\${str_linefeed}/\\\\n/g' $PKG_DIR/luci-app-wechatpush/root/usr/share/wechatpush/api/qywx_mpnews.json
+sed -i 's/\${1} ${nowtime}/${nowtime}\\\\n${1}/g' $PKG_DIR/luci-app-wechatpush/root/usr/share/wechatpush/api/qywx_mpnews.json
 
-# 添加luci-theme-argon
-git clone https://github.com/jerrykuku/luci-theme-argon.git package/xzhhzx222/luci-theme-argon
+# 修改luci-theme-argon
 sed -i 's/luci-theme-bootstrap/luci-theme-argon/g' package/feeds/luci/luci-light/Makefile
 
 # 修改default-settings
@@ -110,14 +94,9 @@ sed -i '/define Package\/default-settings-chn/,/endef/d' package/emortal/default
 sed -i '/default-settings-chn/d' package/emortal/default-settings/Makefile
 sed -i 's/+luci/& +@LUCI_LANG_zh_Hans +luci-i18n-base-zh-cn/g' package/emortal/default-settings/Makefile
 
-echo "------------ Check Start ------------"
-ls -l package/xzhhzx222/
-echo "------------- Check End -------------"
-
 DIY_LOGO=$GITHUB_WORKSPACE/diy/openwrt.jpg
 DIY_SET=$GITHUB_WORKSPACE/diy/default.settings
 DIY_SH=$GITHUB_WORKSPACE/diy/jimmywrt.sh
-
 echo "------------ Check Start ------------"
 echo "LOGO_FILE=$LOGO_FILE"
 echo "SET_FILE=$SET_FILE"
