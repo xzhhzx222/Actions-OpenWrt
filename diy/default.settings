@@ -254,6 +254,7 @@ uci add_list network.@device[-1].ports='eth4.85'
 uci add_list network.@device[-1].ports='eth5.85'
 uci set network.@device[-1].igmp_snooping='1'
 uci set network.@device[-1].multicast_querier='0'
+uci set network.@device[-1].igmpversion='2'
 uci commit network
 
 # Openclash Settings
