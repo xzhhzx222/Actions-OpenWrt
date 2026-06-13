@@ -327,6 +327,19 @@ cat >> /etc/openclash/custom/openclash_custom_rules.list <<EOF
 EOF
 uci commit openclash
 
+# rtp2http Settings
+while uci -q get rtp2httpd.@rtp2httpd[1] > /dev/null; do
+  uci del rtp2httpd.@rtp2httpd[1]
+done
+uci add rtp2httpd rtp2httpd
+uci set rtp2httpd.@rtp2httpd[-1].disabled='0'
+uci set rtp2httpd.@rtp2httpd[-1].verbose='1'
+uci set rtp2httpd.@rtp2httpd[-1].upstream_interface='br-iptv'
+uci add_list network.@device[-1].workers='2'
+uci add_list network.@device[-1].udp_rcvbuf_size='8388608'
+uci set rtp2httpd.@rtp2httpd[-1].external_m3u='https://raw.githubusercontent.com/ihipop/Shanghai-IPTV/master/tel_mu.m3u8'
+uci set rtp2httpd.@rtp2httpd[-1].xff='1'
+
 # Turboacc Settings
 # uci set turboacc.config.sfe_flow='0'
 # uci set turboacc.config.fullcone_nat='1'
