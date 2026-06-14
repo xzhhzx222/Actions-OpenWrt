@@ -141,6 +141,7 @@ jobs:
         echo "FILE_DATE=$(date +"%Y%m%d%H%M")" >> $GITHUB_ENV
 
     - name: Check space usage
+      if: (!cancelled())
       run: df -hT
 
     - name: Organize files
