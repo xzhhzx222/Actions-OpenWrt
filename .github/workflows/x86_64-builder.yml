@@ -141,20 +141,13 @@ jobs:
         echo "FILE_DATE=$(date +"%Y%m%d%H%M")" >> $GITHUB_ENV
 
     - name: Check space usage
-      if: (!cancelled())
       run: df -hT
-
-    - name: Upload bin directory
-      uses: actions/upload-artifact@v7
-      if: steps.compile.outputs.status == 'success' && env.UPLOAD_BIN_DIR == 'true'
-      with:
-        name: OpenWrt_bin${{ env.DEVICE_NAME }}_${{ env.FILE_DATE }}
-        path: openwrt/bin
 
     - name: Organize files
       id: organize
-      if: env.UPLOAD_FIRMWARE == 'true' && !cancelled()
+      if: steps.compile.outputs.status == 'success' && !cancelled()
       run: |
+        df -hT
         cd openwrt/bin/targets/*/*
         rm -rf packages
         sed -i 's/immortalwrt/openwrt/g' sha256sums
@@ -163,17 +156,24 @@ jobs:
         done
         echo "FIRMWARE=$PWD" >> $GITHUB_ENV
         echo "status=success" >> $GITHUB_OUTPUT
+    
+    - name: Upload bin directory
+      uses: actions/upload-artifact@v7
+      if: steps.organize.outputs.status == 'success' && env.UPLOAD_BIN_DIR == 'true' && !cancelled()
+      with:
+        name: OpenWrt_bin${{ env.DEVICE_NAME }}_${{ env.FILE_DATE }}
+        path: openwrt/bin
 
     - name: Upload firmware directory
       uses: actions/upload-artifact@v7
-      if: steps.organize.outputs.status == 'success' && !cancelled()
+      if: steps.organize.outputs.status == 'success' && env.UPLOAD_FIRMWARE == 'true' && !cancelled()
       with:
         name: OpenWrt_firmware${{ env.DEVICE_NAME }}_${{ env.FILE_DATE }}
         path: ${{ env.FIRMWARE }}
 
     - name: Generate release tag
       id: tag
-      if: env.UPLOAD_RELEASE == 'true' && !cancelled()
+      if: steps.organize.outputs.status == 'success' && !cancelled()
       run: |
         echo "release_name=$(date +"%y.%m.%d-%H%M")" >> $GITHUB_OUTPUT
         touch release.txt
@@ -183,7 +183,7 @@ jobs:
 
     - name: Upload firmware to release
       uses: softprops/action-gh-release@v3
-      if: steps.tag.outputs.status == 'success' && !cancelled()
+      if: steps.tag.outputs.status == 'success' && env.UPLOAD_RELEASE == 'true' && !cancelled()
       with:
         name: ImmortalWrt_${{ steps.tag.outputs.release_name }}
         tag_name: ${{ env.FILE_DATE }}
@@ -191,18 +191,24 @@ jobs:
         files: ${{ env.FIRMWARE }}/*
         make_latest: true
 
-    - name: Delete releases and workflows runs
-      uses: ophub/delete-releases-workflows@main
-      with:
-        delete_releases: true
-        releases_keep_latest: 7
-        delete_tags: true
-        delete_workflows: true
-        workflows_keep_day: 30
-        gh_token: ${{ secrets.GITHUB_TOKEN }}
-    
-    - name: Send Message to Wechat
+    - name: Send Message to Wechat (Failure)
       uses: HollowMan6/Wechat-Timed-Message@main
+      if: failure()
+      with:
+        TITLE: |
+          ${{ github.repository }}
+          工作流 ${{ github.workflow }} 流程失败
+        CONTENT: |
+          <b>工作流存在错误！！！</b>
+          - 后台：<a href="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}">点击查看详情</a>
+        IMAGE: https://raw.githubusercontent.com/${{ github.repository }}/${{ github.ref_name }}/diy/openwrt.jpg
+        CORPID: ${{ secrets.CORPID }}
+        CORPSECRET: ${{ secrets.CORPSECRET }}
+        AGENTID: ${{ secrets.AGENTID }}
+    
+    - name: Send Message to Wechat (Success)
+      uses: HollowMan6/Wechat-Timed-Message@main
+      if: success()
       with:
         TITLE: |
           ${{ github.repository }}
@@ -217,3 +223,15 @@ jobs:
         CORPID: ${{ secrets.CORPID }}
         CORPSECRET: ${{ secrets.CORPSECRET }}
         AGENTID: ${{ secrets.AGENTID }}
+    
+    - name: Delete releases and workflows runs
+      uses: ophub/delete-releases-workflows@main
+      with:
+        delete_releases: true
+        releases_keep_latest: 7
+        delete_tags: true
+        delete_workflows: true
+        workflows_keep_day: 30
+        gh_token: ${{ secrets.GITHUB_TOKEN }}
+    
+    
