@@ -9,6 +9,8 @@
 # Decide Release Version
 # OpenWrt or ImmortalWrt
 # DISTRIB_ID=$(grep DISTRIB_ID /etc/openwrt_release | cut -d "'" -f 2)
+# 24.10-SNAPSHOT or 25.12-SNAPSHOT
+DISTRIB_RELEASE=$(grep DISTRIB_RELEASE /etc/openwrt_release | cut -d "'" -f 2)
 
 # Luci Settings
 uci set luci.main.lang='zh_cn'
@@ -246,10 +248,6 @@ uci set network.iptv.metric='10'
 uci add network device
 uci set network.@device[-1].type='bridge'
 uci set network.@device[-1].name='br-iptv'
-uci add_list network.@device[-1].ports='eth0.85'
-uci add_list network.@device[-1].ports='eth1.85'
-uci add_list network.@device[-1].ports='eth2.85'
-uci add_list network.@device[-1].ports='eth3.85'
 uci add_list network.@device[-1].ports='eth4.85'
 uci add_list network.@device[-1].ports='eth5.85'
 uci set network.@device[-1].igmp_snooping='1'
@@ -328,11 +326,12 @@ EOF
 uci commit openclash
 
 # rtp2http Settings
-while uci -q get rtp2httpd.@rtp2httpd[1] > /dev/null; do
-  uci del rtp2httpd.@rtp2httpd[1]
+while uci -q get rtp2httpd.@rtp2httpd[-1] > /dev/null; do
+  uci del rtp2httpd.@rtp2httpd[-1]
 done
 uci add rtp2httpd rtp2httpd
 uci set rtp2httpd.@rtp2httpd[-1].disabled='0'
+uci set rtp2httpd.@rtp2httpd[-1].respawn='1'
 uci set rtp2httpd.@rtp2httpd[-1].verbose='1'
 uci set rtp2httpd.@rtp2httpd[-1].upstream_interface='br-iptv'
 uci add_list network.@device[-1].workers='2'
@@ -414,9 +413,17 @@ dhcp-option=28
 dhcp-option=60,00:00:01:00:02:03:43:50:45:03:0e:45:38:20:47:50:4f:4e:20:52:4f:55:54:45:52:04:03:31:2e:30
 EOF
 
-sed -i '/helloworld/d' /etc/opkg/distfeeds.conf
-sed -i '/passwall/d' /etc/opkg/distfeeds.conf
-sed -i '/sundaqiang/d' /etc/opkg/distfeeds.conf
+DISTRIB_RELEASE=$(grep DISTRIB_RELEASE /etc/openwrt_release | cut -d "'" -f 2)
+if [ "$DISTRIB_RELEASE" = "24.10-SNAPSHOT" ]; then
+  sed -i '/helloworld/d' /etc/opkg/distfeeds.conf
+  sed -i '/passwall/d' /etc/opkg/distfeeds.conf
+  sed -i '/sundaqiang/d' /etc/opkg/distfeeds.conf
+elif [ "$DISTRIB_RELEASE" = "25.12-SNAPSHOT" ]; then
+  sed -i '/helloworld/d' /etc/apk/repositories.d/distfeeds.list
+  sed -i '/passwall/d' /etc/apk/repositories.d/distfeeds.list
+  sed -i '/sundaqiang/d' /etc/apk/repositories.d/distfeeds.list
+fi
+
 
 sed -i 's/services/control/g' /usr/lib/lua/luci/controller/wolplus.lua
 sed -i 's/services/control/g' /usr/lib/lua/luci/view/wolplus/index.htm
