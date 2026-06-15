@@ -418,10 +418,12 @@ if [ "$DISTRIB_RELEASE" = "24.10-SNAPSHOT" ]; then
   sed -i '/helloworld/d' /etc/opkg/distfeeds.conf
   sed -i '/passwall/d' /etc/opkg/distfeeds.conf
   sed -i '/sundaqiang/d' /etc/opkg/distfeeds.conf
+  # echo "src/gz immortalwrt_kmods https://downloads.immortalwrt.org/releases/24.10-SNAPSHOT/targets/x86/64/kmods/6.6.118-1-f8c5d7fde74fa4fedf4370775255c515/" /etc/opkg/distfeeds.conf
 elif [ "$DISTRIB_RELEASE" = "25.12-SNAPSHOT" ]; then
   sed -i '/helloworld/d' /etc/apk/repositories.d/distfeeds.list
   sed -i '/passwall/d' /etc/apk/repositories.d/distfeeds.list
   sed -i '/sundaqiang/d' /etc/apk/repositories.d/distfeeds.list
+  # echo "src/gz immortalwrt_kmods https://downloads.immortalwrt.org/releases/25.12-SNAPSHOT/targets/x86/64/kmods/6.12.87-1-bd81971a3d8cd24f759789a68acc0cde" /etc/apk/repositories.d/distfeeds.list
 fi
 
 
