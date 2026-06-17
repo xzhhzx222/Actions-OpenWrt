@@ -66,19 +66,19 @@ rm -vf $CLASH_DIR/core/core.tar.gz
 # rm -f $CLASH_DIR/rule_provider/*
 
 # 修改sundaqiang/openwrt-packages
-sed -i 's/Wake on LAN/Wake on LAN +/g' $PWD/feeds/sundaqiang/luci-app-wolplus/luasrc/controller/wolplus.lua
-sed -i 's/wolplus/Wake on LAN +/g' $PWD/feeds/sundaqiang/luci-app-wolplus/po/zh_Hans/wolplus.po
-sed -i 's/macclient/Host Clients/g' $PWD/feeds/sundaqiang/luci-app-wolplus/po/zh_Hans/wolplus.po
-sed -i 's/name/Name/g' $PWD/feeds/sundaqiang/luci-app-wolplus/po/zh_Hans/wolplus.po
-sed -i 's/macaddr/MAC Address/g' $PWD/feeds/sundaqiang/luci-app-wolplus/po/zh_Hans/wolplus.po
-sed -i 's/maceth/Network Interface/g' $PWD/feeds/sundaqiang/luci-app-wolplus/po/zh_Hans/wolplus.po
-sed -i 's/awake/Awake/g' $PWD/feeds/sundaqiang/luci-app-wolplus/po/zh_Hans/wolplus.po
-echo >> $PWD/feeds/sundaqiang/luci-app-wolplus/po/zh_Hans/wolplus.po
-echo "msgid \"Wake on LAN is a mechanism to remotely boot computers in the local network.\"" >> $PWD/feeds/sundaqiang/luci-app-wolplus/po/zh_Hans/wolplus.po
-echo "msgstr \"网络唤醒++是一个远程唤醒本地计算机的工具\"" >> $PWD/feeds/sundaqiang/luci-app-wolplus/po/zh_Hans/wolplus.po
-echo >> $PWD/feeds/sundaqiang/luci-app-wolplus/po/zh_Hans/wolplus.po
-echo "msgid \"Wake Up Host\"" >> $PWD/feeds/sundaqiang/luci-app-wolplus/po/zh_Hans/wolplus.po
-echo "msgstr \"唤醒设备\"" >> $PWD/feeds/sundaqiang/luci-app-wolplus/po/zh_Hans/wolplus.po
+sed -i 's/Wake on LAN/Wake on LAN +/g' $PKG_DIR/luci-app-wolplus/luasrc/controller/wolplus.lua
+sed -i 's/wolplus/Wake on LAN +/g' $PKG_DIR/luci-app-wolplus/po/zh_Hans/wolplus.po
+sed -i 's/macclient/Host Clients/g' $PKG_DIR/luci-app-wolplus/po/zh_Hans/wolplus.po
+sed -i 's/name/Name/g' $PKG_DIR/luci-app-wolplus/po/zh_Hans/wolplus.po
+sed -i 's/macaddr/MAC Address/g' $PKG_DIR/luci-app-wolplus/po/zh_Hans/wolplus.po
+sed -i 's/maceth/Network Interface/g' $PKG_DIR/luci-app-wolplus/po/zh_Hans/wolplus.po
+sed -i 's/awake/Awake/g' $PKG_DIR/luci-app-wolplus/po/zh_Hans/wolplus.po
+echo >> $PKG_DIR/luci-app-wolplus/po/zh_Hans/wolplus.po
+echo "msgid \"Wake on LAN is a mechanism to remotely boot computers in the local network.\"" >> $PKG_DIR/luci-app-wolplus/po/zh_Hans/wolplus.po
+echo "msgstr \"网络唤醒++是一个远程唤醒本地计算机的工具\"" >> $PKG_DIR/luci-app-wolplus/po/zh_Hans/wolplus.po
+echo >> $PKG_DIR/luci-app-wolplus/po/zh_Hans/wolplus.po
+echo "msgid \"Wake Up Host\"" >> $PKG_DIR/luci-app-wolplus/po/zh_Hans/wolplus.po
+echo "msgstr \"唤醒设备\"" >> $PKG_DIR/luci-app-wolplus/po/zh_Hans/wolplus.po
 
 # 修改luci-app-wechatpush
 LOGO_FILE=$PKG_DIR/luci-app-wechatpush/root/usr/share/wechatpush/api/logo.jpg

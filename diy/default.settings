@@ -10,7 +10,7 @@
 # OpenWrt or ImmortalWrt
 # DISTRIB_ID=$(grep DISTRIB_ID /etc/openwrt_release | cut -d "'" -f 2)
 # 24.10-SNAPSHOT or 25.12-SNAPSHOT
-DISTRIB_RELEASE=$(grep DISTRIB_RELEASE /etc/openwrt_release | cut -d "'" -f 2)
+# DISTRIB_RELEASE=$(grep DISTRIB_RELEASE /etc/openwrt_release | cut -d "'" -f 2)
 
 # Luci Settings
 uci set luci.main.lang='zh_cn'
@@ -139,7 +139,6 @@ done
 for i in $(seq 0 8); do
   uci add firewall redirect
   uci set firewall.@redirect[-1].target='DNAT'
-  uci set firewall.@redirect[-1].family='ipv4'
   uci add_list firewall.@redirect[-1].proto='tcp'
   uci set firewall.@redirect[-1].src='wan'
   uci set firewall.@redirect[-1].dest='lan'
@@ -190,15 +189,15 @@ while uci -q get firewall.@rule[9] > /dev/null; do
 done
 for i in $(seq 0 2); do
   uci add firewall rule
-  uci set firewall.@rule[-1].src='*'
+  uci set firewall.@rule[-1].src='wan'
   uci set firewall.@rule[-1].target='ACCEPT'
-  uci set firewall.@rule[-1].family='ipv4'
 done
-uci set firewall.@rule[9].name='Softether-OpenVPN'
-uci set firewall.@rule[9].dest_port='1194'
-uci set firewall.@rule[10].name='Softether-IPSec'
+uci set firewall.@rule[9].name='IKEv2'
+uci add_list firewall.@rule[9].proto='udp'
+uci set firewall.@rule[9].dest_port='500 4500'
+uci set firewall.@rule[10].name='OpenVPN'
 uci add_list firewall.@rule[10].proto='udp'
-uci set firewall.@rule[10].dest_port='500 1701 4500'
+uci set firewall.@rule[10].dest_port='1194 1701'
 uci set firewall.@rule[11].name='Softether-Server'
 uci add_list firewall.@rule[11].proto='tcp'
 uci set firewall.@rule[11].dest_port='5555'
@@ -335,7 +334,7 @@ uci set rtp2httpd.@rtp2httpd[-1].respawn='1'
 uci set rtp2httpd.@rtp2httpd[-1].verbose='1'
 uci set rtp2httpd.@rtp2httpd[-1].upstream_interface='br-iptv'
 uci add_list network.@device[-1].workers='2'
-uci add_list network.@device[-1].udp_rcvbuf_size='8388608'
+# uci add_list network.@device[-1].udp_rcvbuf_size='8388608'
 uci set rtp2httpd.@rtp2httpd[-1].external_m3u='https://raw.githubusercontent.com/ihipop/Shanghai-IPTV/master/tel_mu.m3u8'
 uci set rtp2httpd.@rtp2httpd[-1].xff='1'
 
@@ -413,19 +412,18 @@ dhcp-option=28
 dhcp-option=60,00:00:01:00:02:03:43:50:45:03:0e:45:38:20:47:50:4f:4e:20:52:4f:55:54:45:52:04:03:31:2e:30
 EOF
 
-DISTRIB_RELEASE=$(grep DISTRIB_RELEASE /etc/openwrt_release | cut -d "'" -f 2)
-if [ "$DISTRIB_RELEASE" = "24.10-SNAPSHOT" ]; then
-  sed -i '/helloworld/d' /etc/opkg/distfeeds.conf
-  sed -i '/passwall/d' /etc/opkg/distfeeds.conf
-  sed -i '/sundaqiang/d' /etc/opkg/distfeeds.conf
-  # echo "src/gz immortalwrt_kmods https://downloads.immortalwrt.org/releases/24.10-SNAPSHOT/targets/x86/64/kmods/6.6.118-1-f8c5d7fde74fa4fedf4370775255c515/" /etc/opkg/distfeeds.conf
-elif [ "$DISTRIB_RELEASE" = "25.12-SNAPSHOT" ]; then
-  sed -i '/helloworld/d' /etc/apk/repositories.d/distfeeds.list
-  sed -i '/passwall/d' /etc/apk/repositories.d/distfeeds.list
-  sed -i '/sundaqiang/d' /etc/apk/repositories.d/distfeeds.list
-  # echo "src/gz immortalwrt_kmods https://downloads.immortalwrt.org/releases/25.12-SNAPSHOT/targets/x86/64/kmods/6.12.87-1-bd81971a3d8cd24f759789a68acc0cde" /etc/apk/repositories.d/distfeeds.list
-fi
-
+# DISTRIB_RELEASE=$(grep DISTRIB_RELEASE /etc/openwrt_release | cut -d "'" -f 2)
+# if [ "$DISTRIB_RELEASE" = "24.10-SNAPSHOT" ]; then
+#   sed -i '/helloworld/d' /etc/opkg/distfeeds.conf
+#   sed -i '/passwall/d' /etc/opkg/distfeeds.conf
+#   sed -i '/sundaqiang/d' /etc/opkg/distfeeds.conf
+#   echo "src/gz immortalwrt_kmods https://downloads.immortalwrt.org/releases/24.10-SNAPSHOT/targets/x86/64/kmods/6.6.118-1-f8c5d7fde74fa4fedf4370775255c515/" /etc/opkg/distfeeds.conf
+# elif [ "$DISTRIB_RELEASE" = "25.12-SNAPSHOT" ]; then
+#   sed -i '/helloworld/d' /etc/apk/repositories.d/distfeeds.list
+#   sed -i '/passwall/d' /etc/apk/repositories.d/distfeeds.list
+#   sed -i '/sundaqiang/d' /etc/apk/repositories.d/distfeeds.list
+#   echo "src/gz immortalwrt_kmods https://downloads.immortalwrt.org/releases/25.12-SNAPSHOT/targets/x86/64/kmods/6.12.87-1-bd81971a3d8cd24f759789a68acc0cde" /etc/apk/repositories.d/distfeeds.list
+# fi
 
 sed -i 's/services/control/g' /usr/lib/lua/luci/controller/wolplus.lua
 sed -i 's/services/control/g' /usr/lib/lua/luci/view/wolplus/index.htm
