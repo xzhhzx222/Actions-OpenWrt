@@ -17,8 +17,6 @@
 #echo 'src-git helloworld https://github.com/fw876/helloworld' >>feeds.conf.default
 #echo 'src-git passwall https://github.com/xiaorouji/openwrt-passwall' >>feeds.conf.default
 
-# 添加sundaqiang/openwrt-packages
-echo 'src-git sundaqiang https://github.com/sundaqiang/openwrt-packages.git;master' >>feeds.conf.default
 
 PKG_DIR=package/xzhhzx222
 echo "------------ Check Start ------------"

@@ -195,7 +195,7 @@ done
 uci set firewall.@rule[9].name='IKEv2'
 uci add_list firewall.@rule[9].proto='udp'
 uci set firewall.@rule[9].dest_port='500 4500'
-uci set firewall.@rule[10].name='OpenVPN'
+uci set firewall.@rule[10].name='OpenVPN/L2TP'
 uci add_list firewall.@rule[10].proto='udp'
 uci set firewall.@rule[10].dest_port='1194 1701'
 uci set firewall.@rule[11].name='Softether-Server'
