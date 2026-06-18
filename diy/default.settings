@@ -192,7 +192,7 @@ for i in $(seq 0 2); do
   uci set firewall.@rule[-1].src='wan'
   uci set firewall.@rule[-1].target='ACCEPT'
 done
-uci set firewall.@rule[9].name='IKEv2'
+uci set firewall.@rule[9].name='IKE/IPsec'
 uci add_list firewall.@rule[9].proto='udp'
 uci set firewall.@rule[9].dest_port='500 4500'
 uci set firewall.@rule[10].name='OpenVPN/L2TP'
