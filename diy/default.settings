@@ -80,6 +80,7 @@ uci commit ddns
 uci set dhcp.@dnsmasq[0].dns_redirect='0'
 uci set dhcp.@dnsmasq[0].sequential_ip='1'
 uci set dhcp.@dnsmasq[0].rebind_protection='0'
+uci set dhcp.@dnsmasq[0].localservice='0'
 uci set dhcp.@dnsmasq[0].filter_aaaa='1'
 uci set dhcp.@dnsmasq[0].cachesize='0'
 uci set dhcp.lan.start='20'
@@ -195,12 +196,13 @@ done
 uci set firewall.@rule[9].name='IKE/IPsec'
 uci add_list firewall.@rule[9].proto='udp'
 uci set firewall.@rule[9].dest_port='500 4500'
-uci set firewall.@rule[10].name='OpenVPN/L2TP'
-uci add_list firewall.@rule[10].proto='udp'
-uci set firewall.@rule[10].dest_port='1194 1701'
-uci set firewall.@rule[11].name='Softether-Server'
-uci add_list firewall.@rule[11].proto='tcp'
-uci set firewall.@rule[11].dest_port='5555'
+uci set firewall.@rule[10].name='VPN-Forward-All'
+uci add_list firewall.@rule[10].proto='tcp udp'
+uci add_list firewall.@rule[10].src_ip='10.10.10.0/24'
+uci set firewall.@rule[10].dest='*'
+uci set firewall.@rule[11].name='VPN-Access-Router'
+uci add_list firewall.@rule[11].proto='tcp udp'
+uci add_list firewall.@rule[11].src_ip='10.10.10.0/24'
 uci commit firewall
 
 # Msd_lite Settings
