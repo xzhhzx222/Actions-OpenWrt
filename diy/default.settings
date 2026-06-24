@@ -18,7 +18,6 @@ uci set luci.diag.dns='openwrt.org'
 uci set luci.diag.ping='openwrt.org'
 uci set luci.diag.route='openwrt.org'
 uci commit luci
-uci commit luci
 
 # System Settings
 uci -q batch <<-EOF
@@ -79,7 +78,7 @@ uci commit ddns
 # DHCP Settings
 uci set dhcp.@dnsmasq[0].dns_redirect='0'
 uci set dhcp.@dnsmasq[0].sequential_ip='1'
-uci set dhcp.@dnsmasq[0].rebind_protection='0'
+# uci set dhcp.@dnsmasq[0].rebind_protection='0'
 uci set dhcp.@dnsmasq[0].localservice='0'
 uci set dhcp.@dnsmasq[0].filter_aaaa='1'
 uci set dhcp.@dnsmasq[0].cachesize='0'
@@ -122,11 +121,14 @@ uci set dhcp.@host[4].mac='3A:D0:F2:0F:6C:CA'
 uci commit dhcp
 
 # Firewall Settings
-uci del firewall.@defaults[-1].flow_offloading
-uci del firewall.@defaults[-1].flow_offloading_hw
-uci del_list firewall.@zone[1].network='wan6'
-while uci -q get firewall.@zone[2] > /dev/null; do
-  uci del firewall.@zone[2]
+# uci del firewall.@defaults[-1].flow_offloading
+# uci del firewall.@defaults[-1].flow_offloading_hw
+# uci del_list firewall.@zone[1].network='wan6'
+# while uci -q get firewall.@zone[2] > /dev/null; do
+#   uci del firewall.@zone[2]
+# done
+while uci -q get firewall.@zone[3] > /dev/null; do
+  uci del firewall.@zone[3]
 done
 uci add firewall zone
 uci set firewall.@zone[-1].name='iptv'
@@ -144,7 +146,7 @@ for i in $(seq 0 8); do
   uci set firewall.@redirect[-1].src='wan'
   uci set firewall.@redirect[-1].dest='lan'
 done
-for i in $(seq 0 8); do
+for i in $(seq 0 7); do
   if [ $i -le 1 ]; then
     uci set firewall.@redirect[$i].dest_ip='10.0.0.1'
   elif [ $i -le 4 ]; then
@@ -166,7 +168,7 @@ uci set firewall.@redirect[2].name='OpenWrt SSH'
 uci set firewall.@redirect[2].src_dport='27022'
 uci set firewall.@redirect[2].dest_port='22'
 uci set firewall.@redirect[3].name='OpenWrt WebUI'
-uci set firewall.@redirect[3].src_dport='27081'
+uci set firewall.@redirect[3].src_dport='27080'
 uci set firewall.@redirect[3].dest_port='80'
 uci set firewall.@redirect[4].name='OpenWrt Socks'
 uci set firewall.@redirect[4].src_dport='27893'
@@ -178,13 +180,10 @@ uci set firewall.@redirect[5].dest_port='16888'
 uci set firewall.@redirect[6].name='Nas SSH'
 uci set firewall.@redirect[6].src_dport='27023'
 uci set firewall.@redirect[6].dest_port='22'
-uci set firewall.@redirect[7].name='Nas Http'
-uci set firewall.@redirect[7].src_dport='27080'
-uci set firewall.@redirect[7].dest_port='27080'
-uci set firewall.@redirect[8].name='Nas Https'
-uci set firewall.@redirect[8].src_dport='27443'
-uci set firewall.@redirect[8].dest_port='27443'
-# Softether
+uci set firewall.@redirect[7].name='Nas Https'
+uci set firewall.@redirect[7].src_dport='27443'
+uci set firewall.@redirect[7].dest_port='27443'
+# IKE/IPsec
 while uci -q get firewall.@rule[9] > /dev/null; do
   uci del firewall.@rule[9]
 done
@@ -204,10 +203,6 @@ uci set firewall.@rule[11].name='VPN-Access-Router'
 uci add_list firewall.@rule[11].proto='tcp udp'
 uci add_list firewall.@rule[11].src_ip='10.10.10.0/24'
 uci commit firewall
-
-# Msd_lite Settings
-# uci set msd_lite.@instance[0].network='iptv'
-# uci commit msd_lite
 
 # Network Settings
 # lan
@@ -230,12 +225,11 @@ uci add_list network.@device[-1].ports='eth1'
 uci add_list network.@device[-1].ports='eth2'
 uci add_list network.@device[-1].ports='eth3'
 uci add_list network.@device[-1].ports='eth4'
-uci add_list network.@device[-1].ports='tap_vpn'
 # wan
 if uci -q get network.wan > /dev/null; then
   uci set network.wan.device='eth5'
   uci set network.wan.proto='pppoe'
-  uci set network.wan.ppp_ipv6='0'
+  # uci set network.wan.ppp_ipv6='0'
   uci del network.wan6
 fi
 # iptv
@@ -317,6 +311,7 @@ cat >> /etc/openclash/custom/openclash_custom_rules.list <<EOF
 - DOMAIN,get.geojs.io,DIRECT
 - DOMAIN-KEYWORD,hga,HK
 - DOMAIN-KEYWORD,mos,HK
+- DOMAIN-SUFFIX,andnode.com,DIRECT
 - DOMAIN-SUFFIX,bwh81.net,DIRECT
 - DOMAIN-SUFFIX,vmiss.com,DIRECT
 - DOMAIN-SUFFIX,hdkylin.com,DIRECT
@@ -331,7 +326,7 @@ while uci -q get rtp2httpd.@rtp2httpd[-1] > /dev/null; do
   uci del rtp2httpd.@rtp2httpd[-1]
 done
 uci add rtp2httpd rtp2httpd
-uci set rtp2httpd.@rtp2httpd[-1].disabled='0'
+uci set rtp2httpd.@rtp2httpd[-1].disabled='1'
 uci set rtp2httpd.@rtp2httpd[-1].respawn='1'
 uci set rtp2httpd.@rtp2httpd[-1].verbose='1'
 uci set rtp2httpd.@rtp2httpd[-1].upstream_interface='br-iptv'
@@ -414,19 +409,6 @@ dhcp-option=28
 dhcp-option=60,00:00:01:00:02:03:43:50:45:03:0e:45:38:20:47:50:4f:4e:20:52:4f:55:54:45:52:04:03:31:2e:30
 EOF
 
-# DISTRIB_RELEASE=$(grep DISTRIB_RELEASE /etc/openwrt_release | cut -d "'" -f 2)
-# if [ "$DISTRIB_RELEASE" = "24.10-SNAPSHOT" ]; then
-#   sed -i '/helloworld/d' /etc/opkg/distfeeds.conf
-#   sed -i '/passwall/d' /etc/opkg/distfeeds.conf
-#   sed -i '/sundaqiang/d' /etc/opkg/distfeeds.conf
-#   echo "src/gz immortalwrt_kmods https://downloads.immortalwrt.org/releases/24.10-SNAPSHOT/targets/x86/64/kmods/6.6.118-1-f8c5d7fde74fa4fedf4370775255c515/" /etc/opkg/distfeeds.conf
-# elif [ "$DISTRIB_RELEASE" = "25.12-SNAPSHOT" ]; then
-#   sed -i '/helloworld/d' /etc/apk/repositories.d/distfeeds.list
-#   sed -i '/passwall/d' /etc/apk/repositories.d/distfeeds.list
-#   sed -i '/sundaqiang/d' /etc/apk/repositories.d/distfeeds.list
-#   echo "src/gz immortalwrt_kmods https://downloads.immortalwrt.org/releases/25.12-SNAPSHOT/targets/x86/64/kmods/6.12.87-1-bd81971a3d8cd24f759789a68acc0cde" /etc/apk/repositories.d/distfeeds.list
-# fi
-
 sed -i 's/services/control/g' /usr/lib/lua/luci/controller/wolplus.lua
 sed -i 's/services/control/g' /usr/lib/lua/luci/view/wolplus/index.htm
 
@@ -436,5 +418,13 @@ echo "log-facility=/dev/null" >> "/etc/dnsmasq.conf"
 ln -sf "/sbin/ip" "/usr/bin/ip"
 
 chmod +x /etc/jimmywrt.sh
+
+# acme
+/etc/init.d/acme disable 2>/dev/null
+mkdir -p /root/.acme.sh && chmod 700 /root/.acme.sh
+/usr/lib/acme/client/acme.sh --install-cronjob
+
+# pki
+sed -i 's|# load =.*|load = openssl x509 pem pkcs1|' /etc/strongswan.d/pki.conf
 
 exit 0

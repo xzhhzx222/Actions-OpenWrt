@@ -38,7 +38,7 @@ uci set dhcp.@host[4].mac='A8:A1:59:20:60:9F'
 uci commit dhcp
 
 # Firewall Settings
-for i in $(seq 0 8); do
+for i in $(seq 0 7); do
   if [ $i -le 1 ]; then
     uci set firewall.@redirect[$i].dest_ip='192.168.0.1'
   elif [ $i -le 4 ]; then
@@ -61,7 +61,6 @@ uci add_list network.@device[-1].ports='eth1'
 uci add_list network.@device[-1].ports='eth2'
 uci add_list network.@device[-1].ports='eth4'
 uci add_list network.@device[-1].ports='eth5'
-uci add_list network.@device[-1].ports='tap_vpn'
 # wan
 if uci -q get network.wan > /dev/null; then
   uci set network.wan.device='eth3'
