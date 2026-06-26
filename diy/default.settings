@@ -79,7 +79,7 @@ uci commit ddns
 uci set dhcp.@dnsmasq[0].dns_redirect='0'
 uci set dhcp.@dnsmasq[0].sequential_ip='1'
 # uci set dhcp.@dnsmasq[0].rebind_protection='0'
-uci set dhcp.@dnsmasq[0].localservice='0'
+# uci set dhcp.@dnsmasq[0].localservice='0'
 uci set dhcp.@dnsmasq[0].filter_aaaa='1'
 uci set dhcp.@dnsmasq[0].cachesize='0'
 uci set dhcp.lan.start='20'
@@ -123,23 +123,39 @@ uci commit dhcp
 # Firewall Settings
 # uci del firewall.@defaults[-1].flow_offloading
 # uci del firewall.@defaults[-1].flow_offloading_hw
-# uci del_list firewall.@zone[1].network='wan6'
-# while uci -q get firewall.@zone[2] > /dev/null; do
-#   uci del firewall.@zone[2]
-# done
-while uci -q get firewall.@zone[3] > /dev/null; do
-  uci del firewall.@zone[3]
+uci del_list firewall.@zone[1].network='wan6'
+while uci -q get firewall.@zone[2] > /dev/null; do
+  uci del firewall.@zone[2]
 done
 uci add firewall zone
 uci set firewall.@zone[-1].name='iptv'
-uci add_list firewall.@zone[-1].network='iptv'
 uci set firewall.@zone[-1].input='ACCEPT'
 uci set firewall.@zone[-1].output='ACCEPT'
 uci set firewall.@zone[-1].forward='ACCEPT'
+uci add_list firewall.@zone[-1].network='iptv'
+uci add firewall zone
+uci set firewall.@zone[-1].name='vpn'
+uci set firewall.@zone[-1].input='ACCEPT'
+uci set firewall.@zone[-1].output='ACCEPT'
+uci set firewall.@zone[-1].forward='ACCEPT'
+uci add_list firewall.@zone[-1].network='vpn'
+uci add_list firewall.@zone[-1].network='vpn_ip'
+while uci -q get firewall.@forwarding[1] > /dev/null; do
+  uci del firewall.@forwarding[1]
+done
+uci add firewall forwarding
+uci set firewall.@forwarding[-1].src='lan'
+uci set firewall.@forwarding[-1].dest='vpn'
+uci add firewall forwarding
+uci set firewall.@forwarding[-1].src='vpn'
+uci set firewall.@forwarding[-1].dest='lan'
+uci add firewall forwarding
+uci set firewall.@forwarding[-1].src='vpn'
+uci set firewall.@forwarding[-1].dest='wan'
 while uci -q get firewall.@redirect[-1] > /dev/null; do
   uci del firewall.@redirect[-1]
 done
-for i in $(seq 0 8); do
+for i in $(seq 0 7); do
   uci add firewall redirect
   uci set firewall.@redirect[-1].target='DNAT'
   uci add_list firewall.@redirect[-1].proto='tcp'
@@ -183,25 +199,27 @@ uci set firewall.@redirect[6].dest_port='22'
 uci set firewall.@redirect[7].name='Nas Https'
 uci set firewall.@redirect[7].src_dport='27443'
 uci set firewall.@redirect[7].dest_port='27443'
+uci add_list firewall.@redirect[7].reflection_zone='lan'
+uci add_list firewall.@redirect[7].reflection_zone='vpn'
 # IKE/IPsec
+uci del firewall.@rule[7].dest
+uci del firewall.@rule[8].dest
 while uci -q get firewall.@rule[9] > /dev/null; do
   uci del firewall.@rule[9]
 done
-for i in $(seq 0 2); do
-  uci add firewall rule
-  uci set firewall.@rule[-1].src='wan'
-  uci set firewall.@rule[-1].target='ACCEPT'
-done
-uci set firewall.@rule[9].name='IKE/IPsec'
-uci add_list firewall.@rule[9].proto='udp'
-uci set firewall.@rule[9].dest_port='500 4500'
-uci set firewall.@rule[10].name='VPN-Forward-All'
-uci add_list firewall.@rule[10].proto='tcp udp'
-uci add_list firewall.@rule[10].src_ip='10.10.10.0/24'
-uci set firewall.@rule[10].dest='*'
-uci set firewall.@rule[11].name='VPN-Access-Router'
-uci add_list firewall.@rule[11].proto='tcp udp'
-uci add_list firewall.@rule[11].src_ip='10.10.10.0/24'
+uci add firewall rule
+uci set firewall.@rule[-1].enabled='1'
+uci set firewall.@rule[-1].name='Allow-IPSec-NAT-T'
+uci add_list firewall.@rule[-1].proto='udp'
+uci set firewall.@rule[-1].src='wan'
+uci set firewall.@rule[-1].dest_port='4500'
+uci set firewall.@rule[-1].target='ACCEPT'
+uci add firewall rule
+uci set firewall.@rule[-1].enabled='1'
+uci set firewall.@rule[-1].name='Allow-IPSEC-AH'
+uci add_list firewall.@rule[-1].proto='ah'
+uci set firewall.@rule[-1].src='wan'
+uci set firewall.@rule[-1].target='ACCEPT'
 uci commit firewall
 
 # Network Settings
@@ -248,6 +266,24 @@ uci add_list network.@device[-1].ports='eth5.85'
 uci set network.@device[-1].igmp_snooping='1'
 uci set network.@device[-1].multicast_querier='0'
 uci set network.@device[-1].igmpversion='2'
+# vpn
+if uci -q get network.vpn > /dev/null; then
+  uci del network.vpn
+fi
+uci set network.vpn=interface
+uci set network.vpn.proto='xfrm'
+uci set network.vpn.ifid=''
+uci set network.vpn.tunlink='wan'
+uci set network.vpn.mtu='1360'
+# uci set network.vpn.multipath='off'
+# vpn_vip
+if uci -q get network.vpn_vip > /dev/null; then
+  uci del network.vpn_vip
+fi
+uci set network.vpn_vip=interface
+uci set network.vpn_vip.proto='static'
+uci set network.vpn_vip.ipaddr='10.10.10.1/24'
+uci set network.vpn_vip.device='@vpn'
 uci commit network
 
 # Openclash Settings
@@ -422,7 +458,7 @@ chmod +x /etc/jimmywrt.sh
 # acme
 /etc/init.d/acme disable 2>/dev/null
 mkdir -p /root/.acme.sh && chmod 700 /root/.acme.sh
-/usr/lib/acme/client/acme.sh --install-cronjob
+HOME=/root /usr/lib/acme/client/acme.sh --install-cronjob
 
 # pki
 sed -i 's|# load =.*|load = openssl x509 pem pkcs1|' /etc/strongswan.d/pki.conf
