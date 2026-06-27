@@ -295,34 +295,45 @@ uci set openclash.config.china_ip_route='1'
 uci set openclash.config.intranet_allowed='0'
 uci set openclash.config.lan_interface_name='br-lan'
 uci set openclash.config.geo_auto_update='1'
-uci set openclash.config.geo_update_week_time='1'
-uci set openclash.config.geo_update_day_time='4'
-uci set openclash.config.geo_custom_url='https://raw.githubusercontent.com/alecthw/mmdb_china_ip_list/release/Country.mmdb'
+uci set openclash.config.geo_update_week_time='*'
+uci set openclash.config.geo_update_day_time='3'
+# uci set openclash.config.geo_custom_url='https://raw.githubusercontent.com/alecthw/mmdb_china_ip_list/release/Country.mmdb'
+uci set openclash.config.geo_custom_url='https://testingcf.jsdelivr.net/gh/alecthw/mmdb_china_ip_list@release/lite/Country.mmdb'
 uci set openclash.config.geoip_auto_update='1'
 uci set openclash.config.geoip_update_week_time='*'
-uci set openclash.config.geoip_update_day_time='7'
-uci set openclash.config.geoip_custom_url='https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geoip.dat'
+uci set openclash.config.geoip_update_day_time='3'
+# uci set openclash.config.geoip_custom_url='https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geoip.dat'
+uci set openclash.config.geoip_custom_url='https://testingcf.jsdelivr.net/gh/Loyalsoldier/v2ray-rules-dat@release/geoip.dat'
 uci set openclash.config.geosite_auto_update='1'
 uci set openclash.config.geosite_update_week_time='*'
-uci set openclash.config.geosite_update_day_time='8'
-uci set openclash.config.geosite_custom_url='https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geosite.dat'
+uci set openclash.config.geosite_update_day_time='3'
+# uci set openclash.config.geosite_custom_url='https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geosite.dat'
+uci set openclash.config.geosite_custom_url='https://testingcf.jsdelivr.net/gh/Loyalsoldier/v2ray-rules-dat@release/geosite.dat'
 uci set openclash.config.geoasn_auto_update='1'
-uci set openclash.config.geoasn_update_week_time='4'
-uci set openclash.config.geoasn_update_day_time='9'
-uci set openclash.config.geoasn_custom_url='https://raw.githubusercontent.com/xishang0128/geoip/release/GeoLite2-ASN.mmdb'
+uci set openclash.config.geoasn_update_week_time='*'
+uci set openclash.config.geoasn_update_day_time='3'
+# uci set openclash.config.geoasn_custom_url='https://raw.githubusercontent.com/xishang0128/geoip/release/GeoLite2-ASN.mmdb'
+uci set openclash.config.geoasn_custom_url='https://testingcf.jsdelivr.net/gh/xishang0128/geoip@release/GeoLite2-ASN.mmdb'
 uci set openclash.config.chnr_auto_update='1'
 uci set openclash.config.chnr_update_week_time='*'
-uci set openclash.config.chnr_update_day_time='11'
-# uci set openclash.config.chnr_custom_url='https://ispip.clang.cn/all_cn.txt'
-uci set openclash.config.chnr_custom_url='https://github.com/Hackl0us/GeoIP2-CN/raw/release/CN-ip-cidr.txt'
-uci set openclash.config.chnr6_custom_url='https://ispip.clang.cn/all_cn_ipv6.txt'
-uci set openclash.config.core_version='linux-amd64-v3'
+uci set openclash.config.chnr_update_day_time='4'
+# uci set openclash.config.chnr_custom_url='https://github.com/Hackl0us/GeoIP2-CN/raw/release/CN-ip-cidr.txt'
+uci set openclash.config.chnr_custom_url='https://raw.githubusercontent.com/gaoyifan/china-operator-ip/refs/heads/ip-lists/china.txt'
+uci set openclash.config.chnr6_custom_url='https://raw.githubusercontent.com/gaoyifan/china-operator-ip/refs/heads/ip-lists/china6.txt'
+# uci set openclash.config.core_version='linux-amd64-v3'
+uci set openclash.config.interface_name='pppoe-wan'
 uci set openclash.config.log_level='error'
 uci set openclash.config.enable_custom_dns='1'
+for i in $(seq 0 36); do
+    uci set openclash.@dns_servers[$i].enabled='0'
+done
+uci set openclash.@dns_servers[1].enabled='1'
+uci set openclash.@dns_servers[7].enabled='1'
+uci set openclash.@dns_servers[8].enabled='1'
 uci set openclash.config.enable_tcp_concurrent='1'
 uci set openclash.config.enable_unified_delay='1'
 uci set openclash.config.find_process_mode='off'
-uci set openclash.config.global_client_fingerprint='chrome'
+# uci set openclash.config.global_client_fingerprint='chrome'
 uci set openclash.config.geodata_loader='0'
 # uci set openclash.config.geodata_loader='standard'
 uci set openclash.config.enable_geoip_dat='1'
@@ -330,14 +341,6 @@ uci set openclash.config.enable_meta_sniffer='1'
 uci set openclash.config.enable_meta_sniffer_pure_ip='1'
 uci set openclash.config.enable_meta_sniffer_custom='1'
 uci set openclash.config.enable_custom_clash_rules='1'
-# while uci -q get openclash.@dns_servers[-1] > /dev/null; do
-#   uci del openclash.@dns_servers[-1]
-# done
-# uci add openclash dns_servers
-# uci set openclash.@dns_servers[-1].enabled='1'
-# uci set openclash.@dns_servers[-1].group='nameserver'
-# uci set openclash.@dns_servers[-1].type='udp'
-# uci set openclash.@dns_servers[-1].ip='223.5.5.5'
 echo >> /etc/openclash/custom/openclash_custom_chnroute_pass.list
 cat >> /etc/openclash/custom/openclash_custom_chnroute_pass.list <<EOF
 bing.com
@@ -459,6 +462,7 @@ chmod +x /etc/jimmywrt.sh
 /etc/init.d/acme disable 2>/dev/null
 mkdir -p /root/.acme.sh && chmod 700 /root/.acme.sh
 HOME=/root /usr/lib/acme/client/acme.sh --install-cronjob
+/usr/lib/acme/client/acme.sh --set-default-ca --server zerossl
 
 # pki
 sed -i 's|# load =.*|load = openssl x509 pem pkcs1|' /etc/strongswan.d/pki.conf
