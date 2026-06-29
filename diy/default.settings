@@ -135,24 +135,23 @@ uci set firewall.@zone[-1].output='ACCEPT'
 uci set firewall.@zone[-1].forward='ACCEPT'
 uci add_list firewall.@zone[-1].network='iptv'
 uci add firewall zone
-uci set firewall.@zone[-1].name='vpn'
+uci set firewall.@zone[-1].name='roadwarrior'
 uci set firewall.@zone[-1].input='ACCEPT'
 uci set firewall.@zone[-1].output='ACCEPT'
 uci set firewall.@zone[-1].forward='ACCEPT'
-uci add_list firewall.@zone[-1].network='vpn'
-uci add_list firewall.@zone[-1].network='vpn_ip'
+uci add_list firewall.@zone[-1].network='roadwarrior'
 # forwarding
 while uci -q get firewall.@forwarding[1] > /dev/null; do
   uci del firewall.@forwarding[1]
 done
 uci add firewall forwarding
 uci set firewall.@forwarding[-1].src='lan'
-uci set firewall.@forwarding[-1].dest='vpn'
+uci set firewall.@forwarding[-1].dest='roadwarrior'
 uci add firewall forwarding
-uci set firewall.@forwarding[-1].src='vpn'
+uci set firewall.@forwarding[-1].src='roadwarrior'
 uci set firewall.@forwarding[-1].dest='lan'
 uci add firewall forwarding
-uci set firewall.@forwarding[-1].src='vpn'
+uci set firewall.@forwarding[-1].src='roadwarrior'
 uci set firewall.@forwarding[-1].dest='wan'
 # redirect
 while uci -q get firewall.@redirect[-1] > /dev/null; do
@@ -273,24 +272,21 @@ uci add_list network.@device[-1].ports='eth5.85'
 uci set network.@device[-1].igmp_snooping='1'
 uci set network.@device[-1].multicast_querier='0'
 uci set network.@device[-1].igmpversion='2'
-# vpn
-if uci -q get network.vpn > /dev/null; then
-  uci del network.vpn
+# roadwarrior
+if uci -q get network.roadwarrior > /dev/null; then
+  uci del network.roadwarrior
 fi
-uci set network.vpn=interface
-uci set network.vpn.proto='xfrm'
-uci set network.vpn.ifid=''
-uci set network.vpn.tunlink='wan'
-uci set network.vpn.mtu='1360'
-# uci set network.vpn.multipath='off'
-# vpn_vip
-if uci -q get network.vpn_vip > /dev/null; then
-  uci del network.vpn_vip
-fi
-uci set network.vpn_vip=interface
-uci set network.vpn_vip.proto='static'
-uci set network.vpn_vip.ipaddr='10.10.10.1/24'
-uci set network.vpn_vip.device='@vpn'
+uci set network.roadwarrior=interface
+uci set network.roadwarrior.proto='static'
+uci set network.roadwarrior.device='xfrm0'
+uci set network.roadwarrior.ipaddr='10.0.2.1'
+uci set network.roadwarrior.netmask='255.255.255.0'
+ip link add xfrm0 type xfrm if_id 357 dev pppoe-wan
+ip link set xfrm0 up
+uci add network device
+uci set network.@device[-1].name='xfrm0'
+uci set network.@device[-1].mtu='1360'
+uci set network.@device[-1].multicast='1'
 uci commit network
 
 # Openclash Settings
@@ -378,14 +374,9 @@ uci set rtp2httpd.@rtp2httpd[-1].verbose='1'
 uci set rtp2httpd.@rtp2httpd[-1].upstream_interface='br-iptv'
 uci add_list network.@device[-1].workers='2'
 # uci add_list network.@device[-1].udp_rcvbuf_size='8388608'
-uci set rtp2httpd.@rtp2httpd[-1].external_m3u='https://raw.githubusercontent.com/ihipop/Shanghai-IPTV/master/tel_mu.m3u8'
+# uci set rtp2httpd.@rtp2httpd[-1].external_m3u='https://raw.githubusercontent.com/ihipop/Shanghai-IPTV/master/tel_mu.m3u8'
+uci set rtp2httpd.@rtp2httpd[-1].external_m3u='https://cdn.jsdelivr.net/gh/ihipop/Shanghai-IPTV@master/tel_mu.m3u8'
 uci set rtp2httpd.@rtp2httpd[-1].xff='1'
-
-# Turboacc Settings
-# uci set turboacc.config.sfe_flow='0'
-# uci set turboacc.config.fullcone_nat='1'
-# uci set turboacc.config.bbr_cca='0'
-# uci commit turboacc
 
 # Wechatpush Settings
 uci set wechatpush.config.enable='0'
