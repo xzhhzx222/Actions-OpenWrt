@@ -71,6 +71,12 @@ rm -rf package/sundaqiang/
 # 添加luci-theme-argon
 git clone https://github.com/jerrykuku/luci-theme-argon.git $PKG_DIR/luci-theme-argon
 
+# 替换golang
+if [ "$REPO_BRANCH" = "openwrt-24.10" ]; then
+    git clone -b 26.x https://github.com/sbwml/packages_lang_golang $PKG_DIR/golang
+fi
+
+
 echo "------------ Check Start ------------"
 ls -l $PKG_DIR/
 echo "------------- Check End -------------"

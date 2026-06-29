@@ -20,20 +20,6 @@
 #sed -i 's/OpenWrt/P3TERX-Router/g' package/base-files/files/bin/config_generate
 
 
-# 删除已存在的软件包
-# rm -rf feeds/luci/applications/luci-app-openclash/
-# rm -rf feeds/luci/applications/luci-app-passwall/
-# rm -rf feeds/luci/applications/luci-app-rtp2httpd/
-# rm -rf feeds/luci/applications/luci-app-wechatpush/
-# rm -rf feeds/luci/themes/luci-theme-argon*/
-# rm -rf feeds/packages/net/rtp2httpd/
-# rm -rf package/feeds/luci/luci-app-openclash/
-# rm -rf package/feeds/luci/luci-app-passwall/
-# rm -rf package/feeds/luci/luci-app-rtp2httpd/
-# rm -rf package/feeds/luci/luci-app-wechatpush/
-# rm -rf package/feeds/luci/luci-theme-argon*/
-# rm -rf package/feeds/packages/rtp2httpd/
-
 PKG_DIR=package/xzhhzx222
 echo "------------ Check Start ------------"
 echo "PKG_DIR=$PKG_DIR"
