@@ -25,13 +25,9 @@ uci -q batch <<-EOF
   set system.@system[0].timezone='CST-8'
   set system.@system[0].zonename='Asia/Shanghai'
   
-  set system.ntp.enable_server='1'
-  set system.ntp.interface='lan'
-  set system.ntp.use_dhcp='0'
-  
   delete system.ntp.server
-  add_list system.ntp.server='ntp1.aliyun.com'
   add_list system.ntp.server='ntp.tencent.com'
+  add_list system.ntp.server='ntp1.aliyun.com'
   add_list system.ntp.server='ntp.ntsc.ac.cn'
   add_list system.ntp.server='cn.ntp.org.cn'
 EOF
@@ -57,6 +53,8 @@ uci set ddns.cf_root.check_interval='5'
 uci set ddns.cf_root.check_unit='minutes'
 uci set ddns.cf_root.force_interval='24'
 uci set ddns.cf_root.force_unit='hours'
+uci set ddns.cf_root.retry_interval='30'
+uci set ddns.cf_root.retry_unit='seconds'
 # www
 uci set ddns.cf_www=service
 uci set ddns.cf_www.enabled='0'
@@ -73,13 +71,13 @@ uci set ddns.cf_www.check_interval='5'
 uci set ddns.cf_www.check_unit='minutes'
 uci set ddns.cf_www.force_interval='24'
 uci set ddns.cf_www.force_unit='hours'
+uci set ddns.cf_www.retry_interval='30'
+uci set ddns.cf_www.retry_unit='seconds'
 uci commit ddns
 
 # DHCP Settings
 uci set dhcp.@dnsmasq[0].dns_redirect='0'
 uci set dhcp.@dnsmasq[0].sequential_ip='1'
-# uci set dhcp.@dnsmasq[0].rebind_protection='0'
-# uci set dhcp.@dnsmasq[0].localservice='0'
 uci set dhcp.@dnsmasq[0].filter_aaaa='1'
 uci set dhcp.@dnsmasq[0].cachesize='0'
 uci set dhcp.lan.start='20'
@@ -121,8 +119,6 @@ uci set dhcp.@host[4].mac='3A:D0:F2:0F:6C:CA'
 uci commit dhcp
 
 # Firewall Settings
-# uci del firewall.@defaults[-1].flow_offloading
-# uci del firewall.@defaults[-1].flow_offloading_hw
 # zone
 uci del_list firewall.@zone[1].network='wan6'
 while uci -q get firewall.@zone[2] > /dev/null; do
@@ -209,7 +205,9 @@ uci add_list firewall.@redirect[7].reflection_zone='lan'
 uci add_list firewall.@redirect[7].reflection_zone='vpn'
 # rule
 uci del firewall.@rule[7].dest
+uci set firewall.@rule[7].family='ipv4'
 uci del firewall.@rule[8].dest
+uci set firewall.@rule[8].family='ipv4'
 while uci -q get firewall.@rule[9] > /dev/null; do
   uci del firewall.@rule[9]
 done
@@ -220,12 +218,7 @@ uci add_list firewall.@rule[-1].proto='udp'
 uci set firewall.@rule[-1].src='wan'
 uci set firewall.@rule[-1].dest_port='4500'
 uci set firewall.@rule[-1].target='ACCEPT'
-uci add firewall rule
-uci set firewall.@rule[-1].enabled='1'
-uci set firewall.@rule[-1].name='Allow-IPSEC-AH'
-uci add_list firewall.@rule[-1].proto='ah'
-uci set firewall.@rule[-1].src='wan'
-uci set firewall.@rule[-1].target='ACCEPT'
+uci set firewall.@rule[-1].family='ipv4'
 uci commit firewall
 
 # Network Settings
@@ -264,11 +257,13 @@ uci set network.iptv=interface
 uci set network.iptv.proto='dhcp'
 uci set network.iptv.device='br-iptv'
 uci set network.iptv.metric='10'
+uci set network.iptv.delegate='0'
 uci add network device
 uci set network.@device[-1].type='bridge'
 uci set network.@device[-1].name='br-iptv'
 uci add_list network.@device[-1].ports='eth4.85'
 uci add_list network.@device[-1].ports='eth5.85'
+uci set network.@device[-1].ipv6='0'
 uci set network.@device[-1].igmp_snooping='1'
 uci set network.@device[-1].multicast_querier='0'
 uci set network.@device[-1].igmpversion='2'
@@ -279,13 +274,13 @@ fi
 uci set network.roadwarrior=interface
 uci set network.roadwarrior.proto='static'
 uci set network.roadwarrior.device='xfrm0'
-uci set network.roadwarrior.ipaddr='10.0.2.1'
+uci set network.roadwarrior.ipaddr='10.10.10.1'
 uci set network.roadwarrior.netmask='255.255.255.0'
-ip link add xfrm0 type xfrm if_id 357 dev pppoe-wan
-ip link set xfrm0 up
+uci set network.roadwarrior.delegate='0'
 uci add network device
 uci set network.@device[-1].name='xfrm0'
 uci set network.@device[-1].mtu='1360'
+uci set network.@device[-1].ipv6='0'
 uci set network.@device[-1].multicast='1'
 uci commit network
 
@@ -324,7 +319,7 @@ uci set openclash.config.chnr_update_day_time='4'
 uci set openclash.config.chnr_custom_url='https://raw.githubusercontent.com/gaoyifan/china-operator-ip/refs/heads/ip-lists/china.txt'
 uci set openclash.config.chnr6_custom_url='https://raw.githubusercontent.com/gaoyifan/china-operator-ip/refs/heads/ip-lists/china6.txt'
 # uci set openclash.config.core_version='linux-amd64-v3'
-uci set openclash.config.interface_name='pppoe-wan'
+# uci set openclash.config.interface_name='pppoe-wan'
 uci set openclash.config.log_level='error'
 uci set openclash.config.enable_custom_dns='1'
 for i in $(seq 0 36); do
